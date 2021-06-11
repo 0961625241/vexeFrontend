@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Radio, Table, Space ,Select} from 'antd';
+import { Button, Modal, Form, Input, Radio, Table, Space, Select, Breadcrumb } from 'antd';
 import { connect } from 'react-redux';
 import { postStationRequest, putStationRequest, deleteStationRequest } from './../../../actions/stations';
 import { search } from './../../../actions/index';
 import Item from 'antd/lib/list/Item';
-
+import {BrowserRouter as Router, Switch, Route, Link, useParams} from "react-router-dom";
 const { Option } = Select;
 const { TextArea } = Input;
-const CollectionCreateForm = ({listProvince,listStation, FindId, visible, onCreate, onCancel, data }) => {
+const CollectionCreateForm = ({ listProvince, listStation, FindId, visible, onCreate, onCancel, data }) => {
 
   const [form] = Form.useForm();
   let nameProvince = '';
@@ -57,25 +57,25 @@ const CollectionCreateForm = ({listProvince,listStation, FindId, visible, onCrea
             },
           ]}
         >
-           <Select
-              style={{ width: 150 }}
-              showSearch
-              style={{ width: 200 }}
-              placeholder="Chọn khu vực"
-              optionFilterProp="children"
-              // onChange={onChange}
-              // onFocus={onFocus}
-              // onBlur={onBlur}
-              // onSearch={onSearch}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-             {
-            listProvince.map((item, index) => {
+          <Select
+            style={{ width: 150 }}
+            showSearch
+            style={{ width: 200 }}
+            placeholder="Chọn khu vực"
+            optionFilterProp="children"
+            // onChange={onChange}
+            // onFocus={onFocus}
+            // onBlur={onBlur}
+            // onSearch={onSearch}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {
+              listProvince.map((item, index) => {
                 return (<Option key={index + item._id} value={item._id}>{item.nameProvince}</Option>)
-            })}
-            </Select>
+              })}
+          </Select>
         </Form.Item>
         <Form.Item
           name="nameStation"
@@ -177,7 +177,7 @@ class ListStation extends Component {
       ],
 
       FindId: '',
-      keyword:''
+      keyword: ''
     }
 
 
@@ -257,8 +257,8 @@ class ListStation extends Component {
   };
   listStation = () => {
     const data = []
-    let {keyword}=this.state;
-     let {listStation,listSearch} = this.props;
+    let { keyword } = this.state;
+    let { listStation, listSearch } = this.props;
     //  const regex = new RegExp(`^${value}`, 'i');
     let filterNameProvince = this.state.filterNameProvince
     if (filterNameProvince) {
@@ -271,10 +271,10 @@ class ListStation extends Component {
         }
       });
     }
-      listStation = listStation.filter((task) => {
-        return task.nameStation.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
+    listStation = listStation.filter((task) => {
+      return task.nameStation.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
     });
-   
+
     listStation.map((item, index) => {
       // console.log(item)
       data.push({
@@ -291,11 +291,11 @@ class ListStation extends Component {
 
   onChangeSearch = (event) => {
     this.setState({
-        keyword : event.target.value
+      keyword: event.target.value
     });
-}
-  onSearch=()=>{
-      this.props.search(this.state.keyword)
+  }
+  onSearch = () => {
+    this.props.search(this.state.keyword)
   }
   onChangeFilterProvince = (value) => {
     console.log(`selected ${value}`);
@@ -305,14 +305,22 @@ class ListStation extends Component {
     })
   }
   render() {
-    
+
     return (
       <>
         <div>
-          <h4 style={{ marginBottom: '10px' }}>Quản lý Bến xe</h4>
+          <h4 className="titleListManager">Quản lý Bến xe</h4>
+          <div className="breadcrumbList"><Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to='/manager'>Trang chủ</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              Bến xe
+    </Breadcrumb.Item>
+          </Breadcrumb></div>
           <div className='SearchTicket'>
             <div className="input-groupSearch">
-            
+
               <Button
                 type="primary"
                 onClick={() => {
@@ -369,7 +377,7 @@ class ListStation extends Component {
                   })}
               </Select>
             </div>
-            <div className="input-groupSearch" style={{display:'flex'}}>
+            <div className="input-groupSearch" style={{ display: 'flex' }}>
               <input
                 name="keyword"
                 value={this.state.keyword}
@@ -380,7 +388,7 @@ class ListStation extends Component {
               />
               <span className="input-group-btn">
                 <button className="btn btn-primary" type="button" onClick={this.onSearch}>
-                  <span className="fa fa-search " style={{marginRight:'5px'}}></span>Tìm kiếm
+                  <span className="fa fa-search " style={{ marginRight: '5px' }}></span>Tìm kiếm
                         </button>
               </span>
             </div>
@@ -388,8 +396,8 @@ class ListStation extends Component {
 
 
           <CollectionCreateForm
-          listProvince={this.props.listProvince}
-          listStation={this.props.listStation}
+            listProvince={this.props.listProvince}
+            listStation={this.props.listStation}
             FindId={this.state.FindId}
             data={this.state.data}
             visible={this.state.visible === true}
@@ -410,7 +418,7 @@ class ListStation extends Component {
 const mapStateToProps = (state) => ({
   listStation: state.listStation.stations,
   listProvince: state.listProvince.provinces,
-  listSearch:state.search.keyword
+  listSearch: state.search.keyword
 });
 
 const mapDispathToProps = (dispatch) => {
@@ -424,7 +432,7 @@ const mapDispathToProps = (dispatch) => {
     deleteStationRequest: (id) => {
       dispatch(deleteStationRequest(id))
     },
-    search:(keyword)=>{
+    search: (keyword) => {
       dispatch(search(keyword))
     }
 

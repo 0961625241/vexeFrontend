@@ -9,7 +9,7 @@ import {
   useLocation
 } from "react-router-dom";
 import { Resizable } from 'react-resizable';
-import { Button, Modal, Form, Input, Radio,Table ,Space} from 'antd';
+import { Breadcrumb,Button, Modal, Form, Input, Radio,Table ,Space} from 'antd';
 import { connect } from 'react-redux';
 import {deleteUserRequest,putUserRequest} from './../../../actions/users';
 import { searchUser } from './../../../actions/index';
@@ -217,7 +217,15 @@ class ListUser extends Component {
     console.log(this.state.keyword)
     return (
       <>
-       <h4 style={{marginBottom:'10px'}}>Quản lý User</h4>
+       <h4 className="titleListManager">Quản lý User</h4>
+       <div className="breadcrumbList"><Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to='/manager'>Trang chủ</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+            User
+    </Breadcrumb.Item>
+          </Breadcrumb></div>
        <div className='SearchTicket'>
             <div className="input-groupSearch">
             </div>

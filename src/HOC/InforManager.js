@@ -22,7 +22,7 @@ const { Header, Content, Sider } = Layout;
 class InforManager extends Component {
     state = {
         collapsed: false,
-        current: '1',
+        current: this.props.location.pathname,
     };
     componentDidMount() {
         this.props.getStationRequest()
@@ -51,6 +51,7 @@ class InforManager extends Component {
     logout = () => {
         return localStorage.removeItem('User');
     }
+    
     render() {
         if (JSON.parse(localStorage.getItem("User")) && JSON.parse(localStorage.getItem("User")).userType === 'admin') {
             return (
@@ -86,18 +87,18 @@ class InforManager extends Component {
                                 selectedKeys={[this.state.current]}
                                 onClick={this.handleClick}
                             >
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="1" icon={<LaptopOutlined />} ><Link to="/manager/stations">Bến xe</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/stations" icon={<LaptopOutlined />} ><Link to="/manager/stations">Bến xe</Link></Menu.Item>
                                 
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="2" icon={<StarOutlined />} ><Link to="/manager/drivers">Tài xế</Link></Menu.Item>
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="3" icon={<NotificationOutlined />}><Link to="/manager/trips">Chuyến đi</Link></Menu.Item>
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="4" icon={<TagsOutlined />}><Link to="/manager/tickets">Vé xe</Link></Menu.Item>
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="5" icon={<ThunderboltOutlined />} ><Link to="/manager/busA1s">Phụ xe</Link></Menu.Item>
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="6" icon={<TableOutlined />}><Link to="/manager/users">User</Link></Menu.Item>
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="7" icon={<StarOutlined />}><Link to="/manager/cars">Hãng xe</Link></Menu.Item>
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="8" icon={<ScheduleOutlined />}><Link to="/manager/total">Thông kê</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/drivers" icon={<StarOutlined />} ><Link to="/manager/drivers">Tài xế</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/trips" icon={<NotificationOutlined />}><Link to="/manager/trips">Chuyến đi</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/tickets" icon={<TagsOutlined />}><Link to="/manager/tickets">Vé xe</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/busA1s" icon={<ThunderboltOutlined />} ><Link to="/manager/busA1s">Phụ xe</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/users" icon={<TableOutlined />}><Link to="/manager/users">User</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/cars" icon={<StarOutlined />}><Link to="/manager/cars">Hãng xe</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/total" icon={<ScheduleOutlined />}><Link to="/manager/total">Thông kê</Link></Menu.Item>
                             </Menu>
                         </Sider>
-                        <Content className="site-layout-background" style={{ padding: 24, margin: 0, minHeight: 280, }}>
+                        <Content className="site-layout-background"  style={{ padding: 24, margin: 0, minHeight: 280,background:'#fff'}}>
                             {this.props.children}
                         </Content>
                     </Layout>

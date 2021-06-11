@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Modal, Form, Input, Radio, Table, Space, Select, DatePicker, Tag } from 'antd';
+import { Breadcrumb,Button, Modal, Form, Input, Radio, Table, Space, Select, DatePicker, Tag } from 'antd';
 import { connect } from 'react-redux';
-import { deleteTicketRequest } from './../../../actions/tickets'
+import { deleteTicketRequest } from './../../../actions/tickets';
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 const { Option } = Select;
 const { TextArea } = Input;
 function numberToMoney(money) {
@@ -87,6 +88,8 @@ const CollectionCreateForm = ({ onChangeStartTime, visible, onCreate, onCancel, 
 class ListTicket extends Component {
   state = {
     filterNameTicket: '',
+    filterNameStation: "",
+    filterNameStation2c: "",
     typesTicket1c: true,
     typesTicket2c: false,
     columns: [
@@ -104,6 +107,12 @@ class ListTicket extends Component {
         title: 'Thời gian bắt đầu chuyến',
         dataIndex: 'startTime',
         width: 200,
+        render: (item) => (
+          <Space size="middle">
+            <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+          </Space>
+        ),
+        sorter: (a, b) =>new Date(a.startTime).valueOf() - new Date(b.startTime).valueOf()
       },
       {
         title: 'Chỗ ngồi đã đặt',
@@ -126,6 +135,12 @@ class ListTicket extends Component {
         title: 'Thời gian đặt chuyến KH ',
         dataIndex: 'dateBooked',
         width: 200,
+        render: (item) => (
+          <Space size="middle">
+            <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+          </Space>
+        ),
+        sorter: (a, b) =>new Date(a.dateBooked).valueOf() - new Date(b.dateBooked).valueOf()
       },
       {
         title: 'Email khách hàng',
@@ -164,6 +179,12 @@ class ListTicket extends Component {
           title: 'Thời gian bắt đầu chuyến',
           dataIndex: 'startTime',
           width: 200,
+          render: (item) => (
+            <Space size="middle">
+              <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+            </Space>
+          ),
+          sorter: (a, b) =>new Date(a.startTime).valueOf() - new Date(b.startTime).valueOf()
         },
         {
           title: 'Chỗ ngồi đã đặt',
@@ -201,6 +222,12 @@ class ListTicket extends Component {
             title: 'Thời gian bắt đầu chuyến',
             dataIndex: 'startTimeDI',
             width: 200,
+            render: (item) => (
+              <Space size="middle">
+                <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+              </Space>
+            ),
+            sorter: (a, b) =>new Date(a.startTimeDI).valueOf() - new Date(b.startTimeDI).valueOf()
           },
 
           {
@@ -228,6 +255,12 @@ class ListTicket extends Component {
         title: 'Thời gian đặt chuyến KH ',
         dataIndex: 'dateBooked',
         width: 200,
+        render: (item) => (
+          <Space size="middle">
+            <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+          </Space>
+        ),
+        sorter: (a, b) =>new Date(a.dateBooked).valueOf() - new Date(b.dateBooked).valueOf()
       },
       {
         title: 'Email khách hàng',
@@ -306,7 +339,18 @@ class ListTicket extends Component {
   }
   listTicket = (listTicket) => {
     const data = [];
-    let filterNameTicket = this.state.filterNameTicket
+    let filterNameTicket = this.state.filterNameTicket;
+    let filterNameStation = this.state.filterNameStation
+    if (filterNameStation) {
+      listTicket = listTicket.filter((task) => {
+        if (filterNameStation === '') {
+          return task;
+        }
+        else if (filterNameStation === task.tripId.fromStation._id) {
+          return task
+        }
+      });
+    }
     if (filterNameTicket) {
       listTicket = listTicket.filter((task) => {
         if (filterNameTicket === '') {
@@ -326,11 +370,13 @@ class ListTicket extends Component {
           tripId: item.tripId,
           fromStation: item.tripId.fromStation.nameStation,
           toStation: item.tripId.toStation.nameStation,
-          startTime: `${new Date(item.tripId.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripId.startTime).toLocaleTimeString()}`,
+          startTime: item.tripId.startTime,
+          // startTime: `${new Date(item.tripId.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripId.startTime).toLocaleTimeString()}`,
           seats: item.seats,
           emailKH: item.emailKH,
           totalPrice: `${numberToMoney(item.totalPrice)}đ`,
-          dateBooked: `${new Date(item.createdAt).toLocaleDateString("es-CL")}    ${new Date(item.createdAt).toLocaleTimeString()}`,
+          dateBooked: item.createdAt
+          // dateBooked: `${new Date(item.createdAt).toLocaleDateString("es-CL")}    ${new Date(item.createdAt).toLocaleTimeString()}`,
         })
       }
     })
@@ -338,7 +384,18 @@ class ListTicket extends Component {
   }
   listTicket2c = (listTicket) => {
     const data = [];
-    let filterNameTicket = this.state.filterNameTicket
+    let filterNameTicket = this.state.filterNameTicket;
+    let filterNameStation2 = this.state.filterNameStation2c
+    if (filterNameStation2) {
+      listTicket = listTicket.filter((task) => {
+        if (filterNameStation2 === '') {
+          return task;
+        }
+        else if (filterNameStation2 === task.tripId.fromStation._id) {
+          return task
+        }
+      });
+    }
     if (filterNameTicket) {
       listTicket = listTicket.filter((task) => {
         if (filterNameTicket === '') {
@@ -357,19 +414,33 @@ class ListTicket extends Component {
           tripId: item.tripId,
           fromStation: item.tripId.fromStation.nameStation,
           toStation: item.tripId.toStation.nameStation,
-          startTime: `${new Date(item.tripId.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripId.startTime).toLocaleTimeString()}`,
+          startTime: item.tripId.startTime,
           seats: item.seats,
           fromStationDI: item.tripIDTo !== null ? item.tripIDTo.fromStation.nameStation : '',
           toStationDI: item.tripIDTo !== null ? item.tripIDTo.toStation.nameStation : '',
-          startTimeDI: item.tripIDTo !== null ? `${new Date(item.tripIDTo.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripIDTo.startTime).toLocaleTimeString()}` : '',
+          startTimeDI: item.tripIDTo !== null ? item.tripIDTo.startTime : '',
           seatsDI: item.seatCodesTo,
           emailKH: item.emailKH,
-          dateBooked: `${new Date(item.createdAt).toLocaleDateString("es-CL")}    ${new Date(item.createdAt).toLocaleTimeString()}`,
+          dateBooked: item.createdAt,
           totalPrice: `${numberToMoney(item.totalPrice)}đ`
         })
       }
     })
     return data;
+  }
+  onChangeFilterStation = (value) => {
+    console.log(`selected ${value}`);
+    this.setState({
+      filterNameStation: value,
+      //   selectCodeCar: 'Vui long chon ma xe'
+    })
+  }
+  onChangeFilterStation2 = (value) => {
+    console.log(`selected ${value}`);
+    this.setState({
+      filterNameStation2c: value,
+      //   selectCodeCar: 'Vui long chon ma xe'
+    })
   }
   handleChangeFromStation = (value) => {
     console.log(`selected ${value}`);
@@ -404,16 +475,45 @@ onClickTicket2c=()=>{
     })
 }
   render() {
-    console.log(this.props.listTicket)
     return (
       <><div>
-        <h4 style={{ marginBottom: '10px' }}>Quản lý Vé xe</h4>
+        <h4 className="titleListManager">Quản lý Vé xe</h4>
+        <div className="breadcrumbList"><Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to='/manager'>Trang chủ</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              Vé xe
+    </Breadcrumb.Item>
+          </Breadcrumb></div>
         {this.state.typesTicket1c === true ?
           <div>
             <div className='SearchTicket'>
               <div className="input-groupSearch">
                 <Button onClick={this.onClickTicket2c} type="primary">Vé khứ hồi</Button>
               </div>
+              <div className="input-groupSearch">
+              <Select
+                style={{ width: 150 }}
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Chọn bến xe"
+                optionFilterProp="children"
+                onChange={this.onChangeFilterStation}
+                // onFocus={onFocus}
+                // onBlur={onBlur}
+                // onSearch={onSearch}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                <Option value="">Tất cả</Option>
+                {
+                  this.props.listStation.map((item, index) => {
+                    return (<Option key={index + item._id} value={item._id}>{item.nameStation}</Option>)
+                  })}
+              </Select>
+            </div>
             </div>
             <Table bordered columns={this.state.columns} dataSource={this.listTicket(this.props.listTicket)} />
           </div>
@@ -425,6 +525,28 @@ onClickTicket2c=()=>{
               <div className="input-groupSearch">
                 <Button type="primary" onClick={this.onClickTicket1c}>Vé 1 chiều</Button>
               </div>
+              <div className="input-groupSearch">
+              <Select
+                style={{ width: 150 }}
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Chọn bến xe"
+                optionFilterProp="children"
+                onChange={this.onChangeFilterStation2}
+                // onFocus={onFocus}
+                // onBlur={onBlur}
+                // onSearch={onSearch}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                <Option value="">Tất cả</Option>
+                {
+                  this.props.listStation.map((item, index) => {
+                    return (<Option key={index + item._id} value={item._id}>{item.nameStation}</Option>)
+                  })}
+              </Select>
+            </div>
             </div>
             <Table scroll={{ x: 1500 }} bordered columns={this.state.columns2c} dataSource={this.listTicket2c(this.props.listTicket)} />
           </div>
@@ -440,6 +562,7 @@ onClickTicket2c=()=>{
 const mapStateToProps = (state) => ({
   listTicket: state.listTicket.tickets,
   listTrip: state.listTrip.trips,
+  listStation: state.listStation.stations,
 });
 
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Radio, Table, Space, Upload, Icon, message, Select } from 'antd';
+import { Breadcrumb, Button, Modal, Form, Input, Radio, Table, Space, Upload, Icon, message, Select } from 'antd';
 import { connect } from 'react-redux';
 import { postCarRequest, deleteCarRequest, putCarRequest } from './../../../actions/cars';
 import { UploadOutlined } from '@ant-design/icons';
 import { searchCar } from './../../../actions/index';
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 const { Option } = Select;
 
 const Dragger = Upload.Dragger;
@@ -413,7 +414,7 @@ class ListCar extends Component {
   listCar = () => {
     const data = [];
     let { listCar, listSearch } = this.props;
-   
+
     let filterNameStation = this.state.filterNameStation
     if (filterNameStation) {
       listCar = listCar.filter((task) => {
@@ -425,8 +426,8 @@ class ListCar extends Component {
         }
       });
     }
-   listCar = listCar.filter((task) => {
-        return task.CarMFG.nameCarMFG.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
+    listCar = listCar.filter((task) => {
+      return task.CarMFG.nameCarMFG.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
     });
 
 
@@ -479,7 +480,15 @@ class ListCar extends Component {
     return (
       <>
         <div>
-          <h4 style={{ marginBottom: '10px' }}>Quản lý Hãng xe</h4>
+          <h4 className="titleListManager">Quản lý Hãng xe</h4>
+          <div className="breadcrumbList"><Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to='/manager'>Trang chủ</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              Hãng xe
+    </Breadcrumb.Item>
+          </Breadcrumb></div>
           <div className='SearchTicket'>
             <div className="input-groupSearch">
               <Button style={{ marginBottom: '15px' }}

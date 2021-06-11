@@ -1,6 +1,7 @@
 import *as ActionType from './../constants/ActionType'
 let initialState = {
-    trips: []
+    trips: [],
+    getIdTrip:null
 }
 
 
@@ -10,7 +11,7 @@ const listTrip = (state = initialState, action) => {
             state.trips = action.data;
             return { ...state }
         case ActionType.GET_ID_TRIP:
-            state.trips = action.data;
+            state.getIdTrip = action.data;
             return { ...state }    
         case ActionType.ADD_TRIP:
             state.trips = [...state.trips, action.data]

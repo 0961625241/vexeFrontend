@@ -54,6 +54,12 @@ class History extends Component {
                 title: 'Thời gian bắt đầu chuyến',
                 dataIndex: 'startTime',
                 width: 200,
+                render: (item) => (
+                    <Space size="middle">
+                      <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+                    </Space>
+                  ),
+                  sorter: (a, b) =>new Date(a.startTime).valueOf() - new Date(b.startTime).valueOf()
             },
             {
                 title: 'Chỗ ngồi đã đặt',
@@ -112,6 +118,12 @@ class History extends Component {
                     title: 'Thời gian bắt đầu chuyến',
                     dataIndex: 'startTime',
                     width: 200,
+                    render: (item) => (
+                        <Space size="middle">
+                          <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+                        </Space>
+                      ),
+                      sorter: (a, b) =>new Date(a.startTime).valueOf() - new Date(b.startTime).valueOf()
                 },
                 {
                     title: 'Chỗ ngồi đã đặt',
@@ -148,6 +160,12 @@ class History extends Component {
                         title: 'Thời gian bắt đầu chuyến',
                         dataIndex: 'startTimeDI',
                         width: 200,
+                        render: (item) => (
+                            <Space size="middle">
+                              <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+                            </Space>
+                          ),
+                          sorter: (a, b) =>new Date(a.startTimeDI).valueOf() - new Date(b.startTimeDI).valueOf()
                     },
 
                     {
@@ -281,7 +299,8 @@ class History extends Component {
                         seats: item.seats,
                         fromStation: item.tripId.fromStation.nameStation,
                         toStation: item.tripId.toStation.nameStation,
-                        startTime: `${new Date(item.tripId.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripId.startTime).toLocaleTimeString()}`,
+                        startTime: item.tripId.startTime,
+                        // startTime: `${new Date(item.tripId.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripId.startTime).toLocaleTimeString()}`,
                         totalPrice: `${numberToMoney(item.totalPrice)}đ`,
                         captureID: item.captureID
                     })
@@ -305,10 +324,12 @@ class History extends Component {
                         seats: item.seats,
                         fromStation: item.tripId.fromStation.nameStation,
                         toStation: item.tripId.toStation.nameStation,
-                        startTime: `${new Date(item.tripId.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripId.startTime).toLocaleTimeString()}`,
+                        startTime: item.tripId.startTime,
+                      //  startTime: `${new Date(item.tripId.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripId.startTime).toLocaleTimeString()}`,
                         fromStationDI: item.tripIDTo !== null ? item.tripIDTo.fromStation.nameStation : '',
                         toStationDI: item.tripIDTo !== null ? item.tripIDTo.toStation.nameStation : '',
-                        startTimeDI: item.tripIDTo !== null ? `${new Date(item.tripIDTo.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripIDTo.startTime).toLocaleTimeString()}` : '',
+                        startTimeDI: item.tripIDTo !== null ? item.tripIDTo.startTime : '',
+                        // startTimeDI: item.tripIDTo !== null ? `${new Date(item.tripIDTo.startTime).toLocaleDateString("es-CL")}    ${new Date(item.tripIDTo.startTime).toLocaleTimeString()}` : '',
                         seatsDI: item.seatCodesTo,
                         totalPrice: `${numberToMoney(item.totalPrice)}đ`,
                         captureID: item.captureID

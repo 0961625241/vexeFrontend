@@ -28,6 +28,7 @@ import TicketBook  from './Components/TicketBook/TicketBook'
 import StationSingle  from './Components/InForStation/StationSingle/StationSingle'
 import CarSingle  from './Components/InForCar/CarSingle/CarSingle';
 import { createBrowserHistory } from "history";
+import GetTrip from './Components/Manager/Trips/GetTrip/GetTrip'
 const history = createBrowserHistory();
 const menuRoutes = (Routes) => {
   return Routes.map((item, index) => {
@@ -64,6 +65,7 @@ const App =(props)=> {
                   <Route exact path="/manager/stations" component={Stations} />
                   <Route exact path="/manager/drivers" component={Drivers} />
                   <Route exact path="/manager/trips" component={Trips} />
+                  <Route exact path="/manager/trips/:id" component={GetTrip} />
                   <Route exact path="/manager/tickets" component={Tickets} />
                   <Route exact path="/manager/users" component={Users} />
                   <Route exact path="/manager/cars" component={Cars} />

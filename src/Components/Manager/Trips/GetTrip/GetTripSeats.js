@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 
-export default class TicketBook1cAllChecked extends Component {
+export default class GetTripSeats extends Component {
     qua=(id)=>{
-        let qua = document.getElementById(id);
-        let seat = this.props.seat;
-            if((qua.style.fill) === "rgb(192, 192, 192)")
-            {
-                qua.style.fill = 'rgb(24, 144, 255)';
-            }else{
-                if((qua.style.fill) === "rgb(253, 237, 232)")
-                {
-                    qua.style.fill = 'rgb(253, 237, 232)'
-                }else{
-                    qua.style.fill = 'rgb(192, 192, 192)';
-                }
-            }
-            seat.filter((item,index)=>{
-                if(item._id === id && item.isBooked !== true)
-                {
-                 this.props.onCheckbox(this.props.price,item.code)
-                }
-            })
+        // let qua = document.getElementById(id);
+        // let seat = this.props.seat;
+        //     if((qua.style.fill) === "rgb(192, 192, 192)")
+        //     {
+        //         qua.style.fill = 'rgb(24, 144, 255)';
+        //     }else{
+        //         if((qua.style.fill) === "rgb(253, 237, 232)")
+        //         {
+        //             qua.style.fill = 'rgb(253, 237, 232)'
+        //         }else{
+        //             qua.style.fill = 'rgb(192, 192, 192)';
+        //         }
+        //     }
+        //     seat.filter((item,index)=>{
+        //         if(item._id === id && item.isBooked !== true)
+        //         {
+        //          this.props.onCheckbox(this.props.price,item.code)
+        //         }
+        //     })
      }
      phanmang1 = (start, end) => {
         return this.props.seat.slice(start, end).map((item, index) => {
@@ -192,7 +192,7 @@ phanmang35choNgoiThieu= (start, end) => {
 })
 }
     render() {
-         let { seat, index ,id} = this.props;
+         let { seat} = this.props;
         return (
             <>
                       {seat.length === 24 ?

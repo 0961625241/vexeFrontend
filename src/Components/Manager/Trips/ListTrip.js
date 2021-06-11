@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Button, InputNumber, Modal, Form, Input, Radio, Table, Space, Select, DatePicker } from 'antd';
+import {Breadcrumb, Button, InputNumber, Modal, Form, Input, Radio, Table, Space, Select, DatePicker,Tag } from 'antd';
 import { connect } from 'react-redux';
 import { postTripRequest, putTripRequest, deleteTripRequest } from './../../../actions/trips';
+import {BrowserRouter as Router, Switch, Route, Link, useParams} from "react-router-dom";
 import moment from 'moment';
 import { search, searchTrip } from './../../../actions/index';
 function numberToMoney(money) {
@@ -24,17 +25,14 @@ const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectPr
   let nameBus = '';
   let seatCodes = '';
   let quaxx = [{name:''}];
-  let temp;
-  console.log(selectStartTime)
   listTrip.filter((trip, index) => {
     if(trip.fromStation._id === selectFormStation)
     {
-      if (new Date(trip.startTime).toLocaleDateString("es-CL") === selectStartTime) {
+      if (new Date(trip.startTime).toLocaleDateString("es-CL") === selectStartTime || new Date(new Date(trip.startTime).valueOf() + 24 * 60 * 60 * 1000).toLocaleDateString("es-CL") === selectStartTime ) {
         quaxx.push({ name: trip.cars.codeBus })
       }
     }
   })
-  console.log(quaxx)
   // seats = seats.filter((seat,index) => {
   //  return  quaxx.indexOf(seat.codeBus) == -1;
   // }); 
@@ -209,14 +207,14 @@ const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectPr
                       let temp;
                         console.log(quaxx)
                         quaxx.map((itemxx, indexx) => {
-                          console.log(itemxx.name === item.codeBus)
+                          console.log(itemxx)
                           // if (itemxx.name === item.codeBus) {
                           //   temp = <Select.Option key={index + item._id} disabled value={item._id}>{item.codeBus}</Select.Option>
                             if (itemxx.name === item.codeBus) {
                               temp= <Select.Option key={index + item._id} disabled value={item._id}>{item.codeBus}</Select.Option>
                           }
                         })
-                        console.log(temp)
+                        // console.log(temp)
                         if(temp === undefined)
                         {
                           return <Select.Option key={index + item._id}  value={item._id}>{item.codeBus}</Select.Option>
@@ -252,6 +250,7 @@ const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectPr
 
 class ListTrip extends Component {
   state = {
+    filterNameStation: "",
     columns: [
       {
         title: 'Điểm đi',
@@ -271,6 +270,12 @@ class ListTrip extends Component {
         dataIndex: 'startTime',
         key: 'startTime',
         width: 200,
+        render: (item) => (
+          <Space size="middle">
+            <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
+          </Space>
+        ),
+        sorter: (a, b) =>new Date(a.startTime).valueOf() - new Date(b.startTime).valueOf()
       },
       {
         title: 'Xe',
@@ -283,6 +288,19 @@ class ListTrip extends Component {
         dataIndex: 'codeBus',
         key: 'codeBus',
         width: 150,
+      },
+      {
+        title: 'Số chỗ ngồi',
+        dataIndex: 'seats',
+        key: 'seats',
+        width: 100,
+         render: text => {
+            
+                return (<Tag color={'green'} >
+                  {text}
+                </Tag>)
+              
+        }
       },
       {
         title: 'Giá tiền',
@@ -302,6 +320,7 @@ class ListTrip extends Component {
         key: 'action',
         render: (text) => (
           <Space size="middle">
+            <Link to={`/manager/trips/${text._id}`} ><i style={{ color: '#1890ff' }} className="far fa-bookmark"></i></Link>
             <a onClick={() => this.onUpdate(text._id)}><i style={{ color: '#1890ff' }} className="far fa-edit"></i>  </a>
             <a onClick={() => this.onDelete(text._id)}><i style={{ color: '#1890ff' }} className="far fa-trash-alt"></i></a>
           </Space>
@@ -462,6 +481,17 @@ class ListTrip extends Component {
   listTrip = () => {
     const data = [];
     let { listTrip, listSearch } = this.props;
+    let filterNameStation = this.state.filterNameStation
+    if (filterNameStation) {
+      listTrip = listTrip.filter((task) => {
+        if (filterNameStation === '') {
+          return task;
+        }
+        else if (filterNameStation === task.fromStation._id) {
+          return task
+        }
+      });
+    }
       listTrip = listTrip.filter((task) => {
         return task.fromStation.nameStation.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
      });
@@ -473,14 +503,23 @@ class ListTrip extends Component {
         _id: item._id,
         fromStation: item.fromStation.nameStation,
         toStation: item.toStation.nameStation,
-        startTime: `${new Date(item.startTime).toLocaleDateString("es-CL")}    ${new Date(item.startTime).toLocaleTimeString()}`,
+        startTime:item.startTime,
+        // startTime: `${new Date(item.startTime).toLocaleDateString("es-CL")}    ${new Date(item.startTime).toLocaleTimeString()}`,
         nameBus: item.cars.CarMFG.nameCarMFG,
 
         codeBus: item.cars.codeBus,
+        seats: item.seats.length,
         price: `${numberToMoney(item.price)}đ`
       })
     })
     return data;
+  }
+  onChangeFilterStation = (value) => {
+    console.log(`selected ${value}`);
+    this.setState({
+      filterNameStation: value,
+      //   selectCodeCar: 'Vui long chon ma xe'
+    })
   }
   handleChangeFromStation = (value) => {
     console.log(`selected ${value}`);
@@ -559,8 +598,15 @@ class ListTrip extends Component {
     return (
       <>
         <div>
-          <h4 style={{ marginBottom: '10px' }}>Quản lý Chuyến đi</h4>
-
+          <h4 className="titleListManager">Quản lý Chuyến đi</h4>
+ <div className="breadcrumbList"><Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to='/manager'>Trang chủ</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              Chuyến đi
+    </Breadcrumb.Item>
+          </Breadcrumb></div>
 
           <div className='SearchTicket'>
             <div className="input-groupSearch">
@@ -615,6 +661,28 @@ class ListTrip extends Component {
               >
                 <i className="far fa-plus-square" style={{ marginRight: '9px' }}></i>  Thêm
       </Button>
+            </div>
+            <div className="input-groupSearch">
+              <Select
+                style={{ width: 150 }}
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Chọn bến xe"
+                optionFilterProp="children"
+                onChange={this.onChangeFilterStation}
+                // onFocus={onFocus}
+                // onBlur={onBlur}
+                // onSearch={onSearch}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                <Option value="">Tất cả</Option>
+                {
+                  this.props.listStation.map((item, index) => {
+                    return (<Option key={index + item._id} value={item._id}>{item.nameStation}</Option>)
+                  })}
+              </Select>
             </div>
             <div className="input-groupSearch" style={{ display: 'flex' }}>
               <input

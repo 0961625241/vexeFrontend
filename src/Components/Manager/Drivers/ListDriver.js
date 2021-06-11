@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import {Checkbox, Button, Modal, Form, Input, Radio, Table, Space, Upload, Icon, message, Select, InputNumber, DatePicker, } from 'antd';
+import {Breadcrumb,Checkbox, Button, Modal, Form, Input, Radio, Table, Space, Upload, Icon, message, Select, InputNumber, DatePicker, } from 'antd';
 import { connect } from 'react-redux';
 import { postDriverRequest,putDriverRequest ,deleteDriverRequest} from './../../../actions/drivers';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { searchDriver } from './../../../actions/index';
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
 // import { searchCar } from './../../../actions/index';
 const { Option } = Select;
@@ -465,7 +466,6 @@ class Listdriver extends Component {
       return task.nameDriver.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
   });
     listDriver.map((item, index) => {
-      console.log(item)
       var date1 = new Date(item.SContactDriver);
       var date2 = new Date(item.EContactDriver);
       var diff = new Date(date2.getTime() - date1.getTime());
@@ -708,7 +708,15 @@ class Listdriver extends Component {
     }}
   /> */}
 
-          <h4 style={{ marginBottom: '10px' }}>Quản lý Tài xế</h4>
+          <h4 className="titleListManager">Quản lý Tài xế</h4>
+          <div className="breadcrumbList"><Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to='/manager'>Trang chủ</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              Tài xế
+    </Breadcrumb.Item>
+          </Breadcrumb></div>
           <div className='SearchTicket'>
             <div className="input-groupSearch">
               <Button style={{ marginBottom: '15px' }}
@@ -811,7 +819,7 @@ class Listdriver extends Component {
               })
             }}
           />
-          <Table  scroll={{ x: 1500 }} columns={this.state.columns} dataSource={this.listDriver()} />
+          <Table  scroll={{ x: 1500 }} bordered columns={this.state.columns} dataSource={this.listDriver()} />
 
 
         

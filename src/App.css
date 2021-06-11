@@ -1541,3 +1541,20 @@ margin: auto auto 16px;
     overflow: visible;
     
 }
+
+.titleListManager{
+  padding-bottom: 9px;
+    margin: 10px 0 20px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.breadcrumbList{
+  padding: 8px 15px;
+    margin-bottom: 20px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+.activeMenuSidebar{
+  background-color:red
+}
