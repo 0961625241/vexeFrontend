@@ -34,7 +34,7 @@ class StationSingle extends Component {
         this.props.getTripRequest()
     }
     render() {
-     
+        console.log(this.props.listTrip)
         let nameStation='';
         let addressStation='';
         let descriptionStation='';

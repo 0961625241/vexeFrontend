@@ -81,6 +81,7 @@ class InforManager extends Component {
                         <Sider style={{ height:'1500px',overflow: 'auto', left: 0,background:'none' }}
                             collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} width={200} >
                             <Menu
+                            className='menuSidebar'
                                 mode="inline"
                                defaultSelectedKeys={['1']}
                                 style={{ height: '100%', borderRight: 0 }}

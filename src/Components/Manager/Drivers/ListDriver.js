@@ -107,7 +107,7 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
           ]}
           className='priceTrip'
           name={'sdtDriver'}
-          label="sdtDriver"
+          label="Số điện thoại "
           
         >
           <Input />
@@ -121,7 +121,7 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
             { min: 9,max:9,message:'sdtDriver must be between 9 and 9' },
           ]}
           name={'CMNDDriver'}
-          label="CMNDDriver"
+          label="CMND"
         >
           <Input />
         </Form.Item>
@@ -331,19 +331,19 @@ class Listdriver extends Component {
         },
 
         {
-          title: 'sdtDriver',
+          title: 'Số điện thoại',
           dataIndex: 'sdtDriver',
           width: 150,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'bdayDriver',
+          title: 'Ngày sinh',
           dataIndex: 'bdayDriver',
           width: 200,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'CMNDDriver',
+          title: 'CMND',
           dataIndex: 'CMNDDriver',
           width: 200,
           // sorter: (a, b) => a.amount - b.amount,
@@ -359,19 +359,19 @@ class Listdriver extends Component {
         // //  sorter: (a, b) => a.imageBus - b.imageBus,
         // },
         {
-          title: 'SContactDriver',
+          title: 'Ngày ký hợp đồng',
           dataIndex: 'SContactDriver',
           width: 200,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'EContactDriver',
+          title: 'Ngày kết thúc hợp đồng',
           dataIndex: 'EContactDriver',
           width: 200,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'salaryDriver',
+          title: 'Lương từng tháng',
           dataIndex: 'salaryDriver',
           width: 200,
           render: (text) => (
@@ -384,13 +384,13 @@ class Listdriver extends Component {
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'allowanceDriver',
+          title: 'Phụ cấp',
           dataIndex: 'allowanceDriver',
-          width: 200,
+          width: 100,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'totalSalary',
+          title: 'Tổng lương',
           dataIndex: 'totalSalary',
           width: 200,
           render: (text) => (
@@ -404,7 +404,7 @@ class Listdriver extends Component {
         },
         
         {
-          title: 'Hanh dong',
+          title: 'Hành động',
           key: 'action',
           render: (text) => (
             <Space size="middle">

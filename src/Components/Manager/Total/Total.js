@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Button, InputNumber, Modal, Form, Input, Radio, Table, Space, Select, DatePicker, ConfigProvider } from 'antd';
+import { Button, InputNumber, Modal, Form, Input, Radio, Table, Space, Select, DatePicker, ConfigProvider,Breadcrumb } from 'antd';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import 'moment/locale/vi';
 import locale from 'antd/lib/locale/vi_VN';
 import { Bar } from "react-chartjs-2";
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 const { Option } = Select;
 function numberToMoney(money) {
   return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
@@ -29,7 +30,7 @@ class Total extends Component {
       ticketAll: 0,
       fromDateTicketAll: '',
       toDateTicketAll: '',
-      filterNameStation: '',
+      filterNameStation: '6045edefcb260b0ef4d0b1ef',
       selectMonth: "2021",
     }
   }
@@ -42,7 +43,7 @@ class Total extends Component {
     let stt = 0;
     this.props.listTicket.filter((item, index) => {
       if (item.tripId.fromStation._id === this.state.selectFromTrip && item.tripId.toStation._id === this.state.selectToTrip) {
-        if (new Date(dates[0]._d).toLocaleDateString("es-CL") <= new Date(item.createdAt).toLocaleDateString("es-CL") && new Date(item.createdAt).toLocaleDateString("es-CL") <= new Date(dates[1]._d).toLocaleDateString("es-CL")) {
+        if ((new Date(dates[0]._d)).setHours(0,0,0,0) <= (new Date(item.createdAt)).setHours(0,0,0,0) && (new Date(item.createdAt)).setHours(0,0,0,0) <= (new Date(dates[1]._d)).setHours(0,0,0,0)) {
           stt = stt + 1
           totalPriceTrip = totalPriceTrip + item.totalStart
         }
@@ -51,7 +52,7 @@ class Total extends Component {
       {
         if(item.tripIDTo.fromStation._id === this.state.selectFromTrip && item.tripIDTo.toStation._id === this.state.selectToTrip)
         {
-          if (new Date(dates[0]._d).toLocaleDateString("es-CL") <= new Date(item.createdAt).toLocaleDateString("es-CL") && new Date(item.createdAt).toLocaleDateString("es-CL") <= new Date(dates[1]._d).toLocaleDateString("es-CL")) {
+          if ((new Date(dates[0]._d)).setHours(0,0,0,0) <= (new Date(item.createdAt)).setHours(0,0,0,0) && (new Date(item.createdAt)).setHours(0,0,0,0) <= (new Date(dates[1]._d)).setHours(0,0,0,0)) {
             stt = stt + 1
             totalPriceTrip = totalPriceTrip + item.totalEnd
           }
@@ -74,7 +75,7 @@ class Total extends Component {
     let stt = 0;
     this.props.listTicket.filter((item, index) => {
        if (item.typesTicket === '1c') {
-        if (new Date(dates[0]._d).toLocaleDateString("es-CL") <= new Date(item.createdAt).toLocaleDateString("es-CL") && new Date(item.createdAt).toLocaleDateString("es-CL") <= new Date(dates[1]._d).toLocaleDateString("es-CL")) {
+        if ((new Date(dates[0]._d)).setHours(0,0,0,0) <= (new Date(item.createdAt)).setHours(0,0,0,0) && (new Date(item.createdAt)).setHours(0,0,0,0) <= (new Date(dates[1]._d)).setHours(0,0,0,0)) {
           stt = stt + 1
           totalPriceTicketAll = totalPriceTicketAll + item.totalPrice
         }
@@ -160,78 +161,22 @@ class Total extends Component {
     })
     return (
       <>
+      <div>
+      <h4 className="titleListManager">Quản lý Thống kê</h4>
+          <div className="breadcrumbList"><Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to='/manager'>Trang chủ</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              Thông kê
+    </Breadcrumb.Item>
+          </Breadcrumb></div>
+      </div>
         <div className="input-groupSearch">
-          <Select
-            style={{ width: 150 }}
-            showSearch
-            style={{ width: 200 }}
-            placeholder="Select a person"
-            optionFilterProp="children"
-            onChange={this.onChangeFilterStation}
-            // onFocus={onFocus}
-            // onBlur={onBlur}
-            // onSearch={onSearch}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            <Option value="">Tất cả</Option>
-            {
-              this.props.listStation.map((item, index) => {
-                return (<Option key={index + item._id} value={item._id}>{item.nameStation}</Option>)
-              })}
-          </Select>
-          <Space direction="vertical" size={12}>
-            <ConfigProvider locale={locale}>
-              <DatePicker onChange={this.onChangeMonth}  value ={moment(this.state.selectMonth, "YYYY")}  picker="year" />
-            </ConfigProvider>
-          </Space>
-        </div>
-        <Bar
-          data={{
-            labels: [
-              "Tháng 1",
-              "Tháng 2",
-              "Tháng 3",
-              "Tháng 4",
-              "Tháng 5",
-              "Tháng 6",
-              "Tháng 7",
-              "Tháng 8",
-              "Tháng 9",
-              "Tháng 10",
-              "Tháng 11",
-              "Tháng 12",
-            ],
-            datasets: [
-              {
-                label: "Population (millions)",
-                backgroundColor: [
-                  "#3e95cd",
-                  "#8e5ea2",
-                  "#3cba9f",
-                  "#e8c3b9",
-                  "#c45850",
-                  "#c45850"
-                ],
-                data: quan
-              }
-            ]
-          }}
-          options={{
-            legend: { display: false },
-            title: {
-              display: true,
-              text: "tổng tiền"
-            }
-          }}
-        />
-
-
-
-        <div className="statisticalOfTrip">
+        
+          <div className="statisticalOfTrip">
           <h4>Thống kê chuyến đi từ : </h4>
-          <div className='Statistical' style={{ display: 'flex' }}>
+          <div className='Statistical' style={{ display: 'flex' ,marginBottom:'10px'}}>
             <div>
               <p>Điểm đi : </p>
               <Select onChange={this.handleSelectFROM} style={{ width: 250 }}
@@ -297,10 +242,84 @@ class Total extends Component {
             </ConfigProvider>
           </Space>
           {
-            fromDateTicketAll !== '' && toDateTicketAll !== '' ? <p>Vé  đặt từ ngày {fromDateTicketAll} đến ngày {toDateTicketAll} có {ticketAll} vé tương đương là : {numberToMoney(this.state.totalPriceTicketAll)}đ</p>
-              : <p>Tổng cộng có {ticketAll} vé tương đương là : 0đ</p>
+            fromDateTicketAll !== '' && toDateTicketAll !== '' ? <p style={{marginBottom:'10px'}}>Vé  đặt từ ngày {fromDateTicketAll} đến ngày {toDateTicketAll} có {ticketAll} vé tương đương là : {numberToMoney(this.state.totalPriceTicketAll)}đ</p>
+              : <p style={{marginBottom:'10px'}}>Tổng cộng có {ticketAll} vé tương đương là : 0đ</p>
           }
         </div>
+
+
+        <h4>Thống kê vé theo biểu đồ: </h4>
+        <Select
+            style={{ width: 150 }}
+            showSearch
+            style={{ width: 200 }}
+            placeholder="Vui lòng chọn khu vực"
+            optionFilterProp="children"
+            onChange={this.onChangeFilterStation}
+            defaultValue={this.state.filterNameStation}
+            // onFocus={onFocus}
+            // onBlur={onBlur}
+            // onSearch={onSearch}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            <Option value="">Tất cả</Option>
+            {
+              this.props.listStation.map((item, index) => {
+                return (<Option key={index + item._id} value={item._id}>{item.nameStation}</Option>)
+              })}
+          </Select>
+          <Space direction="vertical" size={12}>
+            <ConfigProvider locale={locale}>
+              <DatePicker onChange={this.onChangeMonth}  value ={moment(this.state.selectMonth, "YYYY")}  picker="year" />
+            </ConfigProvider>
+          </Space>
+          <Bar
+          data={{
+            labels: [
+              "Tháng 1",
+              "Tháng 2",
+              "Tháng 3",
+              "Tháng 4",
+              "Tháng 5",
+              "Tháng 6",
+              "Tháng 7",
+              "Tháng 8",
+              "Tháng 9",
+              "Tháng 10",
+              "Tháng 11",
+              "Tháng 12",
+            ],
+            datasets: [
+              {
+                label: "Population (millions)",
+                backgroundColor: [
+                  "#3e95cd",
+                  "#8e5ea2",
+                  "#3cba9f",
+                  "#e8c3b9",
+                  "#c45850",
+                  "#c45850"
+                ],
+                data: quan
+              }
+            ]
+          }}
+          options={{
+            legend: { display: false },
+            title: {
+              display: true,
+              text: "tổng tiền"
+            }
+          }}
+        />
+        </div>
+        
+
+
+
+     
       </>
     )
   }

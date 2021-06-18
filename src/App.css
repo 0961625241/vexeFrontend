@@ -1558,3 +1558,7 @@ margin: auto auto 16px;
 .activeMenuSidebar{
   background-color:red
 }
+
+.menuSidebar{
+  background-color: #f8f8f8 !important;
+}

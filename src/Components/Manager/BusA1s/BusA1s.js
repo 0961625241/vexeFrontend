@@ -294,19 +294,19 @@ class BusA1s extends Component {
         },
 
         {
-          title: 'sdtBusA1',
+          title: 'Số điện thoại',
           dataIndex: 'sdtBusA1',
           width: 150,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'bdayBusA1',
+          title: 'Ngày sinh',
           dataIndex: 'bdayBusA1',
           width: 200,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'CMNDBusA1',
+          title: 'CMND',
           dataIndex: 'CMNDBusA1',
           width: 200,
           // sorter: (a, b) => a.amount - b.amount,
@@ -322,19 +322,19 @@ class BusA1s extends Component {
           //  sorter: (a, b) => a.imageBus - b.imageBus,
         },
         {
-          title: 'SContactBusA1',
+          title: 'Ngày ký hợp đồng',
           dataIndex: 'SContactBusA1',
           width: 200,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'EContactBusA1',
+          title: 'Ngày kết thúc hợp đồng',
           dataIndex: 'EContactBusA1',
           width: 200,
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'salaryBusA1',
+          title: 'Lương từng tháng',
           dataIndex: 'salaryBusA1',
           width: 200,
           render: (text) => (
@@ -347,14 +347,14 @@ class BusA1s extends Component {
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'allowanceBusA1',
+          title: 'Phụ cấp',
           dataIndex: 'allowanceBusA1',
           width: 200,
 
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'totalSalary',
+          title: 'Tổng lương',
           dataIndex: 'totalSalary',
           width: 200,
           render: (text) => (
@@ -367,7 +367,7 @@ class BusA1s extends Component {
           // sorter: (a, b) => a.amount - b.amount,
         },
         {
-          title: 'Hanh dong',
+          title: 'Hành động',
           key: 'action',
           render: (text) => (
             <Space size="middle">
