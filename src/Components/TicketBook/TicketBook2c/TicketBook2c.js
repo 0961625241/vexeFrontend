@@ -342,8 +342,7 @@ class TicketBook2c extends Component {
         return (
             <>
                 {this.state.continue === true ?
-                    <div className="content-trip"  >
-                        <div className="content-item">
+                    <div className="container">
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="info-container">
@@ -480,7 +479,7 @@ class TicketBook2c extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                       
                         <div className="booking-nav-buttons">
                             <div className="left-btns">
                                 <Link to="/">  <button className="back-btn">
@@ -506,8 +505,7 @@ class TicketBook2c extends Component {
 
 
                 {this.state.continue2 === true ?
-                    <div className="content-trip"  >
-                        <div className="content-item">
+                     <div className="container">
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="info-container info-container1">
@@ -544,7 +542,7 @@ class TicketBook2c extends Component {
                                 </p></div>
                                 </div>
                             </div>
-                        </div>
+                      
                         <div className="booking-nav-buttons">
                             <div className="left-btns">
                                 <button onClick={this.onGoBack} className="back-btn">

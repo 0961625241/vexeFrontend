@@ -2,14 +2,16 @@ import React, { Component } from 'react'
 import Payment from '../../Payment/Payment';
 import TicketBook1cAll from './TicketBook1cAll/TicketBook1cAll'
 import TicketBook1cAllTime from './TicketBook1cAll/TicketBook1cAllTime';
-import TicketBook1cAllCheckBox from './TicketBook1cAll/TicketBook1cAllCheckBox'
+import TicketBook1cAllCheckBox from './TicketBook1cAll/TicketBook1cAllCheckBox';
+import { Layout, Menu, Breadcrumb, Row, Col, Carousel, Input, DatePicker, Button, Card, Form, Spin } from 'antd';
 import { BrowserRouter as Router, Link, } from "react-router-dom";
+
 export default class TicketbookC extends Component {
     constructor(props) {
         super(props)
         this.state = {
             typesStation: `${this.props.LuotDi1c[0].fromStation.nameStation} - ${this.props.LuotDi1c[0].toStation.nameStation}`,
-            itemStart:this.props.LuotDi1c[0],
+            itemStart: this.props.LuotDi1c[0],
             setCodesLuotDi: [],
             priceLuotDi: 0,
             continue: true,
@@ -23,7 +25,7 @@ export default class TicketbookC extends Component {
                 sdt: '',
                 address: '',
                 fullName: JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).fullName : '',
-                captureID:''
+                captureID: ''
             },
             registersERR: {
                 fullName: '',
@@ -31,25 +33,28 @@ export default class TicketbookC extends Component {
                 sdt: '',
                 address: ''
             },
-            item_List:[],
+            item_List: [],
             value: this.props.LuotDi1c[0]._id,
-            timeDi:this.props.LuotDi1c[0].startTime
+            timeDi: this.props.LuotDi1c[0].startTime
         }
     }
-    handleChangeTime=(event)=> {
+
+
+
+
+    handleChangeTime = (event) => {
         console.log(event.target.value)
-       this.props.LuotDi1c.map(item=>{
-                if(item._id === event.target.value)
-                {
-                    this.setState({
-                       itemStart:item,
-                       timeDi:item.startTime,
-                       setCodesLuotDi: [],
-                       priceLuotDi: 0,
-                       value: event.target.value,
-                    })
-                }
-            })
+        this.props.LuotDi1c.map(item => {
+            if (item._id === event.target.value) {
+                this.setState({
+                    itemStart: item,
+                    timeDi: item.startTime,
+                    setCodesLuotDi: [],
+                    priceLuotDi: 0,
+                    value: event.target.value,
+                })
+            }
+        })
     }
     onChangeStation = () => {
         this.setState({
@@ -57,14 +62,14 @@ export default class TicketbookC extends Component {
             priceLuotDi: 0
         })
     }
-    handleRadioChange = (event,data) => {
+    handleRadioChange = (event, data) => {
         console.log(event.target.value)
-                this.setState({
-                        itemStart:data,
-                        timeDi:data.startTime,
-                        value:data._id,
-                      typesStation: event.target.value
-                })
+        this.setState({
+            itemStart: data,
+            timeDi: data.startTime,
+            value: data._id,
+            typesStation: event.target.value
+        })
     }
     onCheckbox = (priceLuotDix, setCodesLuotDix) => {
         console.log(priceLuotDix, setCodesLuotDix)
@@ -84,7 +89,7 @@ export default class TicketbookC extends Component {
         })
     }
     onContinue2 = () => {
-        let {registers, setCodesLuotDi,  value } = this.state;
+        let { registers, setCodesLuotDi, value } = this.state;
         registers.tripId = value;
         registers.seatCodes = setCodesLuotDi;
         registers.typesTicket = this.props.ve;
@@ -155,13 +160,13 @@ export default class TicketbookC extends Component {
         // this.props.postTicketRequest(registers)
         if (isValid) {
             console.log('vo')
-            registers.seatCodes.filter((item)=>{
+            registers.seatCodes.filter((item) => {
                 item_List.push({
                     description: "Chỗ ngồi lượt đi: ",
                     name: item,
                     unit_amount: {
                         currency_code: "USD",
-                        value: Number((this.state.itemStart.price/23083).toFixed(2))
+                        value: Number((this.state.itemStart.price / 23083).toFixed(2))
                     },
                     quantity: "1",
                 })
@@ -173,34 +178,31 @@ export default class TicketbookC extends Component {
             });
         }
     }
-    onGoBack3=()=>{
+    onGoBack3 = () => {
         this.setState({
-            continue2:true,
-            continue3:false,
-            continue:false
+            continue2: true,
+            continue3: false,
+            continue: false
         })
     }
     render() {
-    
-        let homedi, homedi1,homediTime;
-        let {  ve, LuotDi1c } = this.props;
+        let homedi, homedi1, homediTime;
+        let { ve, LuotDi1c } = this.props;
         let LuotDiForm = this.props.LuotDi1c[0].fromStation.province.nameProvince;
         let LuotDiTo = this.props.LuotDi1c[0].toStation.province.nameProvince;
         let stationLuotDi = [];
         if (ve === '1c') {
             homedi = LuotDi1c.map((item, index) => {
-               if(stationLuotDi.includes(`${item.fromStation.nameStation} - ${item.toStation.nameStation}`) === false )
-               {
-                     stationLuotDi.push(`${item.fromStation.nameStation} - ${item.toStation.nameStation}`);
+                if (stationLuotDi.includes(`${item.fromStation.nameStation} - ${item.toStation.nameStation}`) === false) {
+                    stationLuotDi.push(`${item.fromStation.nameStation} - ${item.toStation.nameStation}`);
                     return <TicketBook1cAll onChangeStation={this.onChangeStation} handleRadioChange={this.handleRadioChange} typesStation={this.state.typesStation} key={index} item={item} index={index}></TicketBook1cAll>
                 }
             })
         }
         if (ve === '1c') {
             homediTime = LuotDi1c.map((item, index) => {
-                if(`${item.fromStation.nameStation} - ${item.toStation.nameStation}` === this.state.typesStation)
-                {
-                    return <TicketBook1cAllTime   key={index} item={item} index={index}></TicketBook1cAllTime>
+                if (`${item.fromStation.nameStation} - ${item.toStation.nameStation}` === this.state.typesStation) {
+                    return <TicketBook1cAllTime key={index} item={item} index={index}></TicketBook1cAllTime>
                 }
             })
         }
@@ -209,14 +211,14 @@ export default class TicketbookC extends Component {
                 return <TicketBook1cAllCheckBox onCheckbox={this.onCheckbox} value={this.state.value} key={index} item={item} index={index}></TicketBook1cAllCheckBox>
             })
         }
+
+        console.log(this.props.LuotDi1c.length)
         return (
             <>
-               {this.state.continue === true ?
-                <div className="content-trip"  >
-                    <div className="content-item">
+                {this.state.continue === true ?
+                    <div className="container">
                         <div className="row">
                             <div className="col-md-5">
-
                                 <div className="info-container">
                                     <div className="title"><span >{new Date(this.state.timeDi).getHours()}:{(new Date(this.state.timeDi).getMinutes() < 10 ? '0' : '')}{new Date(this.state.timeDi).getMinutes()} {JSON.parse(localStorage.getItem("OriginDest")).selectDate}</span></div>
                                     <div className="route-name">{LuotDi1c[0].fromStation.province.nameProvince} ⇒ {LuotDi1c[0].toStation.province.nameProvince}</div>
@@ -228,8 +230,8 @@ export default class TicketbookC extends Component {
                                     </div>
                                     <div className="start-time">
                                         <div className="start-time-title">Giờ khởi hành</div>
-                                        <select  className="time-select"  onChange={this.handleChangeTime}>
-                                             {homediTime}
+                                        <select className="time-select" onChange={this.handleChangeTime}>
+                                            {homediTime}
                                         </select>
                                     </div>
                                     <div className="pick-up">
@@ -237,15 +239,13 @@ export default class TicketbookC extends Component {
                                         <div className="pickup-select"><span>{this.state.itemStart.fromStation.nameStation}: {this.state.itemStart.fromStation.addressStation}</span></div>
                                     </div>
                                 </div>
-                               
                             </div>
                             <div className="col-md-7">
-                            <div className="seat-map-container">
+                                <div className="seat-map-container">
                                     <div className="title">Sơ đồ ghế</div>
                                     <div className="seat-tables">
-                                    {homedi1}
+                                        {homedi1}
                                     </div>
-
                                     <div className="seat-statuses">
                                         <div className="status-item">
                                             <div className="active"></div>
@@ -263,10 +263,9 @@ export default class TicketbookC extends Component {
                                         <div className="selected">
                                             <div className="title">
                                                 Ghế đã chọn:
-                                            <span style={{ "display": "none" }}>0</span>
+                                                <span style={{ "display": "none" }}>0</span>
                                             </div>
                                             <div className="selected-list">
-
                                                 {
                                                     this.state.setCodesLuotDi.map(item => {
                                                         return (<span key={item}>{item} </span>)
@@ -285,29 +284,27 @@ export default class TicketbookC extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="booking-nav-buttons">
-                        <div className="left-btns">
-                            <Link to="/">  <button className="back-btn">
-                                <img alt="back" className="icon lazyLoad isLoaded" src="./../img/quaylai.png" />
-                            QUAY LẠI
-                            </button></Link>
+                        <div className="booking-nav-buttons">
+                            <div className="left-btns">
+                                <Link to="/">  <button className="back-btn">
+                                    <img alt="back" className="icon lazyLoad isLoaded" src="./../img/quaylai.png" />
+                                    QUAY LẠI
+                                </button></Link>
+                            </div>
+                            <div className="right-btns">
+                                <button className="next-btn" onClick={this.onContinue2}>
+                                    TIẾP TỤC
+                                    <img alt="back" className="icon lazyLoad isLoaded" src="./../img/tieptuc.png" />
+                                </button>
+                            </div>
                         </div>
-                        <div className="right-btns">
-                            <button className="next-btn" onClick={this.onContinue2}>
-                                TIẾP TỤC
-                                 <img alt="back" className="icon lazyLoad isLoaded" src="./../img/tieptuc.png" />
-                            </button>
-                        </div>
                     </div>
-                </div>
-               :''}
+                    : ''}
 
 
-              {this.state.continue2 === true ?
-                    <div className="content-trip"  >
-                        <div className="content-item">
-                            <div className="row">
+                {this.state.continue2 === true ?
+                    <div className="container">
+                        <div className="row">
                             <div className="col-md-6">
                                 <div className="info-container info-container1">
                                     <p className="title" >THÔNG TIN HÀNH KHÁCH</p>
@@ -330,26 +327,25 @@ export default class TicketbookC extends Component {
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                    <div className="notes-container"><p className="title">ĐIỀU KHOẢN &amp; LƯU Ý</p> <p className="txt">
-                                        (*) Quý khách vui lòng mang email có chứa mã vé đến văn phòng để đổi vé lên xe trước giờ xuất bến ít nhất 60 phút
+                                <div className="notes-container"><p className="title">ĐIỀU KHOẢN &amp; LƯU Ý</p> <p className="txt">
+                                    (*) Quý khách vui lòng mang email có chứa mã vé đến văn phòng để đổi vé lên xe trước giờ xuất bến ít nhất 60 phút
                                     để chúng tôi trung chuyển.
                                 </p> <p className="txt">(*) Thông tin hành khách phải chính xác, nếu không sẽ không thể lên xe hoặc hủy/đổi vé.</p> <p className="txt">
-                                            (*) Quý khách không được đổi/trả vé vào các ngày Lễ Tết (ngày thường quý khách được quyền chuyển đổi hoặc hủy vé một lần
-                                    duy nhất trước giờ xe chạy 24 giờ), phí hủy vé 10%.
-                                </p> <p className="txt">
-                                            (*) Nếu quý khách có nhu cầu trung chuyển, vui lòng liên hệ số điện thoại
-                                    <a data-v-626b8649="" href="tel:0961625241" className="high-light">&nbsp; 0961625241 &nbsp;</a>
-                                    trước khi đặt vé. Chúng tôi không đón/trung chuyển tại những điểm xe trung chuyển không thể tới được.
-                                </p></div>
-                                </div>
-                                </div>
+                                        (*) Quý khách không được đổi/trả vé vào các ngày Lễ Tết (ngày thường quý khách được quyền chuyển đổi hoặc hủy vé một lần
+                                        duy nhất trước giờ xe chạy 24 giờ), phí hủy vé 10%.
+                                    </p> <p className="txt">
+                                        (*) Nếu quý khách có nhu cầu trung chuyển, vui lòng liên hệ số điện thoại
+                                        <a data-v-626b8649="" href="tel:0961625241" className="high-light">&nbsp; 0961625241 &nbsp;</a>
+                                        trước khi đặt vé. Chúng tôi không đón/trung chuyển tại những điểm xe trung chuyển không thể tới được.
+                                    </p></div>
+                            </div>
                         </div>
                         <div className="booking-nav-buttons">
                             <div className="left-btns">
                                 <button onClick={this.onGoBack} className="back-btn">
                                     <img alt="back" className="icon lazyLoad isLoaded" src="./../img/quaylai.png" />
-                                                QUAY LẠI
-                                                </button>
+                                    QUAY LẠI
+                                </button>
                             </div>
                             <div className="right-btns">
                                 <button className="next-btn" onClick={this.onContinue3}>
@@ -357,323 +353,16 @@ export default class TicketbookC extends Component {
                                     < img alt="back" className="icon lazyLoad isLoaded" src="./../img/tieptuc.png" />
                                 </button>
                             </div>
-
-
                         </div>
                     </div>
                     : ''}
 
 
-                    {this.state.continue3 === true ?
-                                        <Payment goBack={this.props.goBack} item_List={this.state.item_List} itemStart={this.state.itemStart}   priceLuotDi={this.state.priceLuotDi}  LuotDiForm={LuotDiForm} LuotDiTo={LuotDiTo} registers={this.state.registers} onGoBack3={this.onGoBack3}></Payment>
-
-                    : ''}              
+                {this.state.continue3 === true ?
+                    <Payment goBack={this.props.goBack} item_List={this.state.item_List} itemStart={this.state.itemStart} priceLuotDi={this.state.priceLuotDi} LuotDiForm={LuotDiForm} LuotDiTo={LuotDiTo} registers={this.state.registers} onGoBack3={this.onGoBack3}></Payment>
+                    : ''}
             </>
         )
     }
 }
 
-
-// import React, { Component } from 'react'
-// import TicketBookItem from './TicketBookItem/TicketBookItem';
-// import Payment from './../Payment/Payment';
-// import { BrowserRouter as Router, Link, } from "react-router-dom";
-// export default class TicketbookC extends Component {
-//     constructor(props) {
-//         super(props)
-
-//         this.state = {
-//             continue:true,
-//             continue1:false,
-//             registers: {
-//                 typesTicket: this.props.ve,
-//                 tripId: '',
-//                 emailKH: JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).email: '',
-//                 seatCodes: '',
-//                 sdt: '',
-//                 address: 'c4/11a',
-//                 fullName: JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).fullName : '',
-//                  price:0,
-//                 // item_List:[],
-//                 // totalPrice:0,
-//                 captureID:''
-//             },
-//             setCodes: [],
-//             price: 0,
-//             registersERR: {
-//                 fullName: '',
-//                 emailKH: '',
-//                 sdt: '',
-//                 address: ''
-//             },
-//             item_List:[]
-//         }
-//         this.inforStation = [];
-
-
-//     }
-//     onCheckbox = (pricex, setCodesx) => {
-//         console.log(pricex, setCodesx)
-//         let { setCodes, price } = this.state;
-//         var findI = setCodes.findIndex(x => x === setCodesx)
-//         if (findI === -1) {
-//             setCodes.push(setCodesx)
-//             price = price + pricex
-//         } else {
-//             var xoaCode = setCodes.indexOf(setCodesx);
-//             setCodes.splice(xoaCode, 1);
-//             price = price - pricex
-//         }
-//         this.setState({
-//             setCodes: setCodes,
-//             price: price
-//         })
-//     }
-
-//     onChange = (e) => {
-//         let target = e.target;
-//         let value = target.type === 'checkbox' ? target.checked : target.value;
-//         let name = target.name;
-//         this.setState(prevState => ({
-//              registers:{
-//                 ...prevState.registers,
-//                 [name]:value
-//             }
-//           }));
-//     }
-//     validate = () => {
-//         let fullName = "", address = "", sdt = "", emailKH = "";
-//         let { registers } = this.state;
-//         if (registers.fullName.trim() === '') {
-//             fullName = "vui lòng nhập Họ và tên";
-//         }
-//         if (registers.emailKH.trim() === '') {
-//             emailKH = "vui lòng nhập email";
-//         }
-//         if (registers.sdt === '') {
-//             sdt = "vui lòng nhập sdt";
-//         }
-//         if (registers.address.trim() === '') {
-//             address = "vui lòng nhập địa chỉ";
-//         }
-
-//         if (fullName || address || sdt || emailKH) {
-//             this.setState({
-//                 registersERR: {
-//                     fullName: fullName,
-//                     emailKH: emailKH,
-//                     sdt: sdt,
-//                     address: address
-//                 }
-//             })
-//             return false;
-//         }
-//         return true;
-//     }
-//     onContinue1=(idStation)=>{
-//         let {registers,item_List,setCodes}=this.state;
-//         const isValid = this.validate();
-//         console.log(isValid)
-//         this.props.LuotDi1c.filter(item=>{
-//             if(item._id === idStation)
-//             {
-//                 this.inforStation= item
-//             }
-//         })
-//         if (isValid) {
-//          console.log('vo')
-//          setCodes.filter((item)=>{
-//             item_List.push({
-//                 description: "Chỗ ngồi : ",
-//                 name: item,
-//                 unit_amount: {
-//                     currency_code: "USD",
-//                     value: Number((this.inforStation.price/23083).toFixed(2))
-//                 },
-//                 quantity: "1",
-//             })
-//         })
-//           this.setState({
-//              continue1:true,
-//              continue:false,
-//              registers:{
-//                  typesTicket: registers.typesTicket,
-//                  tripId: idStation,
-//                  emailKH: registers.emailKH,
-//                  seatCodes: registers.seatCodes,
-//                  sdt: registers.sdt,
-//                  address: registers.address,
-//                  fullName: registers.fullName,
-//                  seatCodes:this.state.setCodes,
-//                  price:this.state.price,
-//                  captureID:registers.captureID
-//              }
-//          })
-//         }
-
-//      }
-//     render() {
-//         let {registers,registersERR,item_List}=this.state;
-//         let {  ve, LuotDi1c } = this.props;
-//         let home1c;
-//         if (ve === '1c') {
-//             home1c = LuotDi1c.map((item, index) => {
-//                 return <TicketBookItem price={this.state.price} registersERR={registersERR} onChange={this.onChange} registers={this.state.registers} setCodes={this.state.setCodes} onCheckbox={this.onCheckbox} onContinue1={this.onContinue1} key={index} item={item} index={index}></TicketBookItem>
-//             })
-//         }
-//         return (
-//             <>
-//               <div className="content-trip"  >
-//                         <div className="content-item">
-//                             <div className="row">
-//                             <div className="col-md-5">
-
-//                                 <div className="info-container">
-//                                     <div className="title">Lượt đi <span ></span></div>
-//                                     <div className="route-name"></div>
-//                                     <div className="route-list">
-//                                         <div className="station-select-title">Chọn bến xe</div>
-
-//                                         <div className='typesTicket2C'>
-
-//                                         </div>
-//                                     </div>
-//                                     <div  className="start-time">
-//                                     <div  className="start-time-title">Giờ khởi hành</div> 
-//                                     <select  >
-
-//           </select>
-
-
-//                                      </div>
-//                                 </div>
-//                                 <div className="seat-map-container">
-//                                     <div className="title">Sơ đồ ghế</div>
-//                                     <div className="seat-tables">
-
-//                                     </div>
-
-//                                     <div className="seat-statuses">
-//                                         <div className="status-item">
-//                                             <div className="active"></div>
-//                                             <div className="status-text">Trống</div>
-//                                         </div> <div className="status-item">
-//                                             <div className="select"></div>
-//                                             <div className="status-text">Đang chọn</div>
-//                                         </div>
-//                                         <div className="status-item">
-//                                             <div className="disable"></div>
-//                                             <div className="status-text">Đã đặt</div>
-//                                         </div>
-//                                     </div>
-//                                     <div className="footer">
-//                                         <div className="selected">
-//                                             <div className="title">
-//                                                 Ghế đã chọn:
-//                                             <span style={{ "display": "none" }}>0</span>
-//                                             </div>
-//                                             <div className="selected-list">
-
-
-//                                             </div>
-//                                         </div>
-//                                         <div className="total">
-//                                             <div className="title">Tổng tiền</div>
-//                                             <div className="total-price-text">
-//                                                 <sup >₫</sup>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                             <div className="col-md-7">
-//                                 <div className="info-container">
-//                                     <div className="title">Lượt về <span></span></div>
-//                                     <div className="route-name"></div>
-//                                     <div className="route-list">
-//                                         <div className="station-select-title">Chọn bến xe</div>
-//                                         <div className='typesTicket2C'>
-
-//                                         </div>
-//                                     </div>
-//                                     <div  className="start-time">
-//                                     <div  className="start-time-title">Giờ khởi hành</div> 
-//                                     <select  >
-
-//           </select>
-
-
-//                                      </div>
-//                                 </div>
-
-//                                 <div className="seat-map-container">
-//                                     <div className="title">Sơ đồ ghế</div>
-//                                     <div className="seat-tables">
-
-//                                     </div>
-//                                     <div className="seat-statuses">
-//                                         <div className="status-item">
-//                                             <div className="active"></div>
-//                                             <div className="status-text">Trống</div>
-//                                         </div> <div className="status-item">
-//                                             <div className="select"></div>
-//                                             <div className="status-text">Đang chọn</div>
-//                                         </div>
-//                                         <div className="status-item">
-//                                             <div className="disable"></div>
-//                                             <div className="status-text">Đã đặt</div>
-//                                         </div>
-//                                     </div>
-//                                     <div className="footer">
-//                                         <div className="selected">
-//                                             <div className="title">
-//                                                 Ghế đã chọn:
-//                                             <span style={{ "display": "none" }}>0</span>
-//                                             </div>
-//                                             <div className="selected-list">
-//                                             </div>
-//                                         </div>
-//                                         <div className="total">
-//                                             <div className="title">Tổng tiền</div>
-//                                             <div className="total-price-text">
-//                                                 <sup >₫</sup>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                             </div>
-//                         </div>
-//                         <div className="booking-nav-buttons">
-//                             <div className="left-btns">
-//                                 <Link to="/">  <button className="back-btn">
-//                                     <img alt="back" className="icon lazyLoad isLoaded" src="./../img/quaylai.png" />
-//                             QUAY LẠI
-//                             </button></Link>
-//                             </div>
-//                             <div className="right-btns">
-//                                 <button className="next-btn" onClick={this.onContinue2}>
-//                                     TIẾP TỤC
-//                                  <img alt="back" className="icon lazyLoad isLoaded" src="./../img/tieptuc.png" />
-//                                 </button>
-//                             </div>
-
-
-//                         </div>
-
-
-
-//                     </div>
-//              {/* {this.state.continue === true ? 
-//                 home1c
-//                :  '' 
-//              } 
-
-//                 {this.state.continue1 === true ? 
-//                     <Payment goBack={this.props.goBack} inforStation={this.inforStation} item_List={item_List} registers={registers}  LuotDi1c={LuotDi1c}></Payment>
-//             :''} */}
-
-//             </>
-//         )
-//     }
-// }

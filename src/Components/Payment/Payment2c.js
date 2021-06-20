@@ -106,8 +106,7 @@ function Payment2c(props) {
   
         return (
             <>
-            <div className="content-trip"  >
-                        <div className="content-item">
+              <div className="container"> 
                             <div className="row">
                             <div className="col-md-12">
                                 <div className="info-container info-container3">
@@ -271,7 +270,7 @@ function Payment2c(props) {
                         </div>
                             </div>
                             </div>
-                        </div>
+                        
                     </div>
           
             </>

@@ -19,9 +19,6 @@ const listCar = (state = initialState, action) => {
                 var index = state.cars.findIndex((item)=>{
                     return item._id === data._id
                 })
-                console.log(data)
-                console.log(state.cars[index])
-
                 state.cars[index] ={
                     _id:data._id,
                     CarMFG:data.CarMFG,

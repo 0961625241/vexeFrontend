@@ -33,7 +33,7 @@ const validateMessages = {
 const Signin = (props) => {
     useEffect(() => {
         props.getUserRequest();
-    })
+    },[])
     const onFinish = (values) => {
         console.log(values);
         console.log('ádsad')

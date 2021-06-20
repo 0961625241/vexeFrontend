@@ -18,7 +18,7 @@ const validateMessages = {
 const Signup = (props) => {
     useEffect(() => {
         props.getUserRequest()
-    })
+    },[])
   
     const [register, setRegister] = useState([
         {

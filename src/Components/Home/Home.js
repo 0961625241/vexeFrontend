@@ -5,6 +5,7 @@ import { postTicketRequest } from './../../actions/tickets';
 import FindTickets from '../FindTickets/FindTickets';
 import { getStationRequest } from './../../actions/stations';
 import { getCarRequest } from './../../actions/cars';
+import { getTripRequest } from './../../actions/trips';
 import { connect } from 'react-redux';
 import Footers from './../Footers/Footers';
 import Headers from './../Headers/Headers'
@@ -21,8 +22,8 @@ const Home = (props) => {
   useEffect(() => {
     props.getStationRequest();
     props.getCarRequest();
-    
-  })
+    props.getTripRequest()
+  },)
   
   // let query = useQuery();
   // let InforTicket=JSON.parse(localStorage.getItem("InforTicket"));
@@ -32,14 +33,13 @@ const Home = (props) => {
   //     console.log('sad')
   //   }
   // }
-  
   return (
     <>
    
       <Layout className="layout">
         <Headers></Headers>
         <Banner></Banner>
-        <FindTickets listStation={props.listStation}></FindTickets>
+        <FindTickets history={props.history} listStation={props.listStation}></FindTickets>
         <InForStation></InForStation>
       <System></System>
       <InForCar></InForCar>
@@ -60,9 +60,13 @@ const mapDispathToProps = (dispatch) => {
     getCarRequest: () => {
       dispatch(getCarRequest())
     },
+    getTripRequest: () => {
+      dispatch(getTripRequest())
+    },
   }
 }
 const mapStateToProps = (state) => ({
+  listTrip:state.listTrip.trips,
   listStation: state.listStation.stations,
 });
 export default connect(mapStateToProps, mapDispathToProps)(Home);

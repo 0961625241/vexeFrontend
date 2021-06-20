@@ -5,6 +5,7 @@ export const getTripRequest = () => {
   return (dispatch) => {
     Axios({ method: "GET",url: "http://localhost:3000/api/trips"})
     .then((res) => {
+      console.log(res.data)
       dispatch(getTrip(res.data))
   })
 }

@@ -28,8 +28,12 @@ import TicketBook  from './Components/TicketBook/TicketBook'
 import StationSingle  from './Components/InForStation/StationSingle/StationSingle'
 import CarSingle  from './Components/InForCar/CarSingle/CarSingle';
 import { createBrowserHistory } from "history";
-import GetTrip from './Components/Manager/Trips/GetTrip/GetTrip'
+import GetTrip from './Components/Manager/Trips/GetTrip/GetTrip';
+import { getTripRequest } from './actions/trips';
 const history = createBrowserHistory();
+// import { createHashHistory } from "history";
+// const history = createHashHistory();
+// console.log(history)
 const menuRoutes = (Routes) => {
   return Routes.map((item, index) => {
     return (
@@ -44,12 +48,17 @@ const menuRoutes = (Routes) => {
   })
 }
 const App =(props)=> {
+
+  useEffect(() => {
+    // props.getTripRequest()
+  }, []);
+  console.log(props)
   return (
     <>
       <Router>
         <Switch>
-          <Route exact path='/'> <Home/></Route>
-          <Route exact path='/vi-VN/ve-xe-khach-tu-:from-di-:to-tg-:date-ve:ve' component={TicketBook} history={history} /> 
+          <Route exact path='/' component={Home}  />
+          <Route exact path='/vi-VN/ve-xe-khach-tu-:from-di-:to-tg-:date-ve:ve' component={TicketBook}  /> 
           <Route exact path='/vi-VN/xe-:hangxe' component={CarSingle} /> 
           <Route exact path='/vi-VN/:benxe' component={StationSingle} /> 
           {/* {menuRoutes(Routes)} */}
@@ -85,6 +94,9 @@ const mapDispathToProps = (dispatch) => {
       getUserIDRequest: (id) => {
           dispatch(getUserIDRequest(id))
       },
+      getTripRequest: () => {
+        dispatch(getTripRequest())
+    },
   }
 }
 const mapStateToProps = (state) => ({
