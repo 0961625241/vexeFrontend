@@ -15,7 +15,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 const Dragger = Upload.Dragger;
 
-const CollectionCreateForm = ({ selectCarMFG, onChangeCarMFG, selectStation, onChangeStation, listCarMFG, listCar, listProvince, selectProvince, onChangeProvince, listStation, FindId, visible, onCreate, onCancel, data }) => {
+const CollectionCreateForm = ({ getId, selectCarMFG, onChangeCarMFG, selectStation, onChangeStation, listCarMFG, listCar, listProvince, selectProvince, onChangeProvince, listStation, FindId, visible, onCreate, onCancel, data }) => {
   const [form] = Form.useForm();
   let nameProvince = '';
   let nameCarMF = '';
@@ -143,6 +143,7 @@ const CollectionCreateForm = ({ selectCarMFG, onChangeCarMFG, selectStation, onC
         <Form.Item
           name="province"
           label="Khu vực"
+
           rules={[
             {
               required: true,
@@ -151,6 +152,7 @@ const CollectionCreateForm = ({ selectCarMFG, onChangeCarMFG, selectStation, onC
           ]}
         >
           <Select
+            disabled={getId === '' ? false : true}
             style={{ width: 150 }}
             showSearch
             style={{ width: 200 }}
@@ -178,6 +180,7 @@ const CollectionCreateForm = ({ selectCarMFG, onChangeCarMFG, selectStation, onC
           ]}
         >
           <Select
+            disabled={getId === '' ? false : true}
             style={{ width: 150 }}
             showSearch
             style={{ width: 200 }}
@@ -208,6 +211,7 @@ const CollectionCreateForm = ({ selectCarMFG, onChangeCarMFG, selectStation, onC
           ]}
         >
           <Select
+            disabled={getId === '' ? false : true}
             style={{ width: 150 }}
             showSearch
             style={{ width: 200 }}
@@ -244,7 +248,7 @@ const CollectionCreateForm = ({ selectCarMFG, onChangeCarMFG, selectStation, onC
             style={{ width: 150 }}
             showSearch
             style={{ width: 200 }}
-
+            disabled={getId === '' ? false : true}
             placeholder="Chọn mã xe"
             optionFilterProp="children"
             filterOption={(input, option) =>
@@ -254,13 +258,19 @@ const CollectionCreateForm = ({ selectCarMFG, onChangeCarMFG, selectStation, onC
             {
               listCar.map((item, index) => {
                 if (item.CarMFG.nameCarMFG === selectCarMFG) {
-                  if (item.busA1.length < 2) {
-                    return (<Option key={index + item._id} value={item._id}>{item.codeBus}</Option>)
-                  }
-                  else if (item.busA1.length === 2) {
-                    return (<Option disabled={true} key={index + item._id} value={item._id}>{item.codeBus}</Option>)
-                  }
+                  if (item.station._id === selectStation) {
+                    if (getId === '') {
+                      if (item.busA1.length < 2) {
 
+                        return (<Option key={index + item._id} value={item._id}>{item.codeBus}</Option>)
+                      }
+                    } else {
+                      return (<Option key={index + item._id} value={item._id}>{item.codeBus}</Option>)
+                    }
+                    // else if(item.busA1.length === 2){
+                    //   return (<Option key={index + item._id} value={item._id}>{item.codeBus}</Option>)
+                    // }
+                  }
                 }
 
 
@@ -277,6 +287,7 @@ class BusA1s extends Component {
     super(props)
 
     this.state = {
+      getId: '',
       filterNameStation: "",
       selectStation: '',
       selectProvince: '',
@@ -551,6 +562,7 @@ class BusA1s extends Component {
     console.log(data)
     this.setState({
       visible: true,
+      getId: id,
       selectStation: data.station._id,
       selectProvince: data.station.province._id,
       selectCarMFG: data.car.CarMFG.nameCarMFG,
@@ -639,7 +651,7 @@ class BusA1s extends Component {
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               Phụ xe
-    </Breadcrumb.Item>
+            </Breadcrumb.Item>
           </Breadcrumb></div>
           <div className='SearchTicket'>
             <div className="input-groupSearch">
@@ -648,6 +660,7 @@ class BusA1s extends Component {
                 onClick={() => {
                   this.setState({
                     FindId: '',
+                    getId: "",
                     visible: true,
                     data: [
                       {
@@ -655,23 +668,59 @@ class BusA1s extends Component {
                         value: ""
                       },
                       {
-                        name: ["nameBus"],
+                        name: ["nameBusA1"],
                         value: ""
                       },
                       {
-                        name: ["codeBus"],
+                        name: ["addressBusA1"],
                         value: ""
                       },
                       {
-                        name: ["imageBus"],
+                        name: ["sdtBusA1"],
                         value: ""
                       },
                       {
-                        name: ["Seats"],
+                        name: ["bdayBusA1"],
                         value: ""
                       },
                       {
-                        name: ["typesSeat"],
+                        name: ["CMNDBusA1"],
+                        value: ""
+                      },
+                      {
+                        name: ["avatarBusA1"],
+                        value: ""
+                      },
+                      {
+                        name: ["SContactBusA1"],
+                        value: ""
+                      },
+                      {
+                        name: ["EContactBusA1"],
+                        value: ""
+                      },
+                      {
+                        name: ["salaryBusA1"],
+                        value: ""
+                      },
+                      {
+                        name: ["allowanceBusA1"],
+                        value: ""
+                      },
+                      {
+                        name: ["province"],
+                        value: ""
+                      },
+                      {
+                        name: ["station"],
+                        value: ""
+                      },
+                      {
+                        name: ["nameCarMFG"],
+                        value: ""
+                      },
+                      {
+                        name: ["car"],
                         value: ""
                       },
                     ]
@@ -679,7 +728,7 @@ class BusA1s extends Component {
                 }}
               >
                 <i className="far fa-plus-square" style={{ marginRight: '9px' }}></i>  Thêm
-          </Button>
+              </Button>
             </div>
             <div className="input-groupSearch">
               <Select
@@ -715,13 +764,14 @@ class BusA1s extends Component {
               <span className="input-group-btn">
                 <button className="btn btn-primary" type="button" onClick={this.onSearch}>
                   <span className="fa fa-search " style={{ marginRight: '5px' }}></span>Tìm kiếm
-                            </button>
+                </button>
               </span>
             </div>
           </div>
 
 
           <CollectionCreateForm
+            getId={this.state.getId}
             //   listBusA={this.pr}
             selectCarMFG={this.state.selectCarMFG}
             onChangeCarMFG={this.onChangeCarMFG}

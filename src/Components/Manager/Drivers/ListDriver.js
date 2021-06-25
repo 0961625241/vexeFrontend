@@ -1,42 +1,40 @@
 import React, { Component } from 'react';
-import {Breadcrumb,Checkbox, Button, Modal, Form, Input, Radio, Table, Space, Upload, Icon, message, Select, InputNumber, DatePicker, } from 'antd';
+import { Breadcrumb, Checkbox, Button, Modal, Form, Input, Radio, Table, Space, Upload, Icon, message, Select, InputNumber, DatePicker, } from 'antd';
 import { connect } from 'react-redux';
-import { postDriverRequest,putDriverRequest ,deleteDriverRequest} from './../../../actions/drivers';
+import { postDriverRequest, putDriverRequest, deleteDriverRequest } from './../../../actions/drivers';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { searchDriver } from './../../../actions/index';
 import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
-// import { searchCar } from './../../../actions/index';
 const { Option } = Select;
 const { TextArea } = Input;
 const Dragger = Upload.Dragger;
-function numberToMoney(money){
-  return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")   
+function numberToMoney(money) {
+  return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 }
 
 
 const validateMessages = {
   required: '${label} is required!',
   types: {
-      email: '${label} is not validate email!',
-      number: '${label} is not a validate number!',
+    email: '${label} is not validate email!',
+    number: '${label} is not a validate number!',
   },
   number: {
     range: '${label} must be between ${min} and ${max}',
-      // range: '${label} must have at least ${min} characters'
   },
 };
 const options = [
   { label: 'Tiền xăng', value: 2000000 },
-  { label: 'Tiền Ăn',value: 1000000},
+  { label: 'Tiền Ăn', value: 1000000 },
 ];
 
 
-const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, selectStation, onChangeStation, listCarMFG, listCar, listProvince, selectProvince, onChangeProvince, listStation, FindId, visible, onCreate, onCancel, data }) => {
+const CollectionCreateForm = ({ getId, onChangeCar, onChangeAllowance, selectCarMFG, onChangeCarMFG, selectStation, onChangeStation, listCarMFG, listCar, listProvince, selectProvince, onChangeProvince, listStation, FindId, visible, onCreate, onCancel, data }) => {
   const [form] = Form.useForm();
-  let nameProvince = '';
   let nameCarMF = '';
+
   return (
     <Modal
       visible={visible}
@@ -64,9 +62,6 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
         name="form_in_modal"
         initialValues={{
           modifier: 'public',
-        
-          // Seats: '22' ,
-          // typesSeat:'Ghế ngồi'
         }}
       >
         <Form.Item
@@ -103,12 +98,12 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
         <Form.Item
           rules={[
             { required: true, message: 'lease input the sdtDriver of collection!' },
-            { min: 10,max:11,message:'sdtDriver must be between 10 and 11' },
+            { min: 10, max: 11, message: 'sdtDriver must be between 10 and 11' },
           ]}
           className='priceTrip'
           name={'sdtDriver'}
           label="Số điện thoại "
-          
+
         >
           <Input />
         </Form.Item>
@@ -118,7 +113,7 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
         <Form.Item
           rules={[
             { required: true, message: 'CMNDDriver input the sdtDriver of collection!' },
-            { min: 9,max:9,message:'sdtDriver must be between 9 and 9' },
+            { min: 9, max: 9, message: 'sdtDriver must be between 9 and 9' },
           ]}
           name={'CMNDDriver'}
           label="CMND"
@@ -126,24 +121,23 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
           <Input />
         </Form.Item>
         <Form.Item
-            name='avatarDriver'
-            label="Hình ảnh"
-             valuePropName="avatarDriver"
-           
+          name='avatarDriver'
+          label="Hình ảnh"
+          valuePropName="avatarDriver"
+        >
+          <Upload
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            listType="picture"
+            maxCount={1}
           >
-               <Upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        listType="picture"
-        maxCount={1}
-      >
-        <Button icon={<UploadOutlined />}>Upload </Button>
-      </Upload>
-          </Form.Item>
+            <Button icon={<UploadOutlined />}>Upload </Button>
+          </Upload>
+        </Form.Item>
         <Form.Item name="SContactDriver" label="SContactDriver" rules={[{ required: true }]} >
           <DatePicker showTime format="DD-MM-YYYY " />
         </Form.Item>
         <Form.Item name="EContactDriver" label="EContactDriver" rules={[{ required: true }]} >
-        {/* HH:mm:ss */}
+          {/* HH:mm:ss */}
           <DatePicker showTime format="DD-MM-YYYY " />
         </Form.Item>
         <Form.Item
@@ -153,9 +147,6 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
         >
           <InputNumber />
         </Form.Item>
-        {/* <Form.Item name="checkboxPear" label="Checkbox.Group">
-        <Checkbox.Group options={options}  onChange={onChangeAllowance} />
-        </Form.Item> */}
         <Form.Item
           name="allowanceDriver"
           label="allowanceDriver"
@@ -182,6 +173,7 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
             style={{ width: 150 }}
             showSearch
             style={{ width: 200 }}
+            disabled={getId === '' ? false : true}
             placeholder="Chọn khu vực"
             onChange={onChangeProvince}
             optionFilterProp="children"
@@ -210,6 +202,7 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
             showSearch
             style={{ width: 200 }}
             onChange={onChangeStation}
+            disabled={getId === '' ? false : true}
             placeholder="Chọn bến xe"
             optionFilterProp="children"
             filterOption={(input, option) =>
@@ -240,6 +233,7 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
             showSearch
             style={{ width: 200 }}
             onChange={onChangeCarMFG}
+            disabled={getId === '' ? false : true}
             placeholder="Chọn hãng xe"
             optionFilterProp="children"
             filterOption={(input, option) =>
@@ -271,8 +265,9 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
           <Select
             style={{ width: 150 }}
             showSearch
+            disabled={getId === '' ? false : true}
             style={{ width: 200 }}
-
+            onChange={onChangeCar}
             placeholder="Chọn mã xe"
             optionFilterProp="children"
             filterOption={(input, option) =>
@@ -282,26 +277,19 @@ const CollectionCreateForm = ({ onChangeAllowance,selectCarMFG, onChangeCarMFG, 
             {
               listCar.map((item, index) => {
                 if (item.CarMFG.nameCarMFG === selectCarMFG) {
-                  // if (item.driver === undefined) {
-                  //   return (<Option disabled={true} key={index + item._id} value={item._id}>{item.codeBus}</Option>)
-                    
-                  // }
-                  //  else if(item.driver && item.driver !== undefined)
-                  // {
-                if(item.station._id=== selectStation)
-                {
-                  if (item.driver === undefined)
-                  {
-                    return (<Option key={index + item._id} value={item._id}>{item.codeBus}</Option>)
+                  if (item.station._id === selectStation) {
+                    if (getId === '') {
+                      if (item.driver === undefined) {
+                        return (<Option key={index + item._id} value={item._id}>{item.codeBus}</Option>)
+                      }
+                    } else {
+                      return (<Option key={index + item._id} value={item._id}>{item.codeBus}</Option>)
+                    }
                   }
-                }
-                  // }
-                 
-                  
-                }
 
-
-              })}
+                }
+              })
+            }
           </Select>
         </Form.Item>
       </Form>
@@ -314,10 +302,12 @@ class Listdriver extends Component {
     super(props)
 
     this.state = {
-      filterNameStation:'',
+      getId: '',
+      filterNameStation: '',
       selectStation: '',
       selectProvince: '',
       selectCarMFG: "",
+      selectCar: "",
       columns: [
         {
           title: 'Tên xe',
@@ -334,41 +324,26 @@ class Listdriver extends Component {
           title: 'Số điện thoại',
           dataIndex: 'sdtDriver',
           width: 150,
-          // sorter: (a, b) => a.amount - b.amount,
         },
         {
           title: 'Ngày sinh',
           dataIndex: 'bdayDriver',
           width: 200,
-          // sorter: (a, b) => a.amount - b.amount,
         },
         {
           title: 'CMND',
           dataIndex: 'CMNDDriver',
           width: 200,
-          // sorter: (a, b) => a.amount - b.amount,
         },
-        // {
-        //   title: 'Hình ảnh',
-        //   dataIndex: 'avatarDriver',
-        //   width: 100,
-        //   render:  (image) =>{
-        //     let link='http://localhost:3000/'
-        //     return <img style={{width:'50px',height:'50px'}} src={`${link}${image}`} />
-        //   },
-        // //  sorter: (a, b) => a.imageBus - b.imageBus,
-        // },
         {
           title: 'Ngày ký hợp đồng',
           dataIndex: 'SContactDriver',
           width: 200,
-          // sorter: (a, b) => a.amount - b.amount,
         },
         {
           title: 'Ngày kết thúc hợp đồng',
           dataIndex: 'EContactDriver',
           width: 200,
-          // sorter: (a, b) => a.amount - b.amount,
         },
         {
           title: 'Lương từng tháng',
@@ -376,18 +351,14 @@ class Listdriver extends Component {
           width: 200,
           render: (text) => (
             <Space size="middle">
-              <span style={{color:'red'}}>{text}</span>
-              {/* <a onClick={() => this.onUpdate(text._id)}><i style={{ color: '#1890ff' }} className="far fa-edit"></i>  </a> */}
-              {/* <a onClick={() => this.onDelete(text._id)}><i style={{ color: '#1890ff' }} className="far fa-trash-alt"></i></a> */}
+              <span style={{ color: 'red' }}>{text}</span>
             </Space>
-        )
-          // sorter: (a, b) => a.amount - b.amount,
+          )
         },
         {
           title: 'Phụ cấp',
           dataIndex: 'allowanceDriver',
           width: 100,
-          // sorter: (a, b) => a.amount - b.amount,
         },
         {
           title: 'Tổng lương',
@@ -395,14 +366,11 @@ class Listdriver extends Component {
           width: 200,
           render: (text) => (
             <Space size="middle">
-              <span style={{color:'red'}}>{text}</span>
-              {/* <a onClick={() => this.onUpdate(text._id)}><i style={{ color: '#1890ff' }} className="far fa-edit"></i>  </a> */}
-              {/* <a onClick={() => this.onDelete(text._id)}><i style={{ color: '#1890ff' }} className="far fa-trash-alt"></i></a> */}
+              <span style={{ color: 'red' }}>{text}</span>
             </Space>
-        )
-          // sorter: (a, b) => a.amount - b.amount,
+          )
         },
-        
+
         {
           title: 'Hành động',
           key: 'action',
@@ -414,46 +382,37 @@ class Listdriver extends Component {
           )
         },
       ],
-      keyword:''
+      keyword: ''
     }
 
 
   }
   onChangeProvince = (value) => {
     console.log(`selected ${value}`);
-
     this.setState({
       selectProvince: value,
-      //   selectCodeCar: 'Vui long chon ma xe'
     })
   }
 
   onChangeStation = (value) => {
     console.log(`selected ${value}`);
-
     this.setState({
       selectStation: value,
-      //   selectCodeCar: 'Vui long chon ma xe'
     })
   }
   onChangeCarMFG = (value) => {
     console.log(`selected ${value}`);
-
     this.setState({
       selectCarMFG: value,
-      //   selectCodeCar: 'Vui long chon ma xe'
     })
   }
   listDriver = () => {
     const data = [];
     let { listDriver, listSearch } = this.props;
-    //     listCar = listCar.filter((task) => {
-    //       return task.nameBus.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
-    //   });
     let filterNameStation = this.state.filterNameStation
     if (filterNameStation) {
       listDriver = listDriver.filter((task) => {
-       
+
         if (filterNameStation === '') {
           return task;
         }
@@ -464,12 +423,12 @@ class Listdriver extends Component {
     }
     listDriver = listDriver.filter((task) => {
       return task.nameDriver.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
-  });
+    });
     listDriver.map((item, index) => {
       var date1 = new Date(item.SContactDriver);
       var date2 = new Date(item.EContactDriver);
       var diff = new Date(date2.getTime() - date1.getTime());
-      const tinhSalary =(((diff.getUTCFullYear() - 1970)*12)+diff.getUTCMonth()) *  item.salaryDriver
+      const tinhSalary = (((diff.getUTCFullYear() - 1970) * 12) + diff.getUTCMonth()) * item.salaryDriver
       data.push({
         key: index,
         _id: item._id,
@@ -481,9 +440,9 @@ class Listdriver extends Component {
         avatarDriver: item.avatarDriver,
         SContactDriver: `${new Date(item.SContactDriver).toLocaleDateString("es-CL")}`,
         EContactDriver: `${new Date(item.EContactDriver).toLocaleDateString("es-CL")}`,
-        salaryDriver:`${numberToMoney(item.salaryDriver)}đ`,
+        salaryDriver: `${numberToMoney(item.salaryDriver)}đ`,
         allowanceDriver: item.allowanceDriver,
-        totalSalary:`${numberToMoney(tinhSalary)}đ`
+        totalSalary: `${numberToMoney(tinhSalary)}đ`
       })
     })
     return data;
@@ -511,6 +470,7 @@ class Listdriver extends Component {
     }
     this.setState({
       visible: false,
+
       data: [
         {
           name: ["id"],
@@ -581,10 +541,12 @@ class Listdriver extends Component {
     var data = listDriver[index];
     console.log(data)
     this.setState({
+      getId: id,
       visible: true,
       selectStation: data.station._id,
-       selectProvince: data.station.province._id,
+      selectProvince: data.station.province._id,
       selectCarMFG: data.car.CarMFG.nameCarMFG,
+      selectCar: data.car._id,
       data: [
         {
           name: ["id"],
@@ -620,7 +582,7 @@ class Listdriver extends Component {
         },
         {
           name: ["EContactDriver"],
-          value:  moment(data.EContactDriver)
+          value: moment(data.EContactDriver)
         },
         {
           name: ["salaryDriver"],
@@ -659,24 +621,32 @@ class Listdriver extends Component {
       //   selectCodeCar: 'Vui long chon ma xe'
     })
   }
-  onChangeAllowance=(checkedValues)=> {
+  onChangeAllowance = (checkedValues) => {
     console.log('checked = ', checkedValues);
   }
-   onChangeSearch = (event) => {
+  onChangeSearch = (event) => {
     this.setState({
-        keyword : event.target.value
+      keyword: event.target.value
     });
-}
-  onSearch=()=>{
-      this.props.searchDriver(this.state.keyword)
+  }
+  onSearch = () => {
+    this.props.searchDriver(this.state.keyword)
+  }
+  onChangeCar = (value) => {
+    console.log(`selected ${value}`);
+
+    this.setState({
+      selectCar: value,
+      //   selectCodeCar: 'Vui long chon ma xe'
+    })
   }
   render() {
- 
+    console.log(this.state.getId)
 
     return (
       <>
         <div>
-        {/* <Bar
+          {/* <Bar
     data={{
       labels: [
         "Africa",
@@ -715,7 +685,7 @@ class Listdriver extends Component {
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               Tài xế
-    </Breadcrumb.Item>
+            </Breadcrumb.Item>
           </Breadcrumb></div>
           <div className='SearchTicket'>
             <div className="input-groupSearch">
@@ -725,29 +695,66 @@ class Listdriver extends Component {
                   this.setState({
                     FindId: '',
                     visible: true,
+                    getId: "",
                     data: [
                       {
                         name: ["id"],
                         value: ""
                       },
                       {
-                        name: ["nameBus"],
+                        name: ["nameDriver"],
                         value: ""
                       },
                       {
-                        name: ["codeBus"],
+                        name: ["addressDriver"],
                         value: ""
                       },
                       {
-                        name: ["imageBus"],
+                        name: ["sdtDriver"],
                         value: ""
                       },
                       {
-                        name: ["Seats"],
+                        name: ["bdayDriver"],
                         value: ""
                       },
                       {
-                        name: ["typesSeat"],
+                        name: ["CMNDDriver"],
+                        value: ""
+                      },
+                      {
+                        name: ["avatarDriver"],
+                        value: ""
+                      },
+                      {
+                        name: ["SContactDriver"],
+                        value: ""
+                      },
+                      {
+                        name: ["EContactDriver"],
+                        value: ""
+                      },
+                      {
+                        name: ["salaryDriver"],
+                        value: ""
+                      },
+                      {
+                        name: ["allowanceDriver"],
+                        value: ""
+                      },
+                      {
+                        name: ["province"],
+                        value: ""
+                      },
+                      {
+                        name: ["station"],
+                        value: ""
+                      },
+                      {
+                        name: ["nameCarMFG"],
+                        value: ""
+                      },
+                      {
+                        name: ["car"],
                         value: ""
                       },
                     ]
@@ -755,7 +762,7 @@ class Listdriver extends Component {
                 }}
               >
                 <i className="far fa-plus-square" style={{ marginRight: '9px' }}></i>  Thêm
-          </Button>
+              </Button>
             </div>
             <div className="input-groupSearch">
               <Select
@@ -791,16 +798,18 @@ class Listdriver extends Component {
               <span className="input-group-btn">
                 <button className="btn btn-primary" type="button" onClick={this.onSearch}>
                   <span className="fa fa-search " style={{ marginRight: '5px' }}></span>Tìm kiếm
-                            </button>
+                </button>
               </span>
             </div>
-          </div> 
+          </div>
 
 
           <CollectionCreateForm
-          onChangeAllowance={this.onChangeAllowance}
+            getId={this.state.getId}
+            onChangeAllowance={this.onChangeAllowance}
             selectCarMFG={this.state.selectCarMFG}
             onChangeCarMFG={this.onChangeCarMFG}
+            onChangeCar={this.onChangeCar}
             selectStation={this.state.selectStation}
             onChangeStation={this.onChangeStation}
             listCar={this.props.listCar}
@@ -819,10 +828,10 @@ class Listdriver extends Component {
               })
             }}
           />
-          <Table  scroll={{ x: 1500 }} bordered columns={this.state.columns} dataSource={this.listDriver()} />
+          <Table scroll={{ x: 1500 }} bordered columns={this.state.columns} dataSource={this.listDriver()} />
 
 
-        
+
         </div>
       </>
     )
@@ -835,7 +844,7 @@ const mapStateToProps = (state) => ({
   listProvince: state.listProvince.provinces,
   listCar: state.listCar.cars,
   listCarMFG: state.listCarMFG.carMFGs,
-  listSearch:state.searchDriver.keyword
+  listSearch: state.searchDriver.keyword
 });
 
 const mapDispathToProps = (dispatch) => {
@@ -849,7 +858,7 @@ const mapDispathToProps = (dispatch) => {
     deleteDriverRequest: (id) => {
       dispatch(deleteDriverRequest(id))
     },
-    searchDriver:(keyword)=>{
+    searchDriver: (keyword) => {
       dispatch(searchDriver(keyword))
     }
   }

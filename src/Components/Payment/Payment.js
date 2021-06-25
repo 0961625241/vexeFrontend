@@ -374,12 +374,20 @@ function Payment(props) {
                     if (props.registers.captureID !== '') {
                         // InforTicket.captureID = captureID
                         props.postTicketRequest(props.registers)
-                        Swal.fire(
-                            '',
-                            'Bạn đã mua thành công',
-                            'success'
-                        )
-                        props.goBack.goBack()
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Bạn đã mua thành công',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: `Ok`,
+                          
+                          }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                props.goBack.goBack()
+                            }
+                          })
+                        
                         //   props.history.goBack()
                         //    localStorage.removeItem("InforTicket");
                     }
@@ -390,7 +398,7 @@ function Payment(props) {
         }).render('#paypal-button-container');
 
         // props.getTripRequest()
-    });
+    },[]);
 
     //      const onClickMOMO=()=>{
     //         var partnerCode = "MOMOFBKM20210425"

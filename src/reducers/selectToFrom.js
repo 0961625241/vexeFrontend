@@ -1,10 +1,11 @@
 import *as ActionType from './../constants/ActionType';
 import moment from 'moment';
 let initialState = {
-    selectFrom:'HCM',
-    selectTo:'HaNoi',
+    selectFrom:'Sài Gòn',
+    selectTo:'Phan Thiết',
     selectDate:moment().format("DD-MM-YYYY"),
-    selectDateTo:moment().format("DD-MM-YYYY")
+    selectDateTo:moment().format("DD-MM-YYYY"),
+    selectVe:'1c'
 }
     
 
@@ -14,7 +15,8 @@ const selectToFrom = (state=initialState,action)=>{
             state.selectFrom = action.selectFrom;
             state.selectTo=action.selectTo;
             state.selectDate=action.selectDate;
-            state.selectDateTo=action.selectDateTo
+            state.selectDateTo=action.selectDateTo;
+            state.selectVe=action.selectVe
             return {...state}
       
         default: return {...state} 

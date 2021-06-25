@@ -13,7 +13,8 @@ import Headers from './../Headers/Headers';
 import TicketBook2c from './TicketBook2c/TicketBook2c';
 import TicketBook1c from './TicketBook1c/TicketBook1c';
 import TicketBook1cErr from './TicketBook1c/TicketBook1cErr/TicketBook1cErr'
-
+import TicketBookErr from './TicketBookErr/TicketBookErr';
+import TicketBook2cErr from './TicketBook2c/TicketBook2cErr/TicketBook2cErr'
 function slugify(string) {
     return string
         .toString()
@@ -43,27 +44,27 @@ class TicketBook extends Component {
         this.LuotDi = [];
         this.LuotVe = [];
     }
-//      showPage = (loadSpin) => {
-//          let loadSpinx =document.getElementById(loadSpin)
-//          let elmH1 =document.getElementById("elmH1");
-//          let TicketBook1c =document.getElementById("TicketBook1c");
-//          console.log(this.LuotDi1c)
-//          if(this.LuotDi1c && this.LuotDi1c.length > 0)
-//          {
-//             TicketBook1c.style.display = "block";
-//             loadSpinx.style.display = "none";
-//          }else{
-//             elmH1.style.display = "block";
-//             loadSpinx.style.display = "none";
-//          }
+    //      showPage = (loadSpin) => {
+    //          let loadSpinx =document.getElementById(loadSpin)
+    //          let elmH1 =document.getElementById("elmH1");
+    //          let TicketBook1c =document.getElementById("TicketBook1c");
+    //          console.log(this.LuotDi1c)
+    //          if(this.LuotDi1c && this.LuotDi1c.length > 0)
+    //          {
+    //             TicketBook1c.style.display = "block";
+    //             loadSpinx.style.display = "none";
+    //          }else{
+    //             elmH1.style.display = "block";
+    //             loadSpinx.style.display = "none";
+    //          }
 
-// }
+    // }
     componentDidMount() {
-    //    window.onload = setTimeout(() => this.showPage("loadSpin"), 10000);
+        //    window.onload = setTimeout(() => this.showPage("loadSpin"), 10000);
         this.props.getTripRequest()
         this.props.getStationRequest()
-      
-      
+
+
     }
     onClickSort = (sortBy, sortValue) => {
         let accordion = document.getElementsByClassName("accordion");
@@ -95,7 +96,6 @@ class TicketBook extends Component {
         });
     }
     render() {
-        console.log(this.props.listTrip)
         let { listTrip } = this.props;
         let { sort } = this.props;
         let { filter } = this.props;
@@ -135,7 +135,7 @@ class TicketBook extends Component {
                     if (to === slugify(item.toStation.nameStation)) {
                         to = slugify(item.toStation.province.nameProvince);
                     }
-                    if (slugify(item.fromStation.province.nameProvince) === from && slugify(item.toStation.province.nameProvince) === to && new Date(item.startTime).toLocaleDateString("nl-NL") === this.props.match.params.date
+                    if (slugify(item.fromStation.province.nameProvince) === from && slugify(item.toStation.province.nameProvince) === to && new Date(item.startTime).toLocaleDateString("nl-NL") === this.props.match.params.date && new Date(item.startTime).valueOf() >= new Date().valueOf()
                     ) {
                         return item;
 
@@ -144,7 +144,7 @@ class TicketBook extends Component {
             }
         }
         if (ve === '1c') {
-            elmTasks =this.LuotDi1c && this.LuotDi1c.length > 0 ?  <TicketBook1c  goBack={this.props.history} ve={this.props.match.params.ve} LuotDi1c={this.LuotDi1c} ></TicketBook1c> : <TicketBook1cErr goBack={this.props.history} ve={this.props.match.params.ve} LuotDi1c={this.LuotDi1c}></TicketBook1cErr>
+            elmTasks = this.LuotDi1c && this.LuotDi1c.length > 0 ? <TicketBook1c goBack={this.props.history} ve={this.props.match.params.ve} LuotDi1c={this.LuotDi1c} ></TicketBook1c> : <TicketBook1cErr goBack={this.props.history} ve={this.props.match.params.ve} LuotDi1c={this.LuotDi1c}></TicketBook1cErr>
             // <div>
             // <div className="LoadSpin" style={{ textAlign: 'center' }}>
             //          <div  id="loadSpin" ><Spin size="large" /></div>
@@ -164,7 +164,7 @@ class TicketBook extends Component {
                     if (to === slugify(item.toStation.nameStation)) {
                         to = slugify(item.toStation.province.nameProvince);
                     }
-                    if (slugify(item.fromStation.province.nameProvince) === from && slugify(item.toStation.province.nameProvince) === to && new Date(item.startTime).toLocaleDateString("nl-NL") === this.props.match.params.date
+                    if (slugify(item.fromStation.province.nameProvince) === from && slugify(item.toStation.province.nameProvince) === to && new Date(item.startTime).toLocaleDateString("nl-NL") === this.props.match.params.date && new Date(item.startTime).valueOf() >= new Date().valueOf()
                     ) {
                         return item
                     }
@@ -183,7 +183,7 @@ class TicketBook extends Component {
                     if (to === slugify(item.toStation.nameStation)) {
                         to = slugify(item.toStation.province.nameProvince);
                     }
-                    if (slugify(item.fromStation.province.nameProvince) === from && slugify(item.toStation.province.nameProvince) === to && new Date(item.startTime).toLocaleDateString("nl-NL") === JSON.parse(localStorage.getItem("OriginDest")).selectDateTo
+                    if (slugify(item.fromStation.province.nameProvince) === from && slugify(item.toStation.province.nameProvince) === to && new Date(item.startTime).toLocaleDateString("nl-NL") === JSON.parse(localStorage.getItem("OriginDest")).selectDateTo && new Date(item.startTime).valueOf() >= new Date().valueOf()
                     ) {
                         return item
                     }
@@ -192,9 +192,9 @@ class TicketBook extends Component {
 
         }
         if (ve === '2c') {
-            elmTasks1 = this.LuotDi && this.LuotDi.length > 0 && this.LuotVe && this.LuotVe.length > 0 ? <TicketBook2c goBack={this.props.history} ve={this.props.match.params.ve} LuotDi={this.LuotDi} LuotVe={this.LuotVe}></TicketBook2c> : <h1>Ko cos chuyeen ddi nao</h1>;
+            elmTasks1 = this.LuotDi && this.LuotDi.length > 0 && this.LuotVe && this.LuotVe.length > 0 ? <TicketBook2c goBack={this.props.history} ve={this.props.match.params.ve} LuotDi={this.LuotDi} LuotVe={this.LuotVe}></TicketBook2c> : <TicketBook2cErr></TicketBook2cErr>;
         }
-       console.log(this.LuotDi1c)
+
         return (
             <>
                 <Layout className="layout">
@@ -206,7 +206,7 @@ class TicketBook extends Component {
                                 <div className="container">
                                     <Row >
                                         <Col className="gutter-row" span={10}>
-                                            <div>
+                                            <div style={{ margin: '7px 0px' }}>
                                                 <span style={{ fontSize: '16px', fontWeight: 'bold', color: 'rgb(0, 21, 41)' }}>Xe đi {JSON.parse(localStorage.getItem("OriginDest")).selectTo} từ {JSON.parse(localStorage.getItem("OriginDest")).selectFrom}</span>
                                             </div>
                                         </Col>
@@ -216,29 +216,37 @@ class TicketBook extends Component {
 
                                 </div>
                             </Col>
-                                               
-                                     
-                                                   <Col span={24}>
-                                                   <div style={{minHeight:'450px'}}>
-                                                  {/* <div className="LoadSpin" style={{ textAlign: 'center',width:'100%',padding:'211px 0px' }}>
+
+
+                            <Col span={24}>
+                                <div style={{ minHeight: '450px' }}>
+                                    {/* <div className="LoadSpin" style={{ textAlign: 'center',width:'100%',padding:'211px 0px' }}>
                                                <div  id="loadSpin"  ><Spin size="large" /></div>
                                               <h4>Đang xử lý...</h4> 
                                                    </div> */}
+                                    
+                                    {this.props.listTrip && this.props.listTrip.length === 0 ?
+                                        <TicketBookErr ve={ve}></TicketBookErr>
+                                        : ''}
+                                    {this.props.listTrip && this.props.listTrip.length > 0 ?
+                                        <div>
+                                            {elmTasks}
+                                            {elmTasks1}
+                                        </div>
+                                        : ''}
 
-                                                   {elmTasks}
-                                                   {elmTasks1}
-                                                   </div>
-                   
-                                               </Col>
-                                               {/* {this.LuotDi1c.length > 0 ?  
+                                </div>
+
+                            </Col>
+                            {/* {this.LuotDi1c.length > 0 ?  
                                                 // :
                                                 // <div className="LoadSpin" style={{ textAlign: 'center',width:'100%',padding:'211px 0px' }}>
                                                 // <div  id="loadSpin"  ><Spin size="large" /></div>
                                                 // <h4>Đang xử lý...</h4>
                                                 //     </div>
                                                 // } */}
-                        
-                         
+
+
                         </Row>
                     </Layout>
                     <Footers></Footers>
@@ -272,6 +280,22 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, mapDispathToProps)(TicketBook);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -404,16 +428,16 @@ export default connect(mapStateToProps, mapDispathToProps)(TicketBook);
 //                 emailKH: 'qua',
 //                 address: '527/18,Hoàng Sa,Phuong 7, Qu?n 3',
 //                 sdt: '0907455769',
-               
+
 //             },
 //             visible: false,
 //             disabled: true,
 //             price: 0,
 //             pickDate:''
 //         }
-    
+
 //     }
-    
+
 //     componentDidMount() {
 //         let accordion = document.getElementsByClassName("accordion");
 //         let selectTicket = document.getElementsByClassName('selectTicket');
@@ -434,7 +458,7 @@ export default connect(mapStateToProps, mapDispathToProps)(TicketBook);
 //         }
 
 
-      
+
 //     }
 
 //     qua = () => {
@@ -473,7 +497,7 @@ export default connect(mapStateToProps, mapDispathToProps)(TicketBook);
 //             }
 //           }));
 //     }
-    
+
 //     onCheckbox = (pricex, setCodesx) => {
 //         let {setCodes,price}=this.state;
 //         var findI =setCodes.findIndex(x=>x === setCodesx)
@@ -498,7 +522,7 @@ export default connect(mapStateToProps, mapDispathToProps)(TicketBook);
 //     };
 
 //     handleOk = e => {
-        
+
 //         e.preventDefault();
 //         let pickDate = new Date();
 //         let registers = this.state.registers;
@@ -514,7 +538,7 @@ export default connect(mapStateToProps, mapDispathToProps)(TicketBook);
 //             this.props.postTicketRequest(registers)
 //             let accordion = document.getElementsByClassName("accordion");
 //             let selectTicket = document.getElementsByClassName('selectTicket');
-            
+
 //             let thanhcong = document.getElementsByClassName('thanhcong');
 //             for (let i = 0; i < thanhcong.length; i++) {
 //                 thanhcong[i].innerHTML = 'Chúc m?ng b?n d?t vé thành công'
@@ -527,10 +551,10 @@ export default connect(mapStateToProps, mapDispathToProps)(TicketBook);
 //                 }
 //             },2000);
 //         }
-      
-      
-        
-       
+
+
+
+
 
 //         this.setState({
 //             visible: false,

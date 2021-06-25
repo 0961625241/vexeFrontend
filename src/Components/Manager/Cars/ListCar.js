@@ -294,7 +294,7 @@ class ListCar extends Component {
           value: ""
         },
         {
-          name: ["nameBus"],
+          name: ["CarMFG"],
           value: ""
         },
         {
@@ -302,15 +302,19 @@ class ListCar extends Component {
           value: ""
         },
         {
-          name: ["imageBus"],
-          value: ""
-        },
-        {
-          name: ["Seats"],
+          name: ["seats"],
           value: ""
         },
         {
           name: ["typesSeat"],
+          value: ""
+        },
+        {
+          name: ["province"],
+          value: ""
+        },
+        {
+          name: ["station"],
           value: ""
         },
       ]
@@ -397,7 +401,7 @@ class ListCar extends Component {
           value: ""
         },
         {
-          name: ["Seats"],
+          name: ["seats"],
           value: ""
         },
         {
@@ -405,7 +409,11 @@ class ListCar extends Component {
           value: ""
         },
         {
-          name: ["seats"],
+          name: ["province"],
+          value: ""
+        },
+        {
+          name: ["station"],
           value: ""
         },
       ]
@@ -503,7 +511,7 @@ class ListCar extends Component {
                         value: ""
                       },
                       {
-                        name: ["nameBus"],
+                        name: ["CarMFG"],
                         value: ""
                       },
                       {
@@ -511,15 +519,19 @@ class ListCar extends Component {
                         value: ""
                       },
                       {
-                        name: ["imageBus"],
-                        value: ""
-                      },
-                      {
-                        name: ["Seats"],
+                        name: ["seats"],
                         value: ""
                       },
                       {
                         name: ["typesSeat"],
+                        value: ""
+                      },
+                      {
+                        name: ["province"],
+                        value: ""
+                      },
+                      {
+                        name: ["station"],
                         value: ""
                       },
                     ]

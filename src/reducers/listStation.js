@@ -23,7 +23,8 @@ const listStation = (state=initialState,action)=>{
                 _id:data._id,
                 nameStation:data.nameStation,
                 addressStation:data.addressStation,
-                province:data.province
+                province:data.province,
+                descriptionStation:data.descriptionStation,
             }
             state.stations =[...state.stations]
             return {...state} 

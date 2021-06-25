@@ -38,7 +38,7 @@ class StationSingle extends Component {
         let nameStation='';
         let addressStation='';
         let descriptionStation='';
-        this.props.listStation.map((item,index)=>{
+        this.props.listStation.filter((item,index)=>{
             if(slugify(item.nameStation) ===  this.props.match.params.benxe)
             {
                     nameStation=item.nameStation;
@@ -47,7 +47,7 @@ class StationSingle extends Component {
             }
         })
         let StationFast =  this.props.listTrip.map((item,index)=>{
-            if(slugify(item.fromStation.nameStation) ===  this.props.match.params.benxe)
+            if(slugify(item.fromStation.nameStation) ===  this.props.match.params.benxe && new Date(item.startTime).valueOf() >= new Date().valueOf() )
             {
                 return(<StationSingleItem listTrip={this.props.listTrip} item={item} key ={item._id + index} ></StationSingleItem>)
             }

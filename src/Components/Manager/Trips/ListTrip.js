@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import {Breadcrumb, Button, InputNumber, Modal, Form, Input, Radio, Table, Space, Select, DatePicker,Tag } from 'antd';
+import { Breadcrumb, Button, InputNumber, Modal, Form, Input, Radio, Table, Space, Select, DatePicker, Tag } from 'antd';
 import { connect } from 'react-redux';
 import { postTripRequest, putTripRequest, deleteTripRequest } from './../../../actions/trips';
-import {BrowserRouter as Router, Switch, Route, Link, useParams} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 import moment from 'moment';
 import { search, searchTrip } from './../../../actions/index';
 function numberToMoney(money) {
@@ -11,31 +11,20 @@ function numberToMoney(money) {
 
 
 const { Option } = Select;
-const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectProvinceStart, onChangeProvinceStart, listProvince, listTrip, selectStartTime, onChangeStartTime, FindId, handleCodeCar, selectCodeCar, handleCar, selectCar, selectSeats, handleSeats, seats, visible, onCreate, onCancel, data, stationFrom, handleChangeFromStation, handleChangeToStation, fromStation, selectToStation, validateMessages, selectFormStation }) => {
+const CollectionCreateForm = ({ listStation, selectProvinceEnd, onChangeProvinceEnd, selectProvinceStart, onChangeProvinceStart, listProvince, listTrip, selectStartTime, onChangeStartTime, FindId, handleCodeCar, selectCodeCar, handleCar, selectCar, selectSeats, handleSeats, seats, visible, onCreate, onCancel, data, stationFrom, handleChangeFromStation, handleChangeToStation, fromStation, selectToStation, validateMessages, selectFormStation }) => {
   const [form] = Form.useForm();
-  const allStation = (fromStation, selectToStation, selectProvince) => {
-    return fromStation.map((item, index) => {
-      if (item.province._id === selectProvince) {
-        // if (item._id !== selectToStation) {
-        return (<Select.Option key={index + item._id} value={item._id}>{item.nameStation}</Select.Option>)
-        // }
-      }
-    })
-  }
+  //       // if (item._id !== selectToStation) {
   let nameBus = '';
   let seatCodes = '';
-  let quaxx = [{name:''}];
+  let quaxx = [{ name: '' }];
   listTrip.filter((trip, index) => {
-    if(trip.fromStation._id === selectFormStation)
-    {
-      if (new Date(trip.startTime).toLocaleDateString("es-CL") === selectStartTime || new Date(new Date(trip.startTime).valueOf() + 24 * 60 * 60 * 1000).toLocaleDateString("es-CL") === selectStartTime ) {
+    if (trip.fromStation._id === selectFormStation) {
+      if (new Date(trip.startTime).toLocaleDateString("es-CL") === selectStartTime || new Date(new Date(trip.startTime).valueOf() + 24 * 60 * 60 * 1000).toLocaleDateString("es-CL") === selectStartTime) {
         quaxx.push({ name: trip.cars.codeBus })
       }
     }
   })
-  // seats = seats.filter((seat,index) => {
-  //  return  quaxx.indexOf(seat.codeBus) == -1;
-  // }); 
+
   return (
     <Modal
       title={FindId !== '' ? 'Sửa' : 'Thêm'}
@@ -58,7 +47,6 @@ const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectPr
       }}
     >
       <Form
-        //  validateMessages={validateMessages}
         fields={data}
         form={form}
         layout="vertical"
@@ -104,8 +92,17 @@ const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectPr
         </Form.Item>
 
         <Form.Item label="Điểm đi" name={'fromStation'} rules={[{ required: true }]} >
-          <Select onChange={handleChangeFromStation}>
-            {allStation(fromStation, selectToStation, selectProvinceStart)}
+          <Select onChange={handleChangeFromStation}
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }>
+            {listStation.map((item, index) => {
+              if (selectProvinceStart === item.province._id) {
+                return (<Option key={index + item._id} value={item._id}>{item.nameStation}</Option>)
+              }
+
+            })}
           </Select>
         </Form.Item>
 
@@ -150,8 +147,16 @@ const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectPr
         //   }),
         // ]}
         >
-          <Select onChange={handleChangeToStation}>
-            {allStation(fromStation, selectFormStation, selectProvinceEnd)}
+          <Select onChange={handleChangeToStation}
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }>
+            {listStation.map((item, index) => {
+              if (selectProvinceEnd === item.province._id) {
+                return (<Option key={index + item._id} value={item._id}>{item.nameStation}</Option>)
+              }
+            })}
           </Select>
         </Form.Item>
 
@@ -172,10 +177,8 @@ const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectPr
             }
           </Select>
         </Form.Item>
-        {/* valuePropName="option" */}
         <Form.Item className='opption' label="Xe" name={'carx'} rules={[{ required: true }]} >
           <Select onChange={handleCar} style={{ width: 150 }}
-          // value={selectCar}
           >
             {
               seats.map((item, index) => {
@@ -191,40 +194,30 @@ const CollectionCreateForm = ({ selectProvinceEnd, onChangeProvinceEnd, selectPr
           </Select>
 
         </Form.Item>
-        {/* valuePropName="option" */}
         <Form.Item className='opption' label="Mã xe" name={'cars'} rules={[{ required: true }]} >
           <Select onChange={handleCodeCar} style={{ width: 160 }}
-          // value={selectCodeCar}
           >
-
             {
 
               seats.map((item, index) => {
-                if(item.station._id === selectFormStation)
-                {
+                if (item.station._id === selectFormStation) {
                   if (item.CarMFG.nameCarMFG === selectCar) {
                     if (item.busA1.length === 2) {
                       let temp;
-                        console.log(quaxx)
-                        quaxx.map((itemxx, indexx) => {
-                          console.log(itemxx)
-                          // if (itemxx.name === item.codeBus) {
-                          //   temp = <Select.Option key={index + item._id} disabled value={item._id}>{item.codeBus}</Select.Option>
-                            if (itemxx.name === item.codeBus) {
-                              temp= <Select.Option key={index + item._id} disabled value={item._id}>{item.codeBus}</Select.Option>
-                          }
-                        })
-                        // console.log(temp)
-                        if(temp === undefined)
-                        {
-                          return <Select.Option key={index + item._id}  value={item._id}>{item.codeBus}</Select.Option>
+                      quaxx.map((itemxx, indexx) => {
+                        if (itemxx.name === item.codeBus) {
+                          temp = <Select.Option key={index + item._id} disabled value={item._id}>{item.codeBus}</Select.Option>
                         }
-                        return temp;
-                       
-                    
-                    
+                      })
+                      if (temp === undefined) {
+                        return <Select.Option key={index + item._id} value={item._id}>{item.codeBus}</Select.Option>
+                      }
+                      return temp;
+
+
+
                       // return <Select.Option key={index + item._id}  value={item._id}>{item.codeBus}</Select.Option>
-                     
+
                     }
                   }
                 }
@@ -275,7 +268,7 @@ class ListTrip extends Component {
             <span >{`${new Date(item).toLocaleDateString("es-CL")}    ${new Date(item).toLocaleTimeString()}`}</span>
           </Space>
         ),
-        sorter: (a, b) =>new Date(a.startTime).valueOf() - new Date(b.startTime).valueOf()
+        sorter: (a, b) => new Date(a.startTime).valueOf() - new Date(b.startTime).valueOf()
       },
       {
         title: 'Xe',
@@ -294,12 +287,12 @@ class ListTrip extends Component {
         dataIndex: 'seats',
         key: 'seats',
         width: 100,
-         render: text => {
-            
-                return (<Tag color={'green'} >
-                  {text}
-                </Tag>)
-              
+        render: text => {
+
+          return (<Tag color={'green'} >
+            {text}
+          </Tag>)
+
         }
       },
       {
@@ -327,13 +320,22 @@ class ListTrip extends Component {
         )
       },
     ],
+
     data: [
       {
         name: ["id"],
         value: ""
       },
       {
+        name: ["provinceStart"],
+        value: ""
+      },
+      {
         name: ["fromStation"],
+        value: ""
+      },
+      {
+        name: ["provinceEnd"],
         value: ""
       },
       {
@@ -345,7 +347,7 @@ class ListTrip extends Component {
         value: ""
       },
       {
-        name: ["seats"],
+        name: ["numberSeat"],
         value: ""
       },
       {
@@ -389,16 +391,16 @@ class ListTrip extends Component {
     console.log(id)
     var index = listTrip.findIndex(x => x._id === id);
     var data = listTrip[index];
-    console.log(data.cars.seats.length)
     console.log(data)
-    // console.log(data)
     this.setState({
       FindId: id,
       visible: true,
-      selectFormStation: "",
-      selectToStation: '',
+      selectProvinceStart: data.fromStation.province._id,
+      selectProvinceEnd: data.toStation.province._id,
+      selectFormStation: data.fromStation._id,
+      selectToStation: data.toStation._id,
       selectSeats: data.cars.seats.length,
-      selectCar: data.cars.nameBus,
+      selectCar: data.cars.CarMFG.nameCarMFG,
       selectCodeCar: data.cars._id,
       data: [
         {
@@ -406,8 +408,16 @@ class ListTrip extends Component {
           value: data._id
         },
         {
+          name: ["provinceStart"],
+          value: data.fromStation.province._id
+        },
+        {
           name: ["fromStation"],
           value: data.fromStation._id
+        },
+        {
+          name: ["provinceEnd"],
+          value: data.toStation.province._id
         },
         {
           name: ["toStation"],
@@ -423,7 +433,7 @@ class ListTrip extends Component {
         },
         {
           name: ["carx"],
-          value: data.cars.nameBus
+          value: data.cars.CarMFG.nameCarMFG
         },
         {
           name: ["cars"],
@@ -457,7 +467,15 @@ class ListTrip extends Component {
           value: ""
         },
         {
+          name: ["provinceStart"],
+          value: ""
+        },
+        {
           name: ["fromStation"],
+          value: ""
+        },
+        {
+          name: ["provinceEnd"],
           value: ""
         },
         {
@@ -469,9 +487,22 @@ class ListTrip extends Component {
           value: ""
         },
         {
+          name: ["numberSeat"],
+          value: ""
+        },
+        {
+          name: ["carx"],
+          value: ""
+        },
+        {
+          name: ["cars"],
+          value: ""
+        },
+        {
           name: ["price"],
           value: ""
-        }
+        },
+
       ],
       selectFormStation: '',
       selectToStation: '',
@@ -492,9 +523,9 @@ class ListTrip extends Component {
         }
       });
     }
-      listTrip = listTrip.filter((task) => {
-        return task.fromStation.nameStation.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
-     });
+    listTrip = listTrip.filter((task) => {
+      return task.fromStation.nameStation.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
+    });
 
     listTrip.map((item, index) => {
       // console.log(item)
@@ -503,7 +534,7 @@ class ListTrip extends Component {
         _id: item._id,
         fromStation: item.fromStation.nameStation,
         toStation: item.toStation.nameStation,
-        startTime:item.startTime,
+        startTime: item.startTime,
         // startTime: `${new Date(item.startTime).toLocaleDateString("es-CL")}    ${new Date(item.startTime).toLocaleTimeString()}`,
         nameBus: item.cars.CarMFG.nameCarMFG,
 
@@ -593,19 +624,19 @@ class ListTrip extends Component {
   }
   render() {
 
-    let { selectSeats, selectCar, selectCodeCar,selectFormStation } = this.state;
-    console.log({ selectSeats, selectCar, selectCodeCar,selectFormStation })
+    let { selectSeats, selectCar, selectCodeCar, selectFormStation } = this.state;
+    console.log({ selectSeats, selectCar, selectCodeCar, selectFormStation })
     return (
       <>
         <div>
           <h4 className="titleListManager">Quản lý Chuyến đi</h4>
- <div className="breadcrumbList"><Breadcrumb>
+          <div className="breadcrumbList"><Breadcrumb>
             <Breadcrumb.Item>
               <Link to='/manager'>Trang chủ</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               Chuyến đi
-    </Breadcrumb.Item>
+            </Breadcrumb.Item>
           </Breadcrumb></div>
 
           <div className='SearchTicket'>
@@ -628,7 +659,15 @@ class ListTrip extends Component {
                         value: ""
                       },
                       {
+                        name: ["provinceStart"],
+                        value: ""
+                      },
+                      {
                         name: ["fromStation"],
+                        value: ""
+                      },
+                      {
+                        name: ["provinceEnd"],
                         value: ""
                       },
                       {
@@ -640,7 +679,7 @@ class ListTrip extends Component {
                         value: ""
                       },
                       {
-                        name: ["seats"],
+                        name: ["numberSeat"],
                         value: ""
                       },
                       {
@@ -654,13 +693,14 @@ class ListTrip extends Component {
                       {
                         name: ["price"],
                         value: ""
-                      }
-                    ]
+                      },
+
+                    ],
                   })
                 }}
               >
                 <i className="far fa-plus-square" style={{ marginRight: '9px' }}></i>  Thêm
-      </Button>
+              </Button>
             </div>
             <div className="input-groupSearch">
               <Select
@@ -696,7 +736,7 @@ class ListTrip extends Component {
               <span className="input-group-btn">
                 <button className="btn btn-primary" type="button" onClick={this.onSearch}>
                   <span className="fa fa-search " style={{ marginRight: '5px' }}></span>Tìm kiếm
-                        </button>
+                </button>
               </span>
             </div>
           </div>
@@ -721,7 +761,7 @@ class ListTrip extends Component {
             onCreate={this.onCreate}
             handleChangeFromStation={this.handleChangeFromStation}
             handleChangeToStation={this.handleChangeToStation}
-            fromStation={this.props.listStation}
+            listStation={this.props.listStation}
             seats={this.props.listCar}
             handleSeats={this.handleSeats}
             selectSeats={this.state.selectSeats}

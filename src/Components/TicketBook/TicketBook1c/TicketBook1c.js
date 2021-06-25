@@ -211,8 +211,6 @@ export default class TicketbookC extends Component {
                 return <TicketBook1cAllCheckBox onCheckbox={this.onCheckbox} value={this.state.value} key={index} item={item} index={index}></TicketBook1cAllCheckBox>
             })
         }
-
-        console.log(this.props.LuotDi1c.length)
         return (
             <>
                 {this.state.continue === true ?

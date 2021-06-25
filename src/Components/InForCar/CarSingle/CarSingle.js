@@ -52,7 +52,7 @@ class CarSingle extends Component {
         })
         let CarFast =  this.props.listTrip.map((item,index)=>{
             // console.log(item)
-            if(slugify(item.cars.CarMFG.nameCarMFG) ===  this.props.match.params.hangxe)
+            if(slugify(item.cars.CarMFG.nameCarMFG) ===  this.props.match.params.hangxe && new Date(item.startTime).valueOf() >= new Date().valueOf() )
             {
                 return(<CarSingleItem listTrip={this.props.listTrip} item={item} key ={item._id + index} ></CarSingleItem>)
             }
@@ -88,8 +88,8 @@ class CarSingle extends Component {
                                                     <th style={{width:'150px'}}>Tuyến đường</th>
                                                     <th style={{width:'200px'}}>Thông tin vé</th>
                                                     {/* <th style={{width:'130px'}}>Giá vé</th>*/}
-                                                    <th style={{width:'150px'}}>Ngày</th> 
-                                                    <th style={{width:'150px'}}></th>
+                                                    <th style={{width:'100px'}}>Ngày</th> 
+                                                    <th style={{width:'100px'}}></th>
                                                 </tr>
                                             </thead>
                                             <tbody>

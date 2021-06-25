@@ -65,10 +65,8 @@ class CarSingleItem extends Component {
         return current && current < moment(customDate, "DD-MM-YYYY");
       }
     render() {
-        console.log(this.props.item)
         // console.log(this.props.listTrip)
         let { item } = this.props;
-        console.log(item)
         const date = moment()
         return (
             <>
@@ -77,21 +75,7 @@ class CarSingleItem extends Component {
                     <td >{item.fromStation.province.nameProvince} đi {item.toStation.province.nameProvince}</td>
                     <td>Vé xe {item.cars.CarMFG.nameCarMFG} tuyến {item.fromStation.province.nameProvince} đi {item.toStation.province.nameProvince}</td>
                     {/* <td>{item.price}</td> */}
-                    <td >
-                    <ConfigProvider locale={locale}>
-                                            <DatePicker
-                                            // defaultValue ={moment(this.state.selectDate, "DD-MM-YYYY")}
-                                            allowClear={false}
-                                                id='input3'
-                                                suffixIcon={false}
-                                                onChange={this.onChange}
-                                                onOk={this.onOk}
-                                                className="book-date" format={"DD-MM-YYYY"}
-                                                disabledDate={this.disabledDate}
-                                                 />
-
-                                        </ConfigProvider>
-                    </td>
+                    <td >{new Date(item.startTime).toLocaleDateString("es-CL")}</td>
                     <td>
                                     <Button type="primary"    >
                                     <Link

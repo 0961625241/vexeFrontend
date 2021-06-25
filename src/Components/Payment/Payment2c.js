@@ -89,19 +89,26 @@ function Payment2c(props) {
            {
                // InforTicket.captureID = captureID
            props.postTicketRequest(props.registers)
-           Swal.fire(
-            '',
-            'Bạn đã mua thành công',
-            'success'
-        )
-             props.goBack.goBack()
+           Swal.fire({
+            icon: 'success',
+            title: 'Bạn đã mua thành công',
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: `Ok`,
+          
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                props.goBack.goBack()
+            }
+          })
            }
             // alert('Transaction completed by ' + details.payer.name.given_name)
          
         })
     }
         }).render('#paypal-button-container');
-    });
+    },[]);
     
   
         return (
@@ -169,7 +176,7 @@ function Payment2c(props) {
                                                         <div className=" field">
                                                             <div className=" sub-tit">Tổng tiền lượt đi:</div>
                                                             <div className=" orange-value green">
-                                                            {props.itemStart.price}
+                                                            {props.itemStart.price * props.registers.seatCodes.length}
                             <sup>₫</sup>
                                                             </div>
                                                         </div>
@@ -216,7 +223,7 @@ function Payment2c(props) {
                                                             <div className=" field">
                                                                 <div className=" sub-tit">Tổng tiền lượt về:</div>
                                                                 <div className=" orange-value">
-                                                                {props.itemEnd.price}
+                                                                {props.registers.seatCodesTo.length *props.itemEnd.price}
                                 <sup>₫</sup>
                                                                 </div>
                                                             </div>

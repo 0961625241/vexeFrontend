@@ -50,7 +50,7 @@ class Findtickets extends Component {
             disabled: true,
             qua: 'Tỉnh - Thành Phố',
             selectDateTo:JSON.parse(localStorage.getItem("OriginDest")) !== null ? JSON.parse(localStorage.getItem("OriginDest")).selectDateTo :this.props.selectDateTo,
-            typesTicket:'1c',
+            typesTicket:JSON.parse(localStorage.getItem("OriginDest")) !== null ? JSON.parse(localStorage.getItem("OriginDest")).selectVe :this.props.selectVe,
             checkdTicket:false
             // selectedOption:'option1'
         }
@@ -328,7 +328,7 @@ class Findtickets extends Component {
         });
     };
     onFindTicket = () => {
-        this.props.getSelectRequest(this.state.selectFrom, this.state.selectTo, this.state.selectDate,this.state.selectDateTo)
+        this.props.getSelectRequest(this.state.selectFrom, this.state.selectTo, this.state.selectDate,this.state.selectDateTo,this.state.typesTicket)
     }
     disabledDate(current) {
         let customDate = new Date().toLocaleDateString("es-CL");
@@ -346,7 +346,7 @@ class Findtickets extends Component {
     }
    
     render() {
-
+        console.log(this.state.typesTicket)
         return (
             <>
                 {this.props.selectFromAndTo ?
@@ -499,8 +499,8 @@ class Findtickets extends Component {
 
 const mapDispathToProps = (dispatch) => {
     return {
-        getSelectRequest: (selectFrom, selectTo, selectDate,selectDateTo) => {
-            dispatch(getSelectRequest(selectFrom, selectTo, selectDate,selectDateTo))
+        getSelectRequest: (selectFrom, selectTo, selectDate,selectDateTo,selectVe) => {
+            dispatch(getSelectRequest(selectFrom, selectTo, selectDate,selectDateTo,selectVe))
         },
     }
 }
@@ -509,6 +509,7 @@ const mapStateToProps = (state) => ({
     selectTo: state.selectToFrom.selectTo,
     selectDate: state.selectToFrom.selectDate,
     selectDateTo:state.selectToFrom.selectDateTo,
+    selectVe:state.selectToFrom.selectVe,
 });
 
 export default connect(mapStateToProps, mapDispathToProps)(Findtickets);
