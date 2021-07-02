@@ -202,7 +202,7 @@ class TicketBook extends Component {
                     <FindTickets selectFromAndTo={this.props.match.params} listStation={this.props.listStation}></FindTickets>
                     <Layout className="Alltrip">
                         <Row>
-                            <Col span={24}>
+                            <Col span={24} style={{background:'#1890ff',marginBottom:'15px'}}>
                                 <div className="container">
                                     <Row >
                                         <Col className="gutter-row" span={10}>

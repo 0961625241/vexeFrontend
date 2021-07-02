@@ -57,9 +57,10 @@ class StationSingleItem extends Component {
         
 
     }
-    onFindTicket=(selectFrom,selectTo)=>{
-        this.props.getSelectRequest(selectFrom,selectTo,this.state.selectDate)
+    onFindTicket=(selectFrom, selectTo, selectDate,selectDateTo,selectVe)=>{
+        this.props.getSelectRequest(selectFrom, selectTo, selectDate,selectDateTo,selectVe)
     }
+  
     disabledDate(current) {
         let customDate = new Date().toLocaleDateString("es-CL");
         return current && current < moment(customDate, "DD-MM-YYYY");
@@ -102,7 +103,7 @@ class StationSingleItem extends Component {
                     <td>
                                     <Button type="primary"    >
                                     <Link
-                                        onClick={()=>this.onFindTicket(item.fromStation.province.nameProvince,item.toStation.province.nameProvince)}
+                                        onClick={()=>this.onFindTicket(item.fromStation.province.nameProvince,item.toStation.province.nameProvince,this.time(item.startTime),moment().format("DD-MM-YYYY"),'1c')}
                                         to={`/vi-VN/ve-xe-khach-tu-${slugify(item.fromStation.province.nameProvince)}-di-${slugify(item.toStation.province.nameProvince)}-tg-${this.time(item.startTime)}-ve1c`}
                                     > Tìm vé xe</Link>
                                 </Button>
@@ -115,8 +116,8 @@ class StationSingleItem extends Component {
 
 const mapDispathToProps = (dispatch) => {
     return {
-        getSelectRequest: (selectFrom,selectTo,selectDate) => {
-            dispatch(getSelectRequest(selectFrom,selectTo,selectDate))
+        getSelectRequest: (selectFrom, selectTo, selectDate,selectDateTo,selectVe) => {
+            dispatch(getSelectRequest(selectFrom, selectTo, selectDate,selectDateTo,selectVe))
         },
     }
 }

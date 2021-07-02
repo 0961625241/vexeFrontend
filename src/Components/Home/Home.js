@@ -19,19 +19,27 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 const Home = (props) => {
+  let query = useQuery();
   useEffect(() => {
     props.getStationRequest();
     props.getCarRequest();
-    props.getTripRequest()
-  },)
+    props.getTripRequest();
+    
+    let InforTicket=JSON.parse(localStorage.getItem("InforTicket"));
+    if(query.get("errorCode") === '0' && InforTicket !== null)
+    {
+      console.log(`thanh cong`)
+      props.postTicketRequest(InforTicket)
+      localStorage.removeItem("InforTicket")
+    }else{
+      localStorage.removeItem("InforTicket")
+    }
+  },[])
   
   // let query = useQuery();
   // let InforTicket=JSON.parse(localStorage.getItem("InforTicket"));
   // const qua =()=>{
-  //   if(query.get("resultCode") === '0' || query.get("resultCode") === 0)
-  //   {
-  //     console.log('sad')
-  //   }
+    
   // }
   return (
     <>

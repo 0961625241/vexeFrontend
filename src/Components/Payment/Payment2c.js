@@ -154,7 +154,7 @@ function Payment2c(props) {
                                                         </div>
                                                         <div className=" field">
                                                             <div className=" sub-tit">Thời gian:</div>
-                                                            <div ><span className="orange-value green">{props.itemStart.startTime}</span></div>
+                                                            <div ><span className="orange-value green">{`${new Date(props.itemStart.startTime).toLocaleDateString("es-CL")}    ${new Date(props.itemStart.startTime).getHours()}:${(new Date(props.itemStart.startTime).getMinutes() < 10 ? '0' : '')}${new Date(props.itemStart.startTime).getMinutes()}`}</span></div>
                                                         </div>
                                                         <div className=" field">
                                                             <div className=" sub-tit">Điểm lên xe:</div>
@@ -200,7 +200,7 @@ function Payment2c(props) {
                                                             </div>
                                                             <div className=" field">
                                                                 <div className=" sub-tit">Thời gian:</div>
-                                                                <div ><span className="orange-value">{props.itemEnd.startTime}</span></div>
+                                                                <div ><span className="orange-value">{`${new Date(props.itemEnd.startTime).toLocaleDateString("es-CL")}    ${new Date(props.itemEnd.startTime).getHours()}:${(new Date(props.itemEnd.startTime).getMinutes() < 10 ? '0' : '')}${new Date(props.itemEnd.startTime).getMinutes()}`}</span></div>
                                                             </div>
                                                             <div className=" field">
                                                                 <div className=" sub-tit">Điểm lên xe:</div>

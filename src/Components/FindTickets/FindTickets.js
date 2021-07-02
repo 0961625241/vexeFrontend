@@ -16,6 +16,9 @@ import locale from 'antd/lib/locale/vi_VN';
 import Draggable from 'react-draggable';
 import { getSelectRequest } from './../../actions/select';
 import { connect } from 'react-redux';
+import { v1 as uuidv1 } from 'uuid';
+const Axios = require('axios');
+
 const dateFromat = 'YYYY/MM/DD';
 const monthFromat = 'YYYY/MM';
 const dateFromatList = ['DD/MM/YYYY', 'DD/MM/YY'];
@@ -344,11 +347,40 @@ class Findtickets extends Component {
         typesTicket: event.target.value
       });
     }
-   
+    MOMO=()=>{
+       let data= {
+            "accessKey": "F8BBA842ECF85",
+            "partnerCode": "MOMO",
+            "requestType": "captureMoMoWallet",
+            "notifyUrl": "https://momo.vn",
+            "returnUrl": "https://momo.vn",
+            "orderId": uuidv1(),
+            "amount": "150000",
+            "orderInfo": "SDK team.",
+            "requestId": uuidv1(),
+            "extraData": "email=abc@gmail.com",
+            "signature": "996ed81d68a1b05c99516835e404b2d0146d9b12fbcecbf80c7e51df51cac85e"
+          }
+          Axios({
+            method: "POST",
+            headers: {
+         'content-type': 'application/x-www-form-urlencoded',
+                // 'accept': 'application/json',
+                // 'content-type': 'multipart/form-data'
+            },
+            url: "https://test-payment.momo.vn/gw_payment/transactionProcessor"
+            , data: data
+        }).then((result) => {
+            console.log(result)
+             window.location.href = result.data.payUrl;
+        }).catch((error) => {
+            console.log(error.response)
+        })
+    }
     render() {
-        console.log(this.state.typesTicket)
         return (
             <>
+            <button onClick={this.MOMO}>MoMo</button>
                 {this.props.selectFromAndTo ?
                     <section>
                         <div className="container">

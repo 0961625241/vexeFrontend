@@ -57,7 +57,7 @@ class InforManager extends Component {
             return (
                 <Layout>
                     <Header className="header d-flex justify-content-between headerManager">
-                        <div className="logo"  ><Link to="/manager/stations" onClick={()=>{
+                        <div className="logo"  ><Link to="/manager" onClick={()=>{
                             this.setState({current:'1'})
                         }}><img src="/img/logo.png" alt=""></img></Link>;</div>
                         {/* <Menu className="d-flex justify-content-end" style={{ width: "100%" }} theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>

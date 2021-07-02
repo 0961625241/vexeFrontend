@@ -312,12 +312,12 @@ class Listdriver extends Component {
         {
           title: 'Tên xe',
           dataIndex: 'nameDriver',
-          width: 400,
+          width: 200,
         },
         {
           title: 'Địa chỉ xe',
           dataIndex: 'addressDriver',
-          width: 400,
+          width: 200,
         },
 
         {
