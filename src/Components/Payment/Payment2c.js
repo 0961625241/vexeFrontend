@@ -34,7 +34,6 @@ function Payment2c(props) {
 
         // Render the PayPal button into #paypal-button-container
         let priceStart = Number((props.itemStart.price /23083).toFixed(2)) * props.registers.seatCodes.length;
-       
         let priceEnd = Number((props.itemEnd.price /23083).toFixed(2)) * props.registers.seatCodesTo.length;
         let totalPrice = Number((priceStart + priceEnd).toFixed(2));
         let item_List=props.item_List
@@ -110,7 +109,52 @@ function Payment2c(props) {
         }).render('#paypal-button-container');
     },[]);
     
-  
+    const onClickMOMO = () => {
+        let priceStart = Number(props.itemStart.price) * props.registers.seatCodes.length;
+        let priceEnd = Number(props.itemEnd.price) * props.registers.seatCodesTo.length;
+        let price = priceStart + priceEnd;
+        var partnerCode = "MOMOFBKM20210425"
+        var accessKey = "l6TpTlpLvQ4JBuYY"
+        var orderInfo = "Thanh toán với MoMo"
+        var returnUrl = "http://localhost:4000/"
+        var notifyUrl = "http://localhost:4000/notifyUrl"
+        var amount = `${price}`
+        var orderId = uuidv1()
+        var requestId = uuidv1()
+        var requestType = "captureMoMoWallet"
+        var extraData = "email=ddrduongqua1027@gmail.com"
+        var serectkey = 'OuC3uvUGmPvxdp3G0ow5QjWWgdljrbCb';
+        var rawSignature = "partnerCode="+partnerCode+"&accessKey="+accessKey+"&requestId="+requestId+"&amount="+amount+"&orderId="+orderId+"&orderInfo="+orderInfo+"&returnUrl="+returnUrl+"&notifyUrl="+notifyUrl+"&extraData="+extraData
+        var signature = CryptoJS.HmacSHA256(rawSignature,serectkey)
+                               .toString(CryptoJS.enc.Hex)
+        let data = JSON.stringify({
+            accessKey: accessKey,
+            partnerCode: partnerCode,
+            requestType: requestType,
+            notifyUrl: notifyUrl,
+            returnUrl: returnUrl,
+            orderId: orderId,
+            amount: amount,
+            orderInfo: orderInfo,
+            requestId: requestId,
+            extraData: extraData,
+            signature: signature
+        })
+        Axios({
+            method: "POST",
+            headers: {
+                 'content-type': 'application/x-www-form-urlencoded',
+            },
+            url: "https://test-payment.momo.vn/gw_payment/transactionProcessor"
+            , data: data
+        }).then((result) => {
+            console.log(result)
+            localStorage.setItem("InforTicket",JSON.stringify(props.registers));
+           window.location.href = result.data.payUrl;
+        }).catch((error) => {
+            console.log(error.response)
+        })
+    }
         return (
             <>
               <div className="container"> 
@@ -118,7 +162,7 @@ function Payment2c(props) {
                             <div className="col-md-12">
                                 <div className="info-container info-container3">
                                     <div id="ticket-infomation-container" className="buy-info-container">
-                                        <div className="title-bar-bg"><p className="title-txt">THÔNG TIN MUA VÉ</p></div>
+                                        <div className="title-bar-bg"><p className="title-txt inForBuyT">THÔNG TIN MUA VÉ</p></div>
                                         <div className="customer-info-container">
                                             <div className="title-bar"><p className="title-txt">Thông tin hành khách</p></div>
                                             <div className="containerRow">
@@ -234,7 +278,7 @@ function Payment2c(props) {
                                                 <div fragment="4e5b8c30e4" className="footer-bar">
                                                     <div className="total-info">
                                                         <p className="footer-title">TỔNG TIỀN</p>
-                                                        <p className="footer-price">{(props.itemStart.price * props.registers.seatCodes.length) + (props.registers.seatCodesTo.length *props.itemEnd.price)}<sup>₫</sup></p>
+                                                        <p className="footer-price inForBuyT">{(props.itemStart.price * props.registers.seatCodes.length) + (props.registers.seatCodesTo.length *props.itemEnd.price)}<sup>₫</sup></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -270,7 +314,7 @@ function Payment2c(props) {
                                     < img alt="back" className="icon lazyLoad isLoaded" src="./../img/tieptuc.png" />
                                 </button> */}
                                     <div id="paypal-button-container"></div>
-                                <div  id="momo-button-container" className="hidden"><Button   style={{width:'100%'}} type="primary">Thanh Toán</Button></div>
+                                <div  id="momo-button-container" className="hidden"><Button onClick={onClickMOMO}   type="primary">Thanh Toán</Button></div>
                             </div>
 
 

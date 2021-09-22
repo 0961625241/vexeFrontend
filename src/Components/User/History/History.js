@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { putIdClient, getUserIDRequest } from './../../../actions/users';
+import { postTicketEmailRequest } from './../../../actions/tickets';
 import { connect } from 'react-redux';
 import Headers from './../../Headers/Headers'
 import { Space, Layout, Row, Col, Table, Tag, Modal,Button } from 'antd';
 import Footers from './../../Footers/Footers';
 import { deleteTicketRequest } from './../../../actions/tickets';
 import Swal from 'sweetalert2';
+import FormChat from '../../FormChat/FormChat';
 function ConvertUSD(VND) {
     return VND / 23075;
 }
@@ -24,16 +26,15 @@ class History extends Component {
                 fullName: JSON.parse(localStorage.getItem("User")).fullName,
                 passwordCurrent: '',
                 passwordNew: '',
-                isModalVisible: false,
 
-                
-                captureID: '',
-                totalPrice: '',
-                ticketId: '',
-                dataTicket: '',
             },
-            typesTicket1c:false,
-            typesTicket2c:true
+            isModalVisible: false,
+            captureID: '',
+            totalPrice: '',
+            ticketId: '',
+            dataTicket: '',
+            typesTicket1c:true,
+            typesTicket2c:false
         }
         this.columns1c =[
             {
@@ -212,22 +213,23 @@ class History extends Component {
     componentDidMount() {
         if (JSON.parse(localStorage.getItem("User")) && JSON.parse(localStorage.getItem("User")) !== null) {
             this.props.getUserIDRequest(JSON.parse(localStorage.getItem("User")).id)
+            this.props.postTicketEmailRequest({emailKH:JSON.parse(localStorage.getItem("User")).email})
         }
     }
 
     showModal = (text) => {
         console.log(text._id)
-        let index = this.props.getIDUser.ticketId.findIndex((item, index) => {
+        let index = this.props.postTicketEmail.findIndex((item, index) => {
             console.log(item._id === text._id)
             return item._id === text._id
         })
         console.log(index)
         this.setState({
             isModalVisible: true,
-            captureID: this.props.getIDUser.ticketId[index].captureID,
-            totalPrice: this.props.getIDUser.ticketId[index].totalPrice,
-            ticketId: this.props.getIDUser.ticketId[index]._id,
-            dataTicket: this.props.getIDUser.ticketId[index],
+            captureID: this.props.postTicketEmail[index].captureID,
+            totalPrice: this.props.postTicketEmail[index].totalPrice,
+            ticketId: this.props.postTicketEmail[index]._id,
+            dataTicket: this.props.postTicketEmail[index],
         })
 
     };
@@ -237,7 +239,8 @@ class History extends Component {
         let totalPrice = this.state.totalPrice
         let ticketId = this.state.ticketId;
         let dataTicket = this.state.dataTicket;
-        console.log(Number(((totalPrice)/23083).toFixed(2)))
+
+        // console.log(Number(((totalPrice)/23083).toFixed(2)))
             if(captureID !== '') 
             {
             const clientIdAndSecret = "AXOD1mIiVxUmqztNJB2aN1g_Oq6WH19OciK3NUMBVW7sQXKuYhUm2oatBUz5f1sATdjww5H-MiIjnFuf:EO0w99oTyqkWvSxtAX4MsqC3mEpznc57AYNogtlANgvx8f4BI9RtyAui7yu8PbNzjeiRScecRwycD6ce";
@@ -273,7 +276,6 @@ class History extends Component {
 
             // }
         }
-        console.log(ticketId,dataTicket)
         this.props.deleteTicketRequest(ticketId, dataTicket)
         this.setState({
             isModalVisible: false
@@ -288,8 +290,8 @@ class History extends Component {
     dataSource1c = () => {
         const data = [];
         let stt = 1;
-        if (this.props.getIDUser.ticketId && this.props.getIDUser.ticketId !== undefined) {
-            this.props.getIDUser.ticketId.map((item, index) => {
+        if (this.props.postTicketEmail && this.props.postTicketEmail !== undefined) {
+            this.props.postTicketEmail.map((item, index) => {
                 console.log(item)
                 if (item.typesTicket === '1c') {
                     data.push({
@@ -312,11 +314,9 @@ class History extends Component {
     dataSource = () => {
         const data = [];
         let stt = 1;
-        if (this.props.getIDUser.ticketId && this.props.getIDUser.ticketId !== undefined) {
-            this.props.getIDUser.ticketId.map((item, index) => {
-                console.log(item)
+        if (this.props.postTicketEmail && this.props.postTicketEmail !== undefined) {
+            this.props.postTicketEmail.map((item, index) => {
                 if (item.typesTicket === '2c') {
-                    console.log(item)
                     data.push({
                         key: index,
                         stt: stt++,
@@ -376,6 +376,8 @@ class History extends Component {
         })
     }
     render() {
+      
+        console.log(this.props.getIDUser)
         return (
             <>
                 <Layout className="layout-history">
@@ -383,7 +385,7 @@ class History extends Component {
                     <section className='history' style={{ background: '#F7F9FA' }}>
                         <div className="container">
                             <Row gutter={16}>
-                                <Col className="gutter-row" span={6}>
+                                <Col className="gutter-row" span={24}>
                                     <div className="aside" >
                                         <div className="aside-sidebar">
                                             <div className="aside-user">
@@ -407,7 +409,7 @@ class History extends Component {
                                                     <li className="nav-item">
                                                         <a href="#" className="aside-panel__item nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
                                                             <div className="aside-panel__icon--password" ></div>
-                                                            <div className="aside-panel__txt" >Xem thông tin</div>
+                                                            <div className="aside-panel__txt" >Xem lịch sử vé</div>
                                                         </a>
                                                     </li>
                                                     <li className="nav-item">
@@ -422,11 +424,11 @@ class History extends Component {
 
                                     </div>
                                 </Col>
-                                <Col className="gutter-row" span={18}>
+                                <Col className="gutter-row" span={24}>
                                     <div style={{ background: '#FFF', minHeight: '500px' }}>
                                         <div className="tab-content" id="myTabContent">
                                             <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                                <div className="content-item__title">THÔNG TIN</div>
+                                                <div className="content-item__title">Lịch sử vé</div>
                                                 <div className="content-item__main"></div>
                                                 <div className='contentData' style={{ padding: '20px' }}>
                                                    { this.state.typesTicket2c === true ? 
@@ -483,6 +485,7 @@ class History extends Component {
                         </div>
                     </section>
                     <Footers></Footers>
+                    <FormChat></FormChat>
                 </Layout>
             </>
         )
@@ -499,10 +502,14 @@ const mapDispathToProps = (dispatch) => {
         deleteTicketRequest: (id, data) => {
             dispatch(deleteTicketRequest(id, data))
         },
+        postTicketEmailRequest: (data) => {
+            dispatch(postTicketEmailRequest(data))
+        },
     }
 }
 const mapStateToProps = (state) => ({
     userLogin: state.userLogin.getUserLogin,
     getIDUser: state.listUser.getIDUser,
+    postTicketEmail: state.listTicket.postTicketEmail
 });
 export default connect(mapStateToProps, mapDispathToProps)(History);

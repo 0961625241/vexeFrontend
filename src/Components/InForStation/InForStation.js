@@ -14,28 +14,28 @@ export default class InForStation extends Component {
                 <Layout className="inforStation" style={{background:'#fff'}}>
                     <div className="container">
                         <Row >
-                            <Col className="station-col" span={24}>
+                            <Col className="station-col" md={24}>
                                 <h4>Bến xe khách</h4>
-                                <Row gutter={[16,16]}>
-                                    <Col className="imgStation" span={6}>
+                                <Row gutter={[16,16]} className="Row_inforStation">
+                                    <Col className="imgStation" md={6} xs={12}>
                                         <Link to='/vi-VN/ben-xe-mien-dong'>
                                             <img src="./img/benxemiendong.jpg"></img>
                                             <p>Bến xe Miền Đông</p>
                                         </Link>
                                     </Col>
-                                    <Col className="imgStation" span={6}>
+                                    <Col className="imgStation" md={6} xs={12}>
                                     <Link to='/vi-VN/ben-xe-gia-lam'>
                                             <img src="./img/bx-gia-lam.jpg"></img>
                                             <p>Bến xe Gia Lâm</p>
                                         </Link>
                                     </Col>
-                                    <Col className="imgStation" span={6}>
+                                    <Col className="imgStation" md={6} xs={12}>
                                          <Link to='/vi-VN/ben-xe-nuoc-ngam'>
                                             <img src="./img/bx-nuoc-ngam.jpg"></img>
                                             <p>Bến xe Nước Ngầm</p>
                                         </Link>
                                     </Col>
-                                    <Col className="imgStation" span={6}>
+                                    <Col className="imgStation" md={6} xs={12}>
                                          <Link to='/vi-VN/ben-xe-my-dinh'>
                                             <img src="./img/bx-my-dinh.jpg"></img>
                                             <p>Bến xe Mỹ Đình</p>

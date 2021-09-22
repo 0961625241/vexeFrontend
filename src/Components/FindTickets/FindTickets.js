@@ -7,7 +7,8 @@ import {
     Switch,
     Route,
     Link,
-    useParams
+    useParams,
+    Redirect
 } from "react-router-dom";
 import moment from 'moment';
 import './../../App.css';
@@ -17,6 +18,10 @@ import Draggable from 'react-draggable';
 import { getSelectRequest } from './../../actions/select';
 import { connect } from 'react-redux';
 import { v1 as uuidv1 } from 'uuid';
+import Swal from 'sweetalert2';
+import {getSelectNotify} from './../../actions/loading';
+
+import {getTripRequest} from './../../actions/trips'
 const Axios = require('axios');
 
 const dateFromat = 'YYYY/MM/DD';
@@ -49,7 +54,6 @@ class Findtickets extends Component {
             provinceArr1: [],
             provinceArr2: [],
             selectDate: JSON.parse(localStorage.getItem("OriginDest")) !== null ? JSON.parse(localStorage.getItem("OriginDest")).selectDate : this.props.selectDate,
-            visible: false,
             disabled: true,
             qua: 'Tỉnh - Thành Phố',
             selectDateTo:JSON.parse(localStorage.getItem("OriginDest")) !== null ? JSON.parse(localStorage.getItem("OriginDest")).selectDateTo :this.props.selectDateTo,
@@ -311,9 +315,13 @@ class Findtickets extends Component {
 
     }
     showModal = () => {
-        this.setState({
-            visible: true,
-        });
+         Swal.fire({
+            title: 'Vui lòng chọn chuyến đi',
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: `Ok`,
+          
+          })
     };
     handleOk = e => {
         e.preventDefault();
@@ -331,7 +339,19 @@ class Findtickets extends Component {
         });
     };
     onFindTicket = () => {
+    //     if(this.props.listTrip && this.props.listTrip.length === 0)
+    //     {
+    //         this.props.getSelectNotify({loading: true})
+    //         setTimeout(() => {
+    //             this.props.history.push(`/vi-VN/ve-xe-khach-tu-${slugify(this.state.selectFrom)}-di-${slugify(this.state.selectTo)}-tg-${this.state.selectDate}-ve${this.state.typesTicket}`)
+    //             this.props.getSelectNotify({})
+    //             this.props.getSelectRequest(this.state.selectFrom, this.state.selectTo, this.state.selectDate,this.state.selectDateTo,this.state.typesTicket)
+    //         }, 2500);
+    //     }
+    //   else {
+         this.props.history.push(`/vi-VN/ve-xe-khach-tu-${slugify(this.state.selectFrom)}-di-${slugify(this.state.selectTo)}-tg-${this.state.selectDate}-ve${this.state.typesTicket}`)
         this.props.getSelectRequest(this.state.selectFrom, this.state.selectTo, this.state.selectDate,this.state.selectDateTo,this.state.typesTicket)
+    //   }
     }
     disabledDate(current) {
         let customDate = new Date().toLocaleDateString("es-CL");
@@ -380,7 +400,7 @@ class Findtickets extends Component {
     render() {
         return (
             <>
-            <button onClick={this.MOMO}>MoMo</button>
+            {/* <button onClick={this.MOMO}>MoMo</button> */}
                 {this.props.selectFromAndTo ?
                     <section>
                         <div className="container">
@@ -391,12 +411,13 @@ class Findtickets extends Component {
                             </Row>
                         </div>
                     </section> : ''}
-                <Layout className="book_Ticket" style={{ background: "#001529" }}>
+                <Layout className="book_Ticket" >
                     <div className="container">
-                        <Row>
+                        <Row className="book_Ticket_content">
 
-                            <Col className="ticket-col" span={24}>
-                                <h4 style={{ color: "white" }}>Đặt vé trực tuyến</h4>
+                            <Col className="ticket-col" md={24} xs={24}>
+                                {/* <h4 style={{ color: "white" }}>Đặt vé trực tuyến</h4> */}
+                                
                                 <div  className="roundtrip-checkbox-container">
                                     <input  type="radio" id="one-way" value="1c"   onChange={this.handleRadioChange} checked={this.state.typesTicket  === '1c'  }/> 
                                         <label htmlFor="one-way"    className="one-way-label">Một chiều</label> 
@@ -404,9 +425,11 @@ class Findtickets extends Component {
                                         <label  htmlFor="round-trip"   className="round-trip-label">Khứ hồi</label>
                                 </div>
                                 <div className="book d-flex">
-                                    <div className="dropdown" id='dropdown1'>
-                                        <div className="fontAwe"><i className="fas fa-map-marker-alt"></i></div>
-                                        <input id='input1' autoComplete="off" value={this.state.selectFrom} placeholder="chon noi di " className="dropdown-toggle book-input" name="selectFrom" type="text" data-toggle="dropdown" onFocus={this.handleFocus1} onChange={this.onChange1} />
+                                    <div className="book__diemdi__diemden">
+                                    <div className="dropdown book__diemdi" id='dropdown1'>
+                                        <label className="label_diemdi">Điểm đi</label>
+                                        {/* <div className="fontAwe"><i className="fas fa-map-marker-alt"></i></div> */}
+                                        <input id='input1' autoComplete="off" value={this.state.selectFrom} placeholder="Chọn điểm đi" className="dropdown-toggle book-input" name="selectFrom" type="text" data-toggle="dropdown" onFocus={this.handleFocus1} onChange={this.onChange1} />
                                         <ul className="dropdown-menu select-dropdown">
                                             <li><div>{this.state.provinceArr1 && this.state.provinceArr1.length > 0 ? this.state.qua : ""}</div>
                                                 <ul>
@@ -418,9 +441,10 @@ class Findtickets extends Component {
                                     <div className="fontAwex">
                                         <i id="btn" onClick={(e) => this.changeFromTo(e)} className="fas fa-exchange-alt"></i>
                                     </div>
-                                    <div className="dropdown" id='dropdown2'>
-                                        <div className="fontAwe"><i className="fas fa-map-marker-alt"></i></div>
-                                        <input autoComplete="off" className="dropdown-toggle book-input" placeholder="chon noi den " id='input2' type="text" onFocus={this.handleFocus2} name="selectTo" value={this.state.selectTo} onChange={this.onChange2} data-toggle="dropdown"></input>
+                                    <div className="dropdown book__diemden" id='dropdown2'>
+                                        <label className="label_diemdi">Điểm đến</label>
+                                        {/* <div className="fontAwe"><i className="fas fa-map-marker-alt"></i></div> */}
+                                        <input autoComplete="off" className="dropdown-toggle book-input" placeholder="chọn điển đến" id='input2' type="text" onFocus={this.handleFocus2} name="selectTo" value={this.state.selectTo} onChange={this.onChange2} data-toggle="dropdown"></input>
                                         <ul className="dropdown-menu select-dropdown">
                                             <li><div>{this.state.provinceArr2 && this.state.provinceArr2.length > 0 ? this.state.qua : ""}</div>
                                                 <ul>
@@ -429,95 +453,67 @@ class Findtickets extends Component {
                                             </li>
                                         </ul>
                                     </div>
-                                    <div className="dropdown ">
-                                        <div className="fontAwexx"><i className="fas fa-calendar-alt"></i></div>
-                                        <ConfigProvider locale={locale}>
-                                            <DatePicker
-                                                defaultValue={moment(this.state.selectDate, "DD-MM-YYYY")}
-                                                allowClear={false}
-                                                id='input3'
-                                                suffixIcon={false}
-                                                onChange={this.onChange}
-                                                onOk={this.onOk}
-                                                className="book-date" format={"DD-MM-YYYY"}
-                                                disabledDate={this.disabledDate}
-                                            />
-
-
-                                        </ConfigProvider>
+                                    </div>
+                                   <div className="book__ngdi__ngve">
+                                    <div className="dropdown book__ngdi">
+                                        <label className="label_diemdi">Ngày đi</label>
+                                        <div className="fontAwexx">
+                                            <i className="fas fa-calendar-alt"></i>
+                                            <ConfigProvider locale={locale}>
+                                                <DatePicker
+                                                    defaultValue={moment(this.state.selectDate, "DD-MM-YYYY")}
+                                                    allowClear={false}
+                                                    id='input3'
+                                                    suffixIcon={false}
+                                                    onChange={this.onChange}
+                                                    onOk={this.onOk}
+                                                    className="book-date" format={"DD-MM-YYYY"}
+                                                    disabledDate={this.disabledDate}
+                                                />
+                                            </ConfigProvider>
+                                            </div>
+                                    </div>
+                                       <div className="dropdown book__ngve">
+                                       <label className="label_diemdi">Ngày về</label>
+                                        <div className="fontAwexx" style={this.state.typesTicket === '1c' ? {opacity:'.1',pointerEvents:'none'} : {}}>
+                                            <i className="fas fa-calendar-alt"></i>
+                                            <ConfigProvider locale={locale}>
+                                                <DatePicker
+                                                    defaultValue={moment(this.state.selectDateTo, "DD-MM-YYYY")}
+                                                    allowClear={false}
+                                                    id='input3'
+                                                    suffixIcon={false}
+                                                    onChange={this.onChangeTo}
+                                                    disabled={this.state.typesTicket === '1c' ? true : false}
+                                                    onOk={this.onOkTo}
+                                                    className="book-date" format={"DD-MM-YYYY"}
+                                                    disabledDate={this.disabledDateTo}
+                                                />
+                                            </ConfigProvider>
+                                        </div>
+                                      
 
                                     </div>
-                                       <div className="dropdown ">
-                                        <div className="fontAwexx"><i className="fas fa-calendar-alt"></i></div>
-                                        <ConfigProvider locale={locale}>
-                                            <DatePicker
-                                                defaultValue={moment(this.state.selectDateTo, "DD-MM-YYYY")}
-                                                allowClear={false}
-                                                id='input3'
-                                                suffixIcon={false}
-                                                onChange={this.onChangeTo}
-                                                disabled={this.state.typesTicket === '1c' ? true : false}
-                                                onOk={this.onOkTo}
-                                                className="book-date" format={"DD-MM-YYYY"}
-                                                disabledDate={this.disabledDateTo}
-                                                style={{marginRight:'18px'}}
-                                            />
-                                        </ConfigProvider>
-
                                     </div>
-
-                                    {this.state.selectTo !== '' && this.state.selectFrom !== '' && this.state.selectDate !== '' ?
-                                        <div className="dropdown">
-                                            <Button className="book-btn" type="primary" >
-                                                <Link
+                                  
+                                </div>
+                                  {this.state.selectTo !== '' && this.state.selectFrom !== '' && this.state.selectDate !== '' ?
+                                            <button className="book-btn"   onClick={this.onFindTicket}>
+                                                <i className="fa fa-search buy-icon"></i>
+                                                TÌM CHUYẾN ĐI
+                                                {/* <Link 
+                                                    className="buy__ticket"
                                                     onClick={this.onFindTicket}
                                                     to={`/vi-VN/ve-xe-khach-tu-${slugify(this.state.selectFrom)}-di-${slugify(this.state.selectTo)}-tg-${this.state.selectDate}-ve${this.state.typesTicket}`}
-                                                > Tìm vé xe</Link>
-                                            </Button>
-                                        </div>
+                                                > TÌM CHUYẾN ĐI</Link> */}
+                                            </button>
                                         :
-                                        <div className="dropdown">
-                                            <Button onClick={this.showModal} className="book-btn" type="primary">
-                                                Tìm vé xe
-                                           </Button>
-                                            <Modal
-                                                title={
-                                                    <div
-                                                        style={{
-                                                            width: '100%',
-                                                            cursor: 'move',
-                                                        }}
-                                                        onMouseOver={() => {
-                                                            if (this.state.disabled) {
-                                                                this.setState({
-                                                                    disabled: false,
-                                                                });
-                                                            }
-                                                        }}
-                                                        onMouseOut={() => {
-                                                            this.setState({
-                                                                disabled: true,
-                                                            });
-                                                        }}
-                                                        onFocus={() => { }}
-                                                        onBlur={() => { }}
-                                                    >
-                                                        Dat ve
-</div>
-                                                }
-                                                visible={this.state.visible}
-                                                onOk={this.handleOk}
-                                                onCancel={this.handleCancel}
-                                                modalRender={modal => <Draggable disabled={this.state.disabled}>{modal}</Draggable>}
-                                            >
-                                                <p>
-                                                    Ban co muon dat ve khong ?
-</p>
-
-                                            </Modal>
-
-                                        </div>}
-                                </div>
+                                        <div >
+                                            <button onClick={this.showModal} className="book-btn" >
+                                            <i className="fa fa-search buy-icon"></i> TÌM CHUYẾN ĐI
+                                           </button>
+                                        </div>
+                                        }    
                             </Col>
                         </Row>
                     </div>
@@ -533,6 +529,12 @@ const mapDispathToProps = (dispatch) => {
     return {
         getSelectRequest: (selectFrom, selectTo, selectDate,selectDateTo,selectVe) => {
             dispatch(getSelectRequest(selectFrom, selectTo, selectDate,selectDateTo,selectVe))
+        },
+        getSelectNotify: (notify) => {
+            dispatch(getSelectNotify(notify))
+        },
+        getTripRequest: () => {
+            dispatch(getTripRequest())
         },
     }
 }

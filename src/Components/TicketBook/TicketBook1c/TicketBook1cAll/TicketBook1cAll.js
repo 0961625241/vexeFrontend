@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 export default class TicketbookCall extends Component {
     render() {
         let item =this.props.item;
+        console.log(this.props.typesStation)
+        console.log(`${item.fromStation.nameStation} - ${item.toStation.nameStation}`)
         return (
             <>
                     <div className="route-info"><div className="route-info-name">{item.fromStation.nameStation} ⇒ {item.toStation.nameStation}</div>

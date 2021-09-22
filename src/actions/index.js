@@ -63,6 +63,13 @@ export const searchUser = (keyword) => {
               keyword
           }
 }
+export const searchTicket = (keyword) => {
+    
+    return {
+              type:ActionType.SEARCH_TICKET,
+              keyword
+          }
+}
 // const  getUse=(data)=>{
 //   return {
 //       type:ActionType.LIST_USER,

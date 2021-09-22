@@ -2,91 +2,18 @@ import React, { Component } from 'react'
 import { Breadcrumb,Button, Modal, Form, Input, Radio, Table, Space, Select, DatePicker, Tag } from 'antd';
 import { connect } from 'react-redux';
 import { deleteTicketRequest } from './../../../actions/tickets';
+import { searchTicket } from './../../../actions/index';
 import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 const { Option } = Select;
 const { TextArea } = Input;
 function numberToMoney(money) {
   return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 }
-const CollectionCreateForm = ({ onChangeStartTime, visible, onCreate, onCancel, data, handleChangeFromStation, handleChangeToStation, fromStation, selectToStation, validateMessages, selectFormStation }) => {
-  const [form] = Form.useForm();
-  const allStation = (fromStation, selectToStation) => {
-    return fromStation.map((item, index) => {
-      console.log(item.tripId.fromStation._id)
-      if (item.tripId.fromStation._id !== selectToStation) {
-        return (<Select.Option key={index + item.tripId.fromStation._id} value={item.tripId.fromStation._id}>{item.tripId.fromStation.name}</Select.Option>)
-      }
-    })
-  }
-  return (
-    <Modal
-      visible={visible}
-      title="Create a new collection"
-      okText="Create"
-      cancelText="Cancel"
-      onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            form.resetFields();
-            console.log(values)
-            onCreate(values);
-          })
-          .catch((info) => {
-            console.log('Validate Failed:', info);
-          });
-      }}
-    >
-      <Form
-        fields={data}
-        form={form}
-        layout="vertical"
-        name="form_in_modal"
-        initialValues={{
-          modifier: 'public',
-        }}
-      >
-        <Form.Item
-          hidden
-          name="id"
-          label="id"
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item label="fromStation" name={'fromStation'} rules={[{ required: true }]} >
-          <Select onChange={handleChangeFromStation}>
-            {allStation(fromStation, selectToStation)}
-          </Select>
-        </Form.Item>
-        <Form.Item label="toStation" name={'toStation'} dependencies={['fromStation']}
-          rules={[
-            { required: true },
-            ({ getFieldValue }) => ({
-              validator(rule, value) {
-                if (!value || getFieldValue('fromStation') !== value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject('toStation is not identical with the fromStation');
-              },
-            }),
-          ]} >
-          <Select onChange={handleChangeToStation}>
-            {allStation(fromStation, selectFormStation)}
-          </Select>
-        </Form.Item>
 
-        <Form.Item name="startTime" label="startTime" rules={[{ required: true }]} >
-          <DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />
-        </Form.Item>
-
-      </Form>
-    </Modal>
-  );
-};
 
 class ListTicket extends Component {
   state = {
+    keyword: '',
     filterNameTicket: '',
     filterNameStation: "",
     filterNameStation2c: "",
@@ -122,8 +49,7 @@ class ListTicket extends Component {
           if (text && text.length > 0) {
             return (
               text.map((text) => {
-                console.log(text)
-                return (<Tag color={'green'} key={text}>
+                return (<Tag color={'green'} key={text._id}>
                   {text.code.toUpperCase()}
                 </Tag>)
               })
@@ -194,8 +120,7 @@ class ListTicket extends Component {
             if (text && text.length > 0) {
               return (
                 text.map((text) => {
-                  console.log(text)
-                  return (<Tag color={'green'} key={text}>
+                  return (<Tag color={'green'} key={text._id}>
                     {text.code.toUpperCase()}
                   </Tag>)
                 })
@@ -238,8 +163,7 @@ class ListTicket extends Component {
               if (text && text.length > 0) {
                 return (
                   text.map((text) => {
-                    console.log(text)
-                    return (<Tag color={'green'} key={text}>
+                    return (<Tag color={'green'} key={text._id}>
                       {text.code.toUpperCase()}
                     </Tag>)
                   })
@@ -281,38 +205,7 @@ class ListTicket extends Component {
           </Space>
         )
       },
-
-      // {
-      //   title: 'Hành động',
-      //   key: 'action',
-      //   render: (text) => (
-      //     <Space size="middle">
-      //       {/* <a onClick={() => this.onUpdate(text._id)}><i style={{ color: '#1890ff' }} className="far fa-edit"></i>  </a> */}
-      //       <a onClick={() => this.onDelete(text._id, text)}><i style={{ color: '#1890ff' }} className="far fa-trash-alt"></i></a>
-      //     </Space>
-
-      //   )
-      // }
     ],
-    // data: [
-    //   {
-    //     name: ["id"],
-    //     value: ""
-    //   },
-    //   {
-    //     name: ["name"],
-    //     value: ""
-    //   },
-    //   {
-    //     name: ["address"],
-    //     value: ""
-    //   },
-    //   {
-    //     name: ["province"],
-    //     value: ""
-    //   }
-    // ],
-
     validateMessages: {
       required: '${label} is required!',
       types: {
@@ -320,10 +213,8 @@ class ListTicket extends Component {
         number: '${label} is not a validate number!',
       },
       number: {
-        // range: '${label} must be between ${min} and ${max}',
         range: '${label} must have at least ${min} characters'
       },
-
     },
     selectFormStation: '',
     selectToStation: '',
@@ -340,7 +231,9 @@ class ListTicket extends Component {
   listTicket = (listTicket) => {
     const data = [];
     let filterNameTicket = this.state.filterNameTicket;
-    let filterNameStation = this.state.filterNameStation
+    let filterNameStation = this.state.filterNameStation;
+    let listSearch =this.props.listSearch;
+   
     if (filterNameStation) {
       listTicket = listTicket.filter((task) => {
         if (filterNameStation === '') {
@@ -361,11 +254,13 @@ class ListTicket extends Component {
         }
       });
     }
+    listTicket = listTicket.filter((task) => {
+      return task.emailKH.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
+    });
     listTicket.map((item, index) => {
       if (item.typesTicket === '1c') {
-        console.log(item)
         data.push({
-          key: index,
+          key: item._id,
           _id: item._id,
           tripId: item.tripId,
           fromStation: item.tripId.fromStation.nameStation,
@@ -385,7 +280,8 @@ class ListTicket extends Component {
   listTicket2c = (listTicket) => {
     const data = [];
     let filterNameTicket = this.state.filterNameTicket;
-    let filterNameStation2 = this.state.filterNameStation2c
+    let filterNameStation2 = this.state.filterNameStation2c;
+    let listSearch=this.props.listSearch
     if (filterNameStation2) {
       listTicket = listTicket.filter((task) => {
         if (filterNameStation2 === '') {
@@ -406,10 +302,13 @@ class ListTicket extends Component {
         }
       });
     }
+    listTicket = listTicket.filter((task) => {
+      return task.emailKH.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
+    });
     listTicket.map((item, index) => {
       if (item.typesTicket === '2c') {
         data.push({
-          key: index,
+          key: item._id,
           _id: item._id,
           tripId: item.tripId,
           fromStation: item.tripId.fromStation.nameStation,
@@ -474,6 +373,14 @@ onClickTicket2c=()=>{
         typesTicket1c:false
     })
 }
+onChangeSearch = (event) => {
+  this.setState({
+    keyword: event.target.value
+  });
+}
+onSearch = () => {
+  this.props.searchTicket(this.state.keyword)
+}
   render() {
     return (
       <><div>
@@ -492,6 +399,7 @@ onClickTicket2c=()=>{
               <div className="input-groupSearch">
                 <Button onClick={this.onClickTicket2c} type="primary">Vé khứ hồi</Button>
               </div>
+
               <div className="input-groupSearch">
               <Select
                 style={{ width: 150 }}
@@ -514,7 +422,23 @@ onClickTicket2c=()=>{
                   })}
               </Select>
             </div>
+            <div className="input-groupSearch" style={{ display: 'flex' }}>
+              <input
+                name="keyword"
+                value={this.state.keyword}
+                type="text"
+                className="form-control"
+                placeholder="Nhập email..."
+                onChange={this.onChangeSearch}
+              />
+              <span className="input-group-btn">
+                <button className="btn btn-primary" type="button" onClick={this.onSearch}>
+                  <span className="fa fa-search " style={{ marginRight: '5px' }}></span>Tìm kiếm
+                        </button>
+              </span>
+            </div>  
             </div>
+              
             <Table bordered columns={this.state.columns} dataSource={this.listTicket(this.props.listTicket)} />
           </div>
           : ''}
@@ -547,6 +471,21 @@ onClickTicket2c=()=>{
                   })}
               </Select>
             </div>
+            <div className="input-groupSearch" style={{ display: 'flex' }}>
+              <input
+                name="keyword"
+                value={this.state.keyword}
+                type="text"
+                className="form-control"
+                placeholder="Nhập email..."
+                onChange={this.onChangeSearch}
+              />
+              <span className="input-group-btn">
+                <button className="btn btn-primary" type="button" onClick={this.onSearch}>
+                  <span className="fa fa-search " style={{ marginRight: '5px' }}></span>Tìm kiếm
+                        </button>
+              </span>
+            </div>  
             </div>
             <Table scroll={{ x: 1500 }} bordered columns={this.state.columns2c} dataSource={this.listTicket2c(this.props.listTicket)} />
           </div>
@@ -563,6 +502,7 @@ const mapStateToProps = (state) => ({
   listTicket: state.listTicket.tickets,
   listTrip: state.listTrip.trips,
   listStation: state.listStation.stations,
+  listSearch: state.searchTicket.keyword
 });
 
 
@@ -571,6 +511,9 @@ const mapDispathToProps = (dispatch) => {
     deleteTicketRequest: (id, data) => {
       dispatch(deleteTicketRequest(id, data))
     },
+    searchTicket: (keyword) => {
+      dispatch(searchTicket(keyword))
+    }
   }
 }
 export default connect(mapStateToProps, mapDispathToProps)(ListTicket);

@@ -20,8 +20,15 @@ import searchCar from './searchCar';
 import searchUser from './searchUser';
 import searchDriver from './searchDriver';
 import searchBusA1 from './searchBusA1';
+import searchTicket from './searchTicket';
+import listChat from './listChat';
+import loading from './loading';
+
 
 const rootReducer = combineReducers({
+  loading,
+  searchTicket,
+  listChat,
   listBusA1,
   listCarMFG,
   listProvince,

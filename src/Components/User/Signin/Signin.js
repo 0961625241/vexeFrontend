@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Button, Layout, Col, Row } from 'antd';
 import { Link, NavLink } from "react-router-dom";
 import {postLoginRequest,getUserRequest} from './../../../actions/users';
+import {getSelectNotify} from './../../../actions/loading';
 import { connect } from 'react-redux';
 import Signup from '../Signup/Signup';
+
 const bcrypt = require('bcryptjs');
 const { promisify } = require('util');
 const comparePassword = promisify(bcrypt.compare);
@@ -31,10 +33,12 @@ const validateMessages = {
 };
 
 const Signin = (props) => {
+    const [loading, setloading] = useState(false)
     useEffect(() => {
         props.getUserRequest();
     },[])
-    const onFinish = (values) => {
+    
+    const onFinish = async (values) => {
         console.log(values);
         console.log('ádsad')
        
@@ -50,8 +54,10 @@ const Signin = (props) => {
         //         // }
         //     })
         // }
-      
-         props.postLoginRequest(values, props.history)
+       props.getSelectNotify({loading: true})
+       props.postLoginRequest(values, props.history)
+     
+        // 
         
         
     };
@@ -71,6 +77,8 @@ const Signin = (props) => {
    
    
     return (
+        <>
+        
         <section className="signUp">
             <div className="container">
                 <Row>
@@ -109,7 +117,7 @@ const Signin = (props) => {
 
 
                             <Form.Item  className="form-signup">
-                                <p id='errLogin'>{props.userLogin.err && props.userLogin.err !== null ? props.userLogin.err : '' }</p>
+                                {/* <p id='errLogin'>{props.userLogin.err && props.userLogin.err !== null ? props.userLogin.err : '' }</p> */}
                                 <Button  type="primary" htmlType="submit"  className="submit-Login">
                                     Đăng nhập
         </Button>
@@ -125,7 +133,7 @@ const Signin = (props) => {
                 </Row>
             </div>
         </section>
-
+        </>
     );
 };
 
@@ -138,6 +146,10 @@ const mapDispathToProps = (dispatch) => {
         getUserRequest: () => {
             dispatch(getUserRequest())
         },
+        getSelectNotify: (notify) => {
+            dispatch(getSelectNotify(notify))
+        },
+        
     }
 }
 const mapStateToProps = (state) => ({

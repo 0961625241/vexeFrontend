@@ -84,21 +84,21 @@ const Headers = () => {
     return (
         <>
 
-            <Header style={{ height: 'auto' }}>
+            <Header style={{ height: 'auto' ,padding:'0px 0px'}}>
                 <div className="container">
                     <Row>
-                        <Col span={10}>
+                        <Col md={10} xs={24}>
                             <div className="logo" style={{}} >
                                 <Link to="/"><img src="/img/logo.png" alt=""></img></Link>;
                         </div>
                         </Col>
-                        <Col span={10}>
+                        <Col md={10} xs={12}>
                             <ul className='menuHeader'>
                                 {showMenus(menus)}
                                 {showMenus1()}
                             </ul>
                         </Col>
-                        <Col span={4}>
+                        <Col md={4} xs={12}>
                             <div className="showDropdownLogin" style={{ textAlign: 'center' }}>
                                 {changeLogin()}
                             </div>

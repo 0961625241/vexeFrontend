@@ -5,13 +5,16 @@ import TicketBook1cAllTime from './TicketBook1cAll/TicketBook1cAllTime';
 import TicketBook1cAllCheckBox from './TicketBook1cAll/TicketBook1cAllCheckBox';
 import { Layout, Menu, Breadcrumb, Row, Col, Carousel, Input, DatePicker, Button, Card, Form, Spin } from 'antd';
 import { BrowserRouter as Router, Link, } from "react-router-dom";
+import { connect } from 'react-redux';
 
-export default class TicketbookC extends Component {
+
+
+class TicketbookC extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            typesStation: `${this.props.LuotDi1c[0].fromStation.nameStation} - ${this.props.LuotDi1c[0].toStation.nameStation}`,
-            itemStart: this.props.LuotDi1c[0],
+            typesStation: `${this.props.listTrip[0].fromStation.nameStation} - ${this.props.listTrip[0].toStation.nameStation}`,
+            itemStart: this.props.listTrip[0],
             setCodesLuotDi: [],
             priceLuotDi: 0,
             continue: true,
@@ -34,17 +37,20 @@ export default class TicketbookC extends Component {
                 address: ''
             },
             item_List: [],
-            value: this.props.LuotDi1c[0]._id,
-            timeDi: this.props.LuotDi1c[0].startTime
+            value: this.props.listTrip[0]._id,
+            timeDi: this.props.listTrip[0].startTime
         }
+
     }
+
+
 
 
 
 
     handleChangeTime = (event) => {
         console.log(event.target.value)
-        this.props.LuotDi1c.map(item => {
+        this.props.listTrip.map(item => {
             if (item._id === event.target.value) {
                 this.setState({
                     itemStart: item,
@@ -187,12 +193,12 @@ export default class TicketbookC extends Component {
     }
     render() {
         let homedi, homedi1, homediTime;
-        let { ve, LuotDi1c } = this.props;
-        let LuotDiForm = this.props.LuotDi1c[0].fromStation.province.nameProvince;
-        let LuotDiTo = this.props.LuotDi1c[0].toStation.province.nameProvince;
+        let { ve, listTrip } = this.props;
+        let LuotDiForm = this.props.listTrip[0].fromStation.province.nameProvince;
+        let LuotDiTo = this.props.listTrip[0].toStation.province.nameProvince;
         let stationLuotDi = [];
         if (ve === '1c') {
-            homedi = LuotDi1c.map((item, index) => {
+            homedi = listTrip.map((item, index) => {
                 if (stationLuotDi.includes(`${item.fromStation.nameStation} - ${item.toStation.nameStation}`) === false) {
                     stationLuotDi.push(`${item.fromStation.nameStation} - ${item.toStation.nameStation}`);
                     return <TicketBook1cAll onChangeStation={this.onChangeStation} handleRadioChange={this.handleRadioChange} typesStation={this.state.typesStation} key={index} item={item} index={index}></TicketBook1cAll>
@@ -200,26 +206,62 @@ export default class TicketbookC extends Component {
             })
         }
         if (ve === '1c') {
-            homediTime = LuotDi1c.map((item, index) => {
+            homediTime = listTrip.map((item, index) => {
                 if (`${item.fromStation.nameStation} - ${item.toStation.nameStation}` === this.state.typesStation) {
                     return <TicketBook1cAllTime key={index} item={item} index={index}></TicketBook1cAllTime>
                 }
             })
         }
         if (ve === '1c') {
-            homedi1 = LuotDi1c.map((item, index) => {
+            homedi1 = listTrip.map((item, index) => {
                 return <TicketBook1cAllCheckBox onCheckbox={this.onCheckbox} value={this.state.value} key={index} item={item} index={index}></TicketBook1cAllCheckBox>
             })
         }
+
         return (
             <>
+                <div className="container step-lineT">
+                    <div className="lineT">
+                        <div className="current-lineT"></div>
+                        <div className="next-lineT" style={ this.state.continue2 || this.state.continue3 ? {background:'#1890ff'} : {} }></div>
+                        <div className="next-lineX" style={ this.state.continue3 ? {background:'#1890ff'} : {} }></div>
+                    </div>
+                    <div className="step-circles">
+                        <div className="current-step">
+                            <div className="text">1</div>
+                            {/* <div  className="active-title" style="display: none;">
+                                CHỌN TUYẾN
+                            </div> */}
+                        </div>
+                        <div className="next-step" style={ this.state.continue2 || this.state.continue3 ? {background:'#1890ff'} : {} }>
+                            <div className="text">2</div>
+                            <div className="active-titleT" style={this.state.continue ? {} : { display: 'none' }} >
+                                CHỌN GHẾ
+                            </div>
+                    </div>                          
+                        <div className="empty-step" style={ this.state.continue2  ? {background:'#fff',border:'2px solid #1890ff'} : this.state.continue3 ? {background:'#1890ff'} :{} } >
+                            <div className="text">3</div>
+                            <div className="active-titleT" style={this.state.continue2 ? {} : { display: 'none' }}>
+                                THÔNG TIN KHÁCH HÀNG
+                            </div>                                   
+                        </div>
+                        <div className="empty-step" style={ this.state.continue3 ? {background:'#fff',border:'2px solid #1890ff'} : {} }>
+                            <div className="text">4</div>
+                            <div className="active-titleT" style={this.state.continue3 ? {} : { display: 'none' }}>
+                                THANH TOÁN
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 {this.state.continue === true ?
                     <div className="container">
                         <div className="row">
                             <div className="col-md-5">
                                 <div className="info-container">
                                     <div className="title"><span >{new Date(this.state.timeDi).getHours()}:{(new Date(this.state.timeDi).getMinutes() < 10 ? '0' : '')}{new Date(this.state.timeDi).getMinutes()} {JSON.parse(localStorage.getItem("OriginDest")).selectDate}</span></div>
-                                    <div className="route-name">{LuotDi1c[0].fromStation.province.nameProvince} ⇒ {LuotDi1c[0].toStation.province.nameProvince}</div>
+                                    <div className="route-name">{listTrip[0].fromStation.province.nameProvince} ⇒ {listTrip[0].toStation.province.nameProvince}</div>
                                     <div className="route-list">
                                         <div className="station-select-title">Chọn bến xe</div>
                                         <div className='typesTicket2C'>
@@ -305,7 +347,7 @@ export default class TicketbookC extends Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="info-container info-container1">
-                                    <p className="title" >THÔNG TIN HÀNH KHÁCH</p>
+                                    <p className="title " >THÔNG TIN HÀNH KHÁCH</p>
                                     <form id="form-steps" style={{ padding: '0px 0px 30px 0px' }} >
                                         <fieldset style={{ 'width': "100%", "paddingLeft": "16px", "paddingRight": "16px" }}>
                                             <p className="input-title">Họ tên hành khách *</p>
@@ -364,3 +406,15 @@ export default class TicketbookC extends Component {
     }
 }
 
+
+
+const mapDispathToProps = (dispatch) => {
+    return {
+      
+    }
+}
+const mapStateToProps = (state) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispathToProps)(TicketbookC);

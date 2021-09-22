@@ -67,3 +67,29 @@ export const postDriverRequest = (data) => {
         data
   }
   }
+
+  export const emailDriverRequest = (data) => {
+    return (dispatch) => {
+      Axios({ method: "POST",url: "http://localhost:3000/api/drivers/email",data})
+      .then((res) => {
+        console.log(res.data)
+        // dispatch(deleteDriver(res.data))
+    })
+  }
+  }
+
+
+  export const getDriverIdRequest = (id) => {
+    return (dispatch) => {
+      Axios({ method: "GET",url: "http://localhost:3000/api/drivers/" + id })
+      .then((res) => {
+        dispatch(getDriverId(res.data))
+    })
+  }
+  }
+  const  getDriverId=(data)=>{
+    return {
+        type:ActionType.GET_ID_DRIVER,
+        data
+    }
+  }

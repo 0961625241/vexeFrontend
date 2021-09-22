@@ -41,6 +41,7 @@ export const LIST_DRIVER  = "LIST_DRIVER";
 export const ADD_DRIVER  = "ADD_DRIVER";
 export const UPDATE_DRIVER  = "UPDATE_DRIVER";
 export const DELETE_DRIVER  = "DELETE_DRIVER";
+export const GET_ID_DRIVER  = "GET_ID_DRIVER";
 
 export const LIST_PROVINCE  = "LIST_PROVINCE";
 
@@ -53,6 +54,9 @@ export const ADD_BUSA1  = "ADD_BUSA1";
 export const UPDATE_BUSA1  = "UPDATE_BUSA1";
 export const DELETE_BUSA1  = "DELETE_BUSA1";
 
+export const LIST_CHAT  = "LIST_CHAT";
+
+
 export const SELECT="SELECT";
 
 
@@ -64,7 +68,11 @@ export const SEARCH_BUSA1="SEARCH_BUSA1";
 export const SEARCH_TRIP="SEARCH_TRIP";
 export const SEARCH_CAR="SEARCH_CAR";
 export const SEARCH_USER="SEARCH_USER";
+export const SEARCH_TICKET="SEARCH_TICKET";
 
 
+export const NOTIFY="NOTIFY";
+
+export const GET_TICKET_EMAIL="GET_TICKET_EMAIL";
 
 

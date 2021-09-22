@@ -9,6 +9,43 @@ export default class Ticketbook2cerr extends Component {
         let seat2s = [1, 2, 3, 4, 5, 6]
         return (
             <>
+            
+             <div className="container step-lineT">
+                    <div className="lineT">
+                        <div className="current-lineT"></div>
+                        <div className="next-lineT" ></div>
+                        <div className="next-lineX" ></div>
+                    </div>
+                    <div className="step-circles">
+                        <div className="current-step">
+                            <div className="text">1</div>
+                            {/* <div  className="active-title" style="display: none;">
+                                CHỌN TUYẾN
+                            </div> */}
+                        </div>
+                        <div className="next-step">
+                            <div className="text">2</div>
+                            <div className="active-titleT"  >
+                                CHỌN GHẾ
+                            </div>
+                    </div>                          
+                        <div className="empty-step"  >
+                            <div className="text">3</div>
+                            <div className="active-titleT" style={{ display: 'none' }}>
+                                THÔNG TIN KHÁCH HÀNG
+                            </div>                                   
+                        </div>
+                        <div className="empty-step" >
+                            <div className="text">4</div>
+                            <div className="active-titleT" style={{ display: 'none' }}>
+                                THANH TOÁN
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6">

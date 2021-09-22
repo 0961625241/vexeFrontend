@@ -80,25 +80,25 @@ render() {
             <Layout className="inforCar" style={{ padding: '20px 0px' }}>
                 <div className="container">
                     <Row >
-                        <Col className="car-col" span={12}>
-                            <h4>Bến xe</h4>
-                            <Row >
+                        <Col className="car-col" md={12} xs={24}>
+                            <h4 className="titleinforCar">Bến xe</h4>
+                            <Row className="RowinforCar">
 
-                                <Col span={12}>
+                                <Col md={12} >
                                     {this.showStation(0,3)}
                                 </Col>
-                                <Col span={12}>
+                                <Col md={12}>
                                 {this.showStation(3,6)}
                                 </Col>
                             </Row>
                         </Col>
-                        <Col className="car-col" span={12}>
-                            <h4>Nhà xe</h4>
-                            <Row >
-                                <Col span={12}>
+                        <Col className="car-col" md={12} xs={24}>
+                            <h4 className="titleinforCar">Nhà xe</h4>
+                            <Row className="RowinforCar">
+                                <Col md={12}>
                                 {this.showCar(0,3)}
                                 </Col>
-                                <Col span={12}>
+                                <Col md={12}>
                                 {this.showCar(3,6)}
                                 </Col>
                             </Row>

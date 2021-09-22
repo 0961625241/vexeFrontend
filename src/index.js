@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { createStore, compose, applyMiddleware } from "redux";
 import rootReducer from "./reducers/index";
 import thunk from "redux-thunk";
+import Notify from './Components/Notify/Notify'
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
@@ -17,6 +18,7 @@ const store = createStore(
 ReactDOM.render(
   // <React.StrictMode enable = {false}>
     <Provider store={store}>
+      <Notify></Notify>
       <App />
     </Provider>
   // </React.StrictMode>,

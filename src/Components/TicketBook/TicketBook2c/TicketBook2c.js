@@ -341,6 +341,43 @@ class TicketBook2c extends Component {
         }
         return (
             <>
+              <div className="container step-lineT">
+                    <div className="lineT">
+                        <div className="current-lineT"></div>
+                        <div className="next-lineT" style={ this.state.continue2 || this.state.continue3 ? {background:'#1890ff'} : {} }></div>
+                        <div className="next-lineX" style={ this.state.continue3 ? {background:'#1890ff'} : {} }></div>
+                    </div>
+                    <div className="step-circles">
+                        <div className="current-step">
+                            <div className="text">1</div>
+                            {/* <div  className="active-title" style="display: none;">
+                                CHỌN TUYẾN
+                            </div> */}
+                        </div>
+                        <div className="next-step" style={ this.state.continue2 || this.state.continue3 ? {background:'#1890ff'} : {} }>
+                            <div className="text">2</div>
+                            <div className="active-titleT" style={this.state.continue ? {} : { display: 'none' }} >
+                                CHỌN GHẾ
+                            </div>
+                    </div>                          
+                        <div className="empty-step" style={ this.state.continue2  ? {background:'#fff',border:'2px solid #1890ff'} : this.state.continue3 ? {background:'#1890ff'} :{} } >
+                            <div className="text">3</div>
+                            <div className="active-titleT" style={this.state.continue2 ? {} : { display: 'none' }}>
+                                THÔNG TIN KHÁCH HÀNG
+                            </div>                                   
+                        </div>
+                        <div className="empty-step" style={ this.state.continue3 ? {background:'#fff',border:'2px solid #1890ff'} : {} }>
+                            <div className="text">4</div>
+                            <div className="active-titleT" style={this.state.continue3 ? {} : { display: 'none' }}>
+                                THANH TOÁN
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
                 {this.state.continue === true ?
                     <div className="container">
                             <div className="row">

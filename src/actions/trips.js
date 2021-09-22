@@ -1,11 +1,17 @@
 import *as ActionType from  './../constants/ActionType'
 import Axios from 'axios';
-
-export const getTripRequest = () => {
+import {getSelectNotify} from './loading';
+export const getTripRequest = (history,linkRedirect) => {
+  
   return (dispatch) => {
     Axios({ method: "GET",url: "http://localhost:3000/api/trips"})
     .then((res) => {
       console.log(res.data)
+    // if(history && linkRedirect !== undefined)
+    // {
+      dispatch(getSelectNotify({}));
+    //     history.push(linkRedirect)
+    // }
       dispatch(getTrip(res.data))
   })
 }

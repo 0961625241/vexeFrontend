@@ -41,28 +41,6 @@ export default class TicketBook1cAllChecked extends Component {
                                 </text>
                             </svg>
                         </td>
-                        {/* <td   className={`tdx${this.props.id}`}>
-                       <svg xmlns="http://www.w3.org/2000/svg" width="23" height="42" viewBox="0 0 28 44">
-                                <g style={item.isBooked===true ? {fill: "rgb(247, 188, 170)"} : {fill: "rgb(192, 192, 192)"}} id={item._id} className={`spanx${this.props.id}`} stroke="#000" strokeWidth=".5">
-                                    <g>
-                                        <rect width="28" height="44" rx="4" stroke="none"></rect>
-                                        <rect x=".25" y=".25" width="27.5" height="43.5" rx="3.75" fill="none"></rect>
-                                    </g>
-                                    <g transform="translate(2)">
-                                        <rect width="24" height="34" rx="2" stroke="none"></rect>
-                                        <rect x=".25" y=".25" width="23.5" height="33.5" rx="1.75" fill="none"></rect>
-                                    </g>
-                                    <g transform="translate(6 36)">
-                                        <rect width="16" height="8" rx="2" stroke="none"></rect>
-                                        <rect x=".25" y=".25" width="15.5" height="7.5" rx="1.75" fill="none"></rect>
-                                    </g>
-                                </g>
-                                <text data-v-8084877a="">
-                                    <tspan onClick={()=>this.qua(item._id)} data-v-8084877a="" x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" className="active-seat-text"> {item.code}
-                                    </tspan>
-                                </text>
-                            </svg>
-                        </td> */}
                     </React.Fragment>
                 )
             } else {

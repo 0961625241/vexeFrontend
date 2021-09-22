@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Button, Layout, Col, Row,Modal, } from 'antd';
 import {postSignUpRequest,getUserRequest} from './../../../actions/users';
 import { connect } from 'react-redux';
-
+import {getSelectNotify} from './../../../actions/loading';
 const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -45,6 +45,7 @@ const Signup = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const onFinish = (values) => {
         values.fullName = values.ho + values.ten
+        props.getSelectNotify({loading: true})
         props.postSignUpRequest(values, props.history)
         console.log(values);
     };
@@ -193,6 +194,9 @@ const mapDispathToProps = (dispatch) => {
         },
         getUserRequest: () => {
             dispatch(getUserRequest())
+        },
+        getSelectNotify: (notify) => {
+            dispatch(getSelectNotify(notify))
         },
     }
 }

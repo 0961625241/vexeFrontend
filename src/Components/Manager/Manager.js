@@ -94,16 +94,16 @@ class Manager extends Component {
         },
         link: 'tickets'
       },
-      {
-        key: 5,
-        _id: 5,
-        ModelName: 'Phụ xe',
-        Records: {
-          name: listBusA1.length,
-          class: '',
-        },
-        link: 'busA1s'
-      },
+      // {
+      //   key: 5,
+      //   _id: 5,
+      //   ModelName: 'Phụ xe',
+      //   Records: {
+      //     name: listBusA1.length,
+      //     class: '',
+      //   },
+      //   link: 'busA1s'
+      // },
       {
         key: 6,
         _id: 6,
@@ -129,6 +129,7 @@ class Manager extends Component {
     return data;
   }
   render() {
+    console.log(this.props)
     return (
       <>
         <div>

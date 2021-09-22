@@ -7,9 +7,13 @@ const InforLogin = ({path,component:Component}) => {
         <>
             <Route path={path}
                  render={routeProps => {
-                    if (localStorage.getItem('User')) {
+                    if (JSON.parse(localStorage.getItem("User")) && JSON.parse(localStorage.getItem("User")).userType === 'client') {
                       return (
                         <Redirect to="/" />
+                      );
+                    }else if(JSON.parse(localStorage.getItem("User")) && JSON.parse(localStorage.getItem("User")).userType === 'admin'){
+                      return (
+                        <Redirect to="/manager" />
                       );
                     }
                     return  <Component {...routeProps} />

@@ -2,7 +2,7 @@ import *as ActionType from  './../constants/ActionType'
 import Axios from 'axios';
 import { responsiveArray } from 'antd/lib/_util/responsiveObserve';
 // import  { getUser,setUser} from "./../method/gobal";
-
+import {getTripRequest} from './trips';
 
 export const getTicketRequest = () => {
   return (dispatch) => {
@@ -25,26 +25,13 @@ export const postTicketRequest = (data) => {
     Axios({ method: "POST",url: "http://localhost:3000/api/tickets/booking" , data})
     .then((res) => {
       console.log(res.data)
-    //   Axios({ method: "GET",url: "http://localhost:3000/api/trips"})
-    //   .then((res) => {
-    //      dispatch(getTrip(res.data))
-    //      console.log(res.data)
-    // })
+      dispatch(getTripRequest())
       // dispatch(postTicket(res.data))
   }).catch((error) =>{
     console.log(error.response)
   });
 }
 }
-const  getTrip=(data)=>{
-  return {
-      type:ActionType.LIST_TRIP,
-      data
-  }
-}
-
-
-
 
 // const  postTicket=(data)=>{
 //   return {
@@ -66,6 +53,24 @@ export const deleteTicketRequest = (id,data) => {
 const  deleteTicket=(data)=>{
   return {
       type:ActionType.DELETE_TICKET,
+      data
+  }
+}
+
+
+export const postTicketEmailRequest = (data) => {
+  console.log(data)
+  return (dispatch) => {
+    Axios({ method: "POST",url: "http://localhost:3000/api/tickets/history/email" , data:data}).then((res) => {
+      console.log(res.data)
+      dispatch(postTicketEmail(res.data))
+    })
+ 
+}
+}
+const  postTicketEmail=(data)=>{
+  return {
+      type:ActionType.GET_TICKET_EMAIL,
       data
   }
 }

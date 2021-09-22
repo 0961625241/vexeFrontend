@@ -1,6 +1,6 @@
 import *as ActionType from  './../constants/ActionType'
 import Axios from 'axios';
-
+import {getSelectNotify} from './loading';
 
 
 
@@ -15,9 +15,14 @@ import Axios from 'axios';
       Axios({ method: "POST",url: "http://localhost:3000/api/users",data})
       .then((res) => {
           dispatch(postSignUp(user));
+          dispatch(getSelectNotify({success: res.data.message}));
           history.push("/login")
           console.log(user)
       })
+      .catch((error) =>{
+        dispatch(getSelectNotify({error: error.response.data.message}));
+        // dispatch(postLoginFailed(error.response.data.message))
+      });
     };
   };
   
@@ -34,7 +39,9 @@ import Axios from 'axios';
       Axios({ method: "POST",url: "http://localhost:3000/api/users/login",data})
       .then((res) => {
           dispatch(postLogin(res.data));
+          dispatch(getSelectNotify({success: res.data.message}));
           console.log(res.data)
+         
           if(res.data.userType==='admin'){
             localStorage.setItem("User", JSON.stringify(res.data));
             history.push("/manager");
@@ -44,7 +51,8 @@ import Axios from 'axios';
         }
         })
         .catch((error) =>{
-          dispatch(postLoginFailed(error.response.data.message))
+          dispatch(getSelectNotify({error: error.response.data.message}));
+          // dispatch(postLoginFailed(error.response.data.message))
         });
     };
   };
@@ -154,3 +162,5 @@ const  putUser=(data)=>{
       data
   }
 }
+
+

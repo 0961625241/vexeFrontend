@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { getTripIdRequest } from './../../../../actions/trips';
+import {emailDriverRequest} from './../../../../actions/drivers';
 import {  Link,} from "react-router-dom";
 import { Breadcrumb,Button, Modal, Form, Input, Radio,Table ,Space} from 'antd';
 import GetTripSeats from './GetTripSeats'
@@ -78,6 +79,15 @@ class Gettrip extends Component {
                                      <div className="start-time">
                                         <div className="start-time-title">Mã Xe</div>
                                         <div><span>{getIdTrip.cars.codeBus}</span></div>
+                                    </div>
+                                    <div className="start-time">
+                                        <div className="start-time-title">Tên Tài xế</div>
+                                        <div><span>{getIdTrip.cars.driver.nameDriver}</span></div>
+                                    </div>
+                                    <div className="start-time">
+                                        <div className="start-time-title">Email</div>
+                                        <div><span>{getIdTrip.cars.driver.emailDriver}</span></div>
+                                        <div><button onClick={()=>{this.props.emailDriverRequest(getIdTrip)}}>Gửi email tài xế</button></div>
                                     </div>
                                     <div className="start-time">
                                         <div className="start-time-title">Điểm lên xe</div>
@@ -158,6 +168,9 @@ const mapStateToProps = (state) => ({
     return {
         getTripIdRequest: (id) => {
         dispatch(getTripIdRequest(id))
+      },
+      emailDriverRequest: (data) => {
+        dispatch(emailDriverRequest(data))
       },
     }
   }

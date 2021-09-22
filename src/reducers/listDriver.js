@@ -1,6 +1,7 @@
 import *as ActionType from './../constants/ActionType'
 let initialState = {
-    drivers: []
+    drivers: [],
+    getIdDriver:null
 }
 
 
@@ -11,6 +12,9 @@ const listDriver = (state = initialState, action) => {
         case ActionType.LIST_DRIVER:
             state.drivers = action.data;
             return { ...state }
+        case ActionType.GET_ID_DRIVER:
+            state.getIdDriver = action.data;
+            return { ...state }       
         case ActionType.ADD_DRIVER:
             state.drivers = [...state.drivers, action.data]
             return { ...state }
@@ -19,6 +23,7 @@ const listDriver = (state = initialState, action) => {
                 var index = state.drivers.findIndex((item)=>{
                     return item._id === data._id
                 })
+                console.log(data)
                 var date1 = new Date(data.SContactDriver);
                 var date2 = new Date(data.EContactDriver);
                 var diff = new Date(date2.getTime() - date1.getTime());

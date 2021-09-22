@@ -2,12 +2,13 @@ import *as ActionType from  './../constants/ActionType'
 import Axios from 'axios';
 import { responsiveArray } from 'antd/lib/_util/responsiveObserve';
 // import  { getUser,setUser} from "./../method/gobal";
-
+import {getSelectNotify} from './loading';
 
 export const getStationRequest = () => {
   return (dispatch) => {
     Axios({ method: "GET",url: "http://localhost:3000/api/stations"})
     .then((res) => {
+      dispatch(getSelectNotify({}));
       dispatch(getStation(res.data))
   })
 }

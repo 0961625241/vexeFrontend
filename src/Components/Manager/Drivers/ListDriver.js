@@ -25,15 +25,12 @@ const validateMessages = {
     range: '${label} must be between ${min} and ${max}',
   },
 };
-const options = [
-  { label: 'Tiền xăng', value: 2000000 },
-  { label: 'Tiền Ăn', value: 1000000 },
-];
 
 
 const CollectionCreateForm = ({ getId, onChangeCar, onChangeAllowance, selectCarMFG, onChangeCarMFG, selectStation, onChangeStation, listCarMFG, listCar, listProvince, selectProvince, onChangeProvince, listStation, FindId, visible, onCreate, onCancel, data }) => {
   const [form] = Form.useForm();
   let nameCarMF = '';
+ 
 
   return (
     <Modal
@@ -84,6 +81,18 @@ const CollectionCreateForm = ({ getId, onChangeCar, onChangeAllowance, selectCar
           <Input />
         </Form.Item>
         <Form.Item
+          name="emailDriver"
+          label="Email"
+          rules={[
+            {
+              required: true,
+              message: 'Please input the Email of collection!',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           name="addressDriver"
           label="Địa chỉ "
           rules={[
@@ -97,7 +106,7 @@ const CollectionCreateForm = ({ getId, onChangeCar, onChangeAllowance, selectCar
         </Form.Item>
         <Form.Item
           rules={[
-            { required: true, message: 'lease input the sdtDriver of collection!' },
+            { required: true, message: 'please input the sdtDriver of collection!' },
             { min: 10, max: 11, message: 'sdtDriver must be between 10 and 11' },
           ]}
           className='priceTrip'
@@ -133,21 +142,21 @@ const CollectionCreateForm = ({ getId, onChangeCar, onChangeAllowance, selectCar
             <Button icon={<UploadOutlined />}>Upload </Button>
           </Upload>
         </Form.Item>
-        <Form.Item name="SContactDriver" label="SContactDriver" rules={[{ required: true }]} >
+        <Form.Item name="SContactDriver" label="Ngày bắt đầu hợp đồng" rules={[{ required: true }]} >
           <DatePicker showTime format="DD-MM-YYYY " />
         </Form.Item>
-        <Form.Item name="EContactDriver" label="EContactDriver" rules={[{ required: true }]} >
+        <Form.Item name="EContactDriver" label="Ngày kết thúc hợp đồng" rules={[{ required: true }]} >
           {/* HH:mm:ss */}
           <DatePicker showTime format="DD-MM-YYYY " />
         </Form.Item>
         <Form.Item
           rules={[{ required: true }]}
           name={'salaryDriver'}
-          label="salaryDriver"
+          label="Lương"
         >
           <InputNumber />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name="allowanceDriver"
           label="allowanceDriver"
           rules={[
@@ -158,7 +167,8 @@ const CollectionCreateForm = ({ getId, onChangeCar, onChangeAllowance, selectCar
           ]}
         >
           <TextArea />
-        </Form.Item>
+        </Form.Item> */}
+       
         <Form.Item
           name="province"
           label="Khu vực"
@@ -355,11 +365,11 @@ class Listdriver extends Component {
             </Space>
           )
         },
-        {
-          title: 'Phụ cấp',
-          dataIndex: 'allowanceDriver',
-          width: 100,
-        },
+        // {
+        //   title: 'Phụ cấp',
+        //   dataIndex: 'allowanceDriver',
+        //   width: 100,
+        // },
         {
           title: 'Tổng lương',
           dataIndex: 'totalSalary',
@@ -376,10 +386,77 @@ class Listdriver extends Component {
           key: 'action',
           render: (text) => (
             <Space size="middle">
+              <Link to={`/manager/drivers/${text._id}`} ><i style={{ color: '#1890ff' }} className="far fa-bookmark"></i></Link>
               <a onClick={() => this.onUpdate(text._id)}><i style={{ color: '#1890ff' }} className="far fa-edit"></i>  </a>
               <a onClick={() => this.onDelete(text._id)}><i style={{ color: '#1890ff' }} className="far fa-trash-alt"></i></a>
             </Space>
           )
+        },
+      ],
+      data: [
+        {
+          name: ["id"],
+          value: ""
+        },
+        {
+          name: ["nameDriver"],
+          value: ""
+        },
+        {
+          name: ["emailDriver"],
+          value: ""
+        },
+        {
+          name: ["addressDriver"],
+          value: ""
+        },
+        {
+          name: ["sdtDriver"],
+          value: ""
+        },
+        {
+          name: ["bdayDriver"],
+          value: ""
+        },
+        {
+          name: ["CMNDDriver"],
+          value: ""
+        },
+        {
+          name: ["avatarDriver"],
+          value: ""
+        },
+        {
+          name: ["SContactDriver"],
+          value: ""
+        },
+        {
+          name: ["EContactDriver"],
+          value: ""
+        },
+        {
+          name: ["salaryDriver"],
+          value: ""
+        },
+        {
+          name: ["allowanceDriver"],
+          value: ""
+        },
+        {
+          name: ["province"],
+          value: ""
+        },
+        {
+          name: ["station"],
+          value: ""
+        },
+        {
+          name: ["nameCarMFG"],
+          value: ""
+        },
+        {
+          name: ["car"],
+          value: ""
         },
       ],
       keyword: ''
@@ -425,6 +502,7 @@ class Listdriver extends Component {
       return task.nameDriver.toLowerCase().indexOf(listSearch.toLowerCase()) !== -1;
     });
     listDriver.map((item, index) => {
+    
       var date1 = new Date(item.SContactDriver);
       var date2 = new Date(item.EContactDriver);
       var diff = new Date(date2.getTime() - date1.getTime());
@@ -441,7 +519,7 @@ class Listdriver extends Component {
         SContactDriver: `${new Date(item.SContactDriver).toLocaleDateString("es-CL")}`,
         EContactDriver: `${new Date(item.EContactDriver).toLocaleDateString("es-CL")}`,
         salaryDriver: `${numberToMoney(item.salaryDriver)}đ`,
-        allowanceDriver: item.allowanceDriver,
+        // allowanceDriver: item.allowanceDriver,
         totalSalary: `${numberToMoney(tinhSalary)}đ`
       })
     })
@@ -452,6 +530,7 @@ class Listdriver extends Component {
     var formData = new FormData(); // Currently empty
     formData.append("nameDriver", values.nameDriver);
     formData.append("addressDriver", values.addressDriver);
+    formData.append("emailDriver", values.emailDriver);
     formData.append("sdtDriver", values.sdtDriver);
     formData.append("bdayDriver", values.bdayDriver);
     formData.append("CMNDDriver", values.CMNDDriver);
@@ -478,6 +557,10 @@ class Listdriver extends Component {
         },
         {
           name: ["nameDriver"],
+          value: ""
+        },
+        {
+          name: ["emailDriver"],
           value: ""
         },
         {
@@ -539,7 +622,6 @@ class Listdriver extends Component {
     var listDriver = this.props.listDriver
     var index = listDriver.findIndex(x => x._id === id);
     var data = listDriver[index];
-    console.log(data)
     this.setState({
       getId: id,
       visible: true,
@@ -555,6 +637,10 @@ class Listdriver extends Component {
         {
           name: ["nameDriver"],
           value: data.nameDriver
+        },
+        {
+          name: ["emailDriver"],
+          value: data.emailDriver
         },
         {
           name: ["addressDriver"],
@@ -703,6 +789,10 @@ class Listdriver extends Component {
                       },
                       {
                         name: ["nameDriver"],
+                        value: ""
+                      },
+                      {
+                        name: ["emailDriver"],
                         value: ""
                       },
                       {

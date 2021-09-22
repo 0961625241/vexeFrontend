@@ -10,12 +10,14 @@ import { getDriverRequest } from './../actions/drivers';
 import { getProvinceRequest } from './../actions/provinces';
 import { getCarMFGRequest } from './../actions/carMFGs';
 import { getBusA1Request } from '../actions/busA1s';
-
+import { getChatRequest } from '../actions/chats';
 import { connect } from 'react-redux';
 import {
     Redirect, BrowserRouter as Router,
     Link,
 } from 'react-router-dom';
+import FormChatAdmin from '../Components/Manager/Chats/FormChatAdmin/FormChat';
+import Manager from '../Components/Manager/Manager';
 
 
 const { Header, Content, Sider } = Layout;
@@ -34,6 +36,7 @@ class InforManager extends Component {
         this.props.getProvinceRequest()
         this.props.getCarMFGRequest()
         this.props.getBusA1Request()
+        this.props.getChatRequest()
     }
 
     onCollapse = collapsed => {
@@ -51,8 +54,15 @@ class InforManager extends Component {
     logout = () => {
         return localStorage.removeItem('User');
     }
-    
+    onClickCurrent=(text)=>{
+        console.log(text)
+        this.setState({
+            current:text
+        })
+    }
     render() {
+        console.log(this.props)
+        console.log(this.state.current)
         if (JSON.parse(localStorage.getItem("User")) && JSON.parse(localStorage.getItem("User")).userType === 'admin') {
             return (
                 <Layout>
@@ -89,20 +99,23 @@ class InforManager extends Component {
                                 onClick={this.handleClick}
                             >
                                 <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/stations" icon={<LaptopOutlined />} ><Link to="/manager/stations">Bến xe</Link></Menu.Item>
-                                
                                 <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/drivers" icon={<StarOutlined />} ><Link to="/manager/drivers">Tài xế</Link></Menu.Item>
                                 <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/trips" icon={<NotificationOutlined />}><Link to="/manager/trips">Chuyến đi</Link></Menu.Item>
                                 <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/tickets" icon={<TagsOutlined />}><Link to="/manager/tickets">Vé xe</Link></Menu.Item>
-                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/busA1s" icon={<ThunderboltOutlined />} ><Link to="/manager/busA1s">Phụ xe</Link></Menu.Item>
+                                {/* <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/busA1s" icon={<ThunderboltOutlined />} ><Link to="/manager/busA1s">Phụ xe</Link></Menu.Item> */}
                                 <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/users" icon={<TableOutlined />}><Link to="/manager/users">User</Link></Menu.Item>
                                 <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/cars" icon={<StarOutlined />}><Link to="/manager/cars">Hãng xe</Link></Menu.Item>
                                 <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/total" icon={<ScheduleOutlined />}><Link to="/manager/total">Thông kê</Link></Menu.Item>
+                                <Menu.Item style={{borderBottom:'1px solid silver',margin:'0px'}} key="/manager/chats" icon={<ScheduleOutlined />}><Link to="/manager/chats">Quản lý chát</Link></Menu.Item>
                             </Menu>
                         </Sider>
                         <Content className="site-layout-background"  style={{ padding: 24, margin: 0, minHeight: 280,background:'#fff'}}>
-                            {this.props.children}
+                         
+                                  {this.props.children}
+                                  {/* <Manager onClickCurrent={this.onClickCurrent}>  </Manager> */}
                         </Content>
                     </Layout>
+                    {/* <FormChatAdmin></FormChatAdmin> */}
                 </Layout>
             )
         }
@@ -141,6 +154,9 @@ const mapDispathToProps = (dispatch) => {
         },
         getBusA1Request: () => {
             dispatch(getBusA1Request())
+        },
+        getChatRequest: () => {
+            dispatch(getChatRequest())
         },
     }
 }

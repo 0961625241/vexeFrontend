@@ -202,7 +202,7 @@ const CollectionCreateForm = ({ listStation, selectProvinceEnd, onChangeProvince
               seats.map((item, index) => {
                 if (item.station._id === selectFormStation) {
                   if (item.CarMFG.nameCarMFG === selectCar) {
-                    if (item.busA1.length === 2) {
+                    if (item.driver !== undefined) {
                       let temp;
                       quaxx.map((itemxx, indexx) => {
                         if (itemxx.name === item.codeBus) {
@@ -213,12 +213,19 @@ const CollectionCreateForm = ({ listStation, selectProvinceEnd, onChangeProvince
                         return <Select.Option key={index + item._id} value={item._id}>{item.codeBus}</Select.Option>
                       }
                       return temp;
-
-
-
-                      // return <Select.Option key={index + item._id}  value={item._id}>{item.codeBus}</Select.Option>
-
                     }
+                    // if (item.busA1.length === 2) {
+                    //   let temp;
+                    //   quaxx.map((itemxx, indexx) => {
+                    //     if (itemxx.name === item.codeBus) {
+                    //       temp = <Select.Option key={index + item._id} disabled value={item._id}>{item.codeBus}</Select.Option>
+                    //     }
+                    //   })
+                    //   if (temp === undefined) {
+                    //     return <Select.Option key={index + item._id} value={item._id}>{item.codeBus}</Select.Option>
+                    //   }
+                    //   return temp;
+                    // }
                   }
                 }
               })}
@@ -528,7 +535,7 @@ class ListTrip extends Component {
     });
 
     listTrip.map((item, index) => {
-      // console.log(item)
+      //  console.log(item)
       data.push({
         key: index,
         _id: item._id,

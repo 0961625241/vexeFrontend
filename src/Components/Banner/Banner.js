@@ -5,9 +5,9 @@ export default class Banner extends Component {
         return (
             <>
                 <Layout className="Carousel">
-                    <Row>
-                        <Col span={24}>
-                            <img width="100%" src="./img/banner.png" alt="" />
+                    <Row >
+                        <Col  xs={24} >
+                            <img width="100%" src="./img/banner2.png" alt="" />
                         </Col>
                     </Row>
                 </Layout>

@@ -9,11 +9,13 @@ import { connect } from 'react-redux';
 import { v1 as uuidv1 } from 'uuid';
 import { createBrowserHistory } from "history";
 import Swal from 'sweetalert2';
+import {getSelectNotify} from './../../actions/loading';
 const crypto = require('crypto');
 const history = createBrowserHistory();
 const Axios = require('axios');
 const CryptoJS = require("crypto-js");
 const { Header, Content, Footer, Sider } = Layout;
+
 function Payment(props) {
     useEffect(() => {
 
@@ -72,6 +74,7 @@ function Payment(props) {
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (details) {
                     // let InforTicket=JSON.parse(localStorage.getItem("InforTicket"));
+                    props.getSelectNotify({loading: true})
                     props.registers.captureID = details.purchase_units[0].payments.captures[0].id;
                     if (props.registers.captureID !== '') {
                         // InforTicket.captureID = captureID
@@ -86,7 +89,8 @@ function Payment(props) {
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                props.goBack.goBack()
+                                props.getSelectNotify({})
+                                props.goBack.goBack();
                             }
                         })
 
@@ -159,7 +163,7 @@ function Payment(props) {
 
                         <div className="info-container info-container3">
                             <div id="ticket-infomation-container" className="buy-info-container">
-                                <div className="title-bar-bg"><p className="title-txt">THÔNG TIN MUA VÉ</p></div>
+                                <div className="title-bar-bg"><p className="title-txt inForBuyT">THÔNG TIN MUA VÉ</p></div>
                                 <div className="customer-info-container">
                                     <div className="title-bar"><p className="title-txt">Thông tin hành khách</p></div>
                                     <div className="containerRow">
@@ -224,7 +228,7 @@ function Payment(props) {
                                     <div fragment="4e5b8c30e4" className="footer-bar">
                                         <div className="total-info">
                                             <p className="footer-title">TỔNG TIỀN</p>
-                                            <p className="footer-price">{(props.itemStart.price * props.registers.seatCodes.length)}<sup>₫</sup></p>
+                                            <p className="footer-price inForBuyT">{(props.itemStart.price * props.registers.seatCodes.length)}<sup>₫</sup></p>
                                         </div>
                                     </div>
                                 </div>
@@ -286,7 +290,10 @@ const mapDispathToProps = (dispatch) => {
         },
         getTripRequest: () => {
             dispatch(getTripRequest())
-        }
+        },
+        getSelectNotify: (notify) => {
+            dispatch(getSelectNotify(notify))
+        },
     }
 }
 
