@@ -43,7 +43,8 @@ class Formchat extends Component {
   }
 
   componentDidMount() {
-    this.socket = io("http://localhost:3000", { transports: ['websocket'] });
+    // this.socket = io("http://localhost:3000", { transports: ['websocket'] });
+    this.socket = io("https://vexe220921.herokuapp.com/", { transports: ['websocket'] });
     this.socket.on('newMessage', response => {
       let inforUser = this.state.inforUser;
       let displayNumberChat=this.state.displayNumberChat;

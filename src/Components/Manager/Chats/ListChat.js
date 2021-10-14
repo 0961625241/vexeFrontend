@@ -38,7 +38,8 @@ class ListChat extends Component {
     this.socket = null;
   }
   componentDidMount() {
-    this.socket = io("http://localhost:3000", { transports: ['websocket'] });
+    // this.socket = io("http://localhost:3000", { transports: ['websocket'] });
+    this.socket = io("https://vexe220921.herokuapp.com/", { transports: ['websocket'] });
     this.socket.on('newMessage', response => {
       this.props.postOneUserChatRequest(response)
       this.newMessage(response)
