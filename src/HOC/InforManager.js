@@ -19,7 +19,7 @@ import {
 import FormChatAdmin from '../Components/Manager/Chats/FormChatAdmin/FormChat';
 import Manager from '../Components/Manager/Manager';
 import ListChat from '../Components/Manager/Chats/ListChat';
-
+import {loginAdminChatRequest} from '../actions/userOnline';
 
 const { Header, Content, Sider } = Layout;
 class InforManager extends Component {
@@ -28,6 +28,8 @@ class InforManager extends Component {
         current: this.props.location.pathname,
     };
     componentDidMount() {
+       
+        this.props.loginAdminChatRequest(JSON.parse(localStorage.getItem("User")))
         this.props.getStationRequest()
         this.props.getTripRequest()
         this.props.getTicketRequest()
@@ -152,6 +154,9 @@ const mapDispathToProps = (dispatch) => {
         },
         getChatRequest: () => {
             dispatch(getChatRequest())
+        },
+        loginAdminChatRequest: (data) => {
+            dispatch(loginAdminChatRequest(data))
         },
     }
 }

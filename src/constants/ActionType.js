@@ -54,8 +54,11 @@ export const ADD_BUSA1  = "ADD_BUSA1";
 export const UPDATE_BUSA1  = "UPDATE_BUSA1";
 export const DELETE_BUSA1  = "DELETE_BUSA1";
 
+export const LOGIN_ADMIN_CHAT  = "LOGIN_ADMIN_CHAT";
 export const LIST_CHAT  = "LIST_CHAT";
 export const ADD_CHAT  = "ADD_CHAT";
+
+
 
 export const ADD_ONE_USER= "ADD_ONE_USER";
 export const DELETE_ONE_USER= "DELETE_ONE_USER";

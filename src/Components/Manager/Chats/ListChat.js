@@ -65,10 +65,13 @@ class ListChat extends Component {
   }
 
   buttonSend = (m, conversation) => {
+   
     if (m.value) {
       let inforUser = this.props.userOnline.inforUser;
       inforUser.conversation = conversation;
       let listContent = { email: inforUser.email, username: inforUser.name, content: m.value, created: Date.now() };
+      console.log(listContent)
+      console.log(inforUser)
       this.socket.emit("newMessage", { data: listContent, user: inforUser });
     }
   }
@@ -76,6 +79,7 @@ class ListChat extends Component {
     this.props.deleteOneUserChatRequest(conversation)
   }
   render() {
+    console.log(this.props.userOnline.inforUser)
     let userClientOnline =this.props.userOnline.userClientOnline;
     let filterMessages = this.props.listChat
       .filter(item => {

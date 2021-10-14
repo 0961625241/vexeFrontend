@@ -4,8 +4,8 @@ let initialState = {
     inforUser: {
       id: '',
       conversation: ``,
-      email: JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).email : '',
-      name: JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).fullName : '',
+      email: '',
+      name: '',
       sdt: '',
     },
 }
@@ -15,6 +15,10 @@ let initialState = {
 
 const userOnline = (state = initialState, action) => {
     switch (action.type) {
+        case ActionType.LOGIN_ADMIN_CHAT:
+            state.inforUser.email = JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).email : '';
+            state.inforUser.name = JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).fullName : '';
+            return { ...state }
         case ActionType.ADD_ONE_USER:
             let response=action.data;
             state.inforUser.conversation = response.conversation

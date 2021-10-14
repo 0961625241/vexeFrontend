@@ -2,6 +2,18 @@ import *as ActionType from  './../constants/ActionType'
 
 
 
+export const loginAdminChatRequest = (data) => {
+  return (dispatch) => {
+      dispatch(loginAdminChat(data))
+  }
+}
+const  loginAdminChat=(data)=>{
+  return {
+      type:ActionType.LOGIN_ADMIN_CHAT,
+      data
+  }
+}
+
 
 export const postOneUserChatRequest = (data) => {
   return (dispatch) => {
