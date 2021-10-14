@@ -44,7 +44,7 @@ const Input1 = (props) => {
       }}
        onEmojiClick={onEmojiClick} pickerStyle={{ width: '100%' }} skinTone={SKIN_TONE_MEDIUM_DARK} />
     </div>: ''}
-    <div id={`bottom_wrapper${props.itemOne.conversation.replace("@gmail.com", "")}`} style={{display:'flex'}}>
+    <div id={`bottom_wrapperx${props.itemOne.conversation.replace("@gmail.com", "")}`} style={{display:'flex'}}>
                   <div className="">
                   {/* onKeyUp={(e) => this.enterKey(e)} */}
                   {/* ref="message" */}

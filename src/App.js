@@ -23,7 +23,10 @@ import Tickets from './Components/Manager/Tickets/ListTicket';
 import Users from './Components/Manager/Users/ListUser';
 import Cars from './Components/Manager/Cars/ListCar';
 import BusA1s from './Components/Manager/BusA1s/BusA1s';
-import Chats from './Components/Manager/Chats/ListChat';
+// import Chats from './Components/Manager/Chats/ListChat';
+import Chats from './Components/Manager/Chats1/ListChat1';
+
+
 
 import Total from './Components/Manager/Total/Total';
 import InforManager from './HOC/InforManager';
@@ -37,34 +40,18 @@ import { getStationRequest } from './actions/stations';
 import { getCarRequest } from './actions/cars';
 import { getTripRequest } from './actions/trips';
 import { getSelectNotify } from './actions/loading';
-
+import { getChatRequest } from './actions/chats'; 
 
 const history = createBrowserHistory();
-// import { createHashHistory } from "history";
-// const history = createHashHistory();
-// console.log(history)
-const menuRoutes = (Routes) => {
-  return Routes.map((item, index) => {
-    return (
-      <Route
-        key={index}
-        exact={item.exact}
-        path={item.path}
-        render={props => <item.main {...props} />}
-      >
-      </Route>
-    )
-  })
-}
 const App =(props)=> {
 
   useEffect(() => {
     // props.getSelectNotify({loading: true})
     props.getStationRequest()
     props.getCarRequest();
+    props.getChatRequest();
     // props.getTripRequest()
   }, []);
-  console.log(props)
   return (
     <>
       <Router>
@@ -106,6 +93,10 @@ const App =(props)=> {
 // export default App;
 const mapDispathToProps = (dispatch) => {
   return {
+    
+    getChatRequest: () => {
+      dispatch(getChatRequest())
+  },
       getUserIDRequest: (id) => {
           dispatch(getUserIDRequest(id))
       },

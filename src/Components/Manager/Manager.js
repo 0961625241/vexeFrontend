@@ -129,7 +129,6 @@ class Manager extends Component {
     return data;
   }
   render() {
-    console.log(this.props)
     return (
       <>
         <div>

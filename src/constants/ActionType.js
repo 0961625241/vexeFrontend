@@ -55,9 +55,14 @@ export const UPDATE_BUSA1  = "UPDATE_BUSA1";
 export const DELETE_BUSA1  = "DELETE_BUSA1";
 
 export const LIST_CHAT  = "LIST_CHAT";
+export const ADD_CHAT  = "ADD_CHAT";
 
+export const ADD_ONE_USER= "ADD_ONE_USER";
+export const DELETE_ONE_USER= "DELETE_ONE_USER";
 
 export const SELECT="SELECT";
+export const SELECT_CHAT="SELECT_CHAT";
+
 
 
 export const FILTER_SEAT="FILTER_SEAT";

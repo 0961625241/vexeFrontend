@@ -5,6 +5,8 @@ import axios from 'axios';
 import Messages from './message-list';
 import Input from './input';
 import { connect } from 'react-redux';
+import {getSelectChatRequest}  from './../../actions/selectChat';
+import {postChatRequest}  from './../../actions/chats';
 function slugify(string) {
   return string
     .toString()
@@ -26,8 +28,6 @@ class Formchat extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      messages: [
-      ],
       userOnline: [],
       inforUser: {
         id: '',
@@ -36,8 +36,6 @@ class Formchat extends Component {
         name: JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).fullName : '',
         sdt: '',
       },
-      inforChat1: true,
-      inforChat2: false,
       isDisplayChat: false,
       displayNumberChat:0,
     }
@@ -58,31 +56,26 @@ class Formchat extends Component {
         })
       }
     })
-    this.socket.on('serverSendUserTyping', data => {
-        if (data.showTyping && data.username !== this.state.inforUser.name) {
-          let slug = slugify(`show-typing${data.username}`);
-          if ($(`p.${slug}`).length > 0) {
-            $(`p.${slug}`).remove();
+      this.socket.on('serverSendUserTyping', data => {
+        let index =this.props.listChat.find(item=>item.username === data.username)
+        if(index === undefined) index = '';
+          if (data.showTyping && data.username !== index.username) {
+            let slug = slugify(`show-typing${data.username}`);
+            if ($(`p.${slug}`).length > 0) {
+              $(`p.${slug}`).remove();
+            }
+            const xhtmlUserTyping = `<p class='show-typing ${slug}' >${data.username} is typing ...</p>`;
+            $(xhtmlUserTyping).insertBefore($(`#bottom_wrapper${data.conversation.replace("@gmail.com", "")}`))
+          } else if(data.showTyping === false && data.username !== index.username){
+            $("p.show-typing").remove();
           }
-          const xhtmlUserTyping = `<p class='show-typing ${slug}' >${data.username} is typing ...</p>`;
-          $(xhtmlUserTyping).insertBefore($(`#bottom_wrapper${data.conversation.replace("@gmail.com", "")}`))
-        } else if(data.showTyping === false && data.username !== this.state.inforUser.name){
-          $("p.show-typing").remove();
-        }
-     
+      
      
     })
-    axios.get(`http://localhost:3000/api/chats`)
-      .then(res => {
-        this.setState({ messages: res.data })
-      })
-      .catch(error => console.log(error));
+ 
 
     if (this.state.inforUser.email !== '' && this.state.inforUser.name !== '') {
-      this.setState({
-        inforChat1: false,
-        inforChat2: true,
-      })
+      this.props.getSelectChatRequest(false,true)
     }
   }
   isDisplayBoxChat = () => {
@@ -110,10 +103,9 @@ class Formchat extends Component {
     let inforUser = this.state.inforUser;
     inforUser.id = this.socket.id;
     inforUser.conversation = `${inforUser.email}-admin`;
+    this.props.getSelectChatRequest(false,true)
     this.setState({
       inforUser: inforUser,
-      inforChat1: false,
-      inforChat2: true
     })
   }
   buttonSend = (m) => {
@@ -124,21 +116,22 @@ class Formchat extends Component {
     }
   }
   newMessage = (m) => {
-    let { messages } = this.state;
-    console.log(m)
-    let index = messages.findIndex(item => item._id === m._id)
-    if (index === -1) {
-      messages.push(m)
-    } else {
-      messages[index].listContent = m.listContent;
-    }
+    // let  messages = this.props.listChat;
+    this.props.postChatRequest(m)
+    // let index = messages.findIndex(item => item._id === m._id)
+    // if (index === -1) {
+    //   messages.push(m)
+    // } else {
+    //   messages[index].listContent = m.listContent;
+    // }
     let objMessage = $(`#messages1${m.conversation.replace("@gmail.com", "")}`);
-    this.setState({ messages });
+    // this.setState({ messages });
     objMessage.animate({ scrollTop: objMessage.prop('scrollHeight') }, 300); //tạo hiệu ứng cuộn khi có tin nhắn mới
   }
 
   render() {
-    let filterMessages = this.state.messages
+    console.log(this.state.inforUser)
+    let filterMessages = this.props.listChat
       .filter(item => {
         return item.conversation === this.state.inforUser.conversation;
       })
@@ -160,7 +153,7 @@ class Formchat extends Component {
             </div>
             <div className="contentChat">
 
-              {this.state.inforChat1 === true ?
+              {this.props.selectChat.inforChat1 === true ?
                 <div className="tawk-chat-panel-inner">
                   <div className="tawk-card">
                     <div className="tawk-text-center">
@@ -196,7 +189,7 @@ class Formchat extends Component {
                 </div>
                 : ''}
 
-              {this.state.inforChat2 === true ?
+              {this.props.selectChat.inforChat2 === true ?
                 <div>
                   <Messages inforUser={this.state.inforUser} messages={filterMessages}></Messages>
                   <Input inforUser={this.state.inforUser} socket={this.socket} buttonSend={this.buttonSend} />
@@ -213,9 +206,16 @@ class Formchat extends Component {
 
 const mapDispathToProps = (dispatch) => {
   return {
+    getSelectChatRequest:(inforChat1,inforChat2)=>{
+      dispatch(getSelectChatRequest(inforChat1,inforChat2))
+    },
+    postChatRequest:(data)=>{
+      dispatch(postChatRequest(data))
+    }
   }
 }
 const mapStateToProps = (state) => ({
+  selectChat:state.selectChat,
   listChat: state.listChat.chats,
 });
 export default connect(mapStateToProps, mapDispathToProps)(Formchat);

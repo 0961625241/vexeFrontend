@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Route, Link } from 'react-router-dom';
 import { Avatar, Layout, Menu, Dropdown, Breadcrumb, Row, Col, Carousel, Input, DatePicker, Button, Card } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import {getSelectChatRequest}  from './../../actions/selectChat';
+import { connect } from 'react-redux';
 const { Header, Content, Footer, Sider } = Layout;
 
 
 
 
 
-const Headers = () => {
+const Headers = (props) => {
+   
     const changeLogin = () => {
-        let result = <Link className='loginHeader' to="/login"><i className="fas fa-sign-in-alt"></i></Link>
+        let result = <Link onClick={()=>{
+            props.selectChat(true,false)
+        }} className='loginHeader' to="/login"><i className="fas fa-sign-in-alt"></i></Link>
         let user = JSON.parse(localStorage.getItem("User"));
         if (user) {
             result =
@@ -31,7 +36,8 @@ const Headers = () => {
         return result
     }
     const logout = () => {
-        return localStorage.removeItem('User');
+        props.selectChat(true,false)
+        localStorage.removeItem('User');
     }
     const menus = [
         {
@@ -111,5 +117,6 @@ const Headers = () => {
         </>
     )
 }
+
 
 export default Headers;

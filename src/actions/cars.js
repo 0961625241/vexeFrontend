@@ -1,9 +1,10 @@
 import *as ActionType from  './../constants/ActionType'
 import Axios from 'axios';
-
+import callApi from './../utils/apiCaller';
 export const getCarRequest = () => {
   return (dispatch) => {
-    Axios({ method: "GET",url: "http://localhost:3000/api/cars"})
+    return callApi(`cars`, 'GET', null)
+    // Axios({ method: "GET",url: "http://localhost:3000/api/cars"})
     .then((res) => {
       dispatch(getCar(res.data))
   })
@@ -17,8 +18,8 @@ const  getCar=(data)=>{
 }
 export const postCarRequest = (data) => {
   return (dispatch) => {
-    Axios({ method: "POST",url: "http://localhost:3000/api/cars",data 
-   })
+    return callApi('cars', 'POST', data)
+    // Axios({ method: "POST",url: "http://localhost:3000/api/cars",data })
     .then((res) => {
       console.log(res.data)
       dispatch(postCar(res.data))
@@ -36,7 +37,8 @@ const  postCar=(data)=>{
 
 export const putCarRequest = (id,data) => {
   return (dispatch) => {
-    Axios({ method: "PUT",url: "http://localhost:3000/api/cars/" + id,data})
+    return callApi(`cars/${id}`, 'PUT', data)
+    // Axios({ method: "PUT",url: "http://localhost:3000/api/cars/" + id,data})
     .then((res) => {
       console.log(res.data)
       dispatch(putCar(res.data))
@@ -53,7 +55,8 @@ const  putCar=(data)=>{
 
 export const deleteCarRequest = (id) => {
   return (dispatch) => {
-    Axios({ method: "DELETE",url: "http://localhost:3000/api/cars/" + id})
+    return callApi(`cars/${id}`, 'DELETE', null)
+    // Axios({ method: "DELETE",url: "http://localhost:3000/api/cars/" + id})
     .then((res) => {
       console.log(res.data)
       dispatch(deleteCar(res.data))

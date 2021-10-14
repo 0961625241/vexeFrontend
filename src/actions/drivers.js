@@ -1,9 +1,10 @@
 import *as ActionType from './../constants/ActionType'
 import Axios from 'axios';
-
+import callApi from './../utils/apiCaller';
 export const getDriverRequest = () => {
     return (dispatch) => {
-        Axios({ method: "GET", url: "http://localhost:3000/api/drivers" })
+      return callApi(`drivers`, 'GET', null)
+        // Axios({ method: "GET", url: "http://localhost:3000/api/drivers" })
             .then((res) => {
                 dispatch(getDriver(res.data))
             })
@@ -18,8 +19,8 @@ const getDriver = (data) => {
 
 export const postDriverRequest = (data) => {
     return (dispatch) => {
-      Axios({ method: "POST",url: "http://localhost:3000/api/drivers",data 
-     })
+      return callApi('drivers', 'POST', data)
+      // Axios({ method: "POST",url: "http://localhost:3000/api/drivers",data })
       .then((res) => {
         dispatch(postDriver(res.data))
     }) .catch((error) =>{
@@ -35,9 +36,9 @@ export const postDriverRequest = (data) => {
   }
   
   export const putDriverRequest = (id,data) => {
-    console.log(id,data)
     return (dispatch) => {
-      Axios({ method: "PUT",url: "http://localhost:3000/api/drivers/" + id,data})
+      return callApi(`drivers/${id}`, 'PUT', data)
+      // Axios({ method: "PUT",url: "http://localhost:3000/api/drivers/" + id,data})
       .then((res) => {
         console.log(res.data)
         dispatch(putDriver(res.data))
@@ -54,7 +55,8 @@ export const postDriverRequest = (data) => {
   
   export const deleteDriverRequest = (id) => {
     return (dispatch) => {
-      Axios({ method: "DELETE",url: "http://localhost:3000/api/drivers/" + id})
+      return callApi(`drivers/${id}`, 'DELETE', null)
+      // Axios({ method: "DELETE",url: "http://localhost:3000/api/drivers/" + id})
       .then((res) => {
         console.log(res.data)
         dispatch(deleteDriver(res.data))
@@ -70,7 +72,8 @@ export const postDriverRequest = (data) => {
 
   export const emailDriverRequest = (data) => {
     return (dispatch) => {
-      Axios({ method: "POST",url: "http://localhost:3000/api/drivers/email",data})
+      return callApi(`drivers/email`, 'POST', data)
+      // Axios({ method: "POST",url: "http://localhost:3000/api/drivers/email",data})
       .then((res) => {
         console.log(res.data)
         // dispatch(deleteDriver(res.data))
@@ -81,7 +84,8 @@ export const postDriverRequest = (data) => {
 
   export const getDriverIdRequest = (id) => {
     return (dispatch) => {
-      Axios({ method: "GET",url: "http://localhost:3000/api/drivers/" + id })
+      return callApi(`drivers/${id}`, 'GET', null)
+      // Axios({ method: "GET",url: "http://localhost:3000/api/drivers/" + id })
       .then((res) => {
         dispatch(getDriverId(res.data))
     })

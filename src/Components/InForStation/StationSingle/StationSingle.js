@@ -228,7 +228,6 @@ class StationSingle extends Component {
         
     }
     render() {
-        console.log(this.state.provinceArr1)
         let nameStation = '';
         let addressStation = '';
         let descriptionStation = '';

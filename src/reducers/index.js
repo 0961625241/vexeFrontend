@@ -23,9 +23,12 @@ import searchBusA1 from './searchBusA1';
 import searchTicket from './searchTicket';
 import listChat from './listChat';
 import loading from './loading';
-
+import selectChat from './selectChat';
+import userOnline from './userOnline';
 
 const rootReducer = combineReducers({
+  userOnline,
+  selectChat,
   loading,
   searchTicket,
   listChat,

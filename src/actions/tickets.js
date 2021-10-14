@@ -3,10 +3,14 @@ import Axios from 'axios';
 import { responsiveArray } from 'antd/lib/_util/responsiveObserve';
 // import  { getUser,setUser} from "./../method/gobal";
 import {getTripRequest} from './trips';
+import callApi from './../utils/apiCaller';
+
+
 
 export const getTicketRequest = () => {
   return (dispatch) => {
-    Axios({ method: "GET",url: "http://localhost:3000/api/tickets"})
+    return callApi(`tickets`, 'GET', null)
+    // Axios({ method: "GET",url: "http://localhost:3000/api/tickets"})
     .then((res) => {
       dispatch(getTicket(res.data))
   })
@@ -22,7 +26,8 @@ const  getTicket=(data)=>{
 
 export const postTicketRequest = (data) => {
   return (dispatch) => {
-    Axios({ method: "POST",url: "http://localhost:3000/api/tickets/booking" , data})
+    return callApi('tickets/booking', 'POST', data)
+    // Axios({ method: "POST",url: "http://localhost:3000/api/tickets/booking" , data})
     .then((res) => {
       console.log(res.data)
       dispatch(getTripRequest())
@@ -42,7 +47,8 @@ export const postTicketRequest = (data) => {
 
 export const deleteTicketRequest = (id,data) => {
   return (dispatch) => {
-    Axios({ method: "DELETE",url: `http://localhost:3000/api/tickets/` + id ,data})
+    return callApi(`tickets/${id}`, 'DELETE', data)
+    // Axios({ method: "DELETE",url: `http://localhost:3000/api/tickets/` + id ,data})
     .then((res) => {
       dispatch(deleteTicket(res.data))
   }).catch((error) =>{
@@ -61,7 +67,9 @@ const  deleteTicket=(data)=>{
 export const postTicketEmailRequest = (data) => {
   console.log(data)
   return (dispatch) => {
-    Axios({ method: "POST",url: "http://localhost:3000/api/tickets/history/email" , data:data}).then((res) => {
+    return callApi(`tickets/history/email`, 'POST', data)
+    // Axios({ method: "POST",url: "http://localhost:3000/api/tickets/history/email" , data:data})
+    .then((res) => {
       console.log(res.data)
       dispatch(postTicketEmail(res.data))
     })

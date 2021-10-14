@@ -18,6 +18,7 @@ import {
 } from 'react-router-dom';
 import FormChatAdmin from '../Components/Manager/Chats/FormChatAdmin/FormChat';
 import Manager from '../Components/Manager/Manager';
+import ListChat from '../Components/Manager/Chats/ListChat';
 
 
 const { Header, Content, Sider } = Layout;
@@ -40,13 +41,10 @@ class InforManager extends Component {
     }
 
     onCollapse = collapsed => {
-        console.log(collapsed);
         this.setState({ collapsed });
     };
 
     handleClick = e => {
-        console.log('click ', e);
-    
         this.setState({
           current: e.key,
         });
@@ -55,14 +53,11 @@ class InforManager extends Component {
         return localStorage.removeItem('User');
     }
     onClickCurrent=(text)=>{
-        console.log(text)
         this.setState({
             current:text
         })
     }
     render() {
-        console.log(this.props)
-        console.log(this.state.current)
         if (JSON.parse(localStorage.getItem("User")) && JSON.parse(localStorage.getItem("User")).userType === 'admin') {
             return (
                 <Layout>
@@ -115,7 +110,7 @@ class InforManager extends Component {
                                   {/* <Manager onClickCurrent={this.onClickCurrent}>  </Manager> */}
                         </Content>
                     </Layout>
-                    {/* <FormChatAdmin></FormChatAdmin> */}
+                    <ListChat></ListChat>
                 </Layout>
             )
         }

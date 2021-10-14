@@ -3,10 +3,11 @@ import Axios from 'axios';
 import { responsiveArray } from 'antd/lib/_util/responsiveObserve';
 // import  { getUser,setUser} from "./../method/gobal";
 import {getSelectNotify} from './loading';
-
+import callApi from './../utils/apiCaller';
 export const getStationRequest = () => {
   return (dispatch) => {
-    Axios({ method: "GET",url: "http://localhost:3000/api/stations"})
+    return callApi(`stations`, 'GET', null)
+    // Axios({ method: "GET",url: "http://localhost:3000/api/stations"})
     .then((res) => {
       dispatch(getSelectNotify({}));
       dispatch(getStation(res.data))
@@ -23,7 +24,8 @@ const  getStation=(data)=>{
 
 export const postStationRequest = (data) => {
   return (dispatch) => {
-    Axios({ method: "POST",url: "http://localhost:3000/api/stations",data})
+    return callApi('stations', 'POST', data)
+    // Axios({ method: "POST",url: "http://localhost:3000/api/stations",data})
     .then((res) => {
       console.log(res.data)
       dispatch(postStation(res.data))
@@ -41,7 +43,8 @@ const  postStation=(data)=>{
 
 export const putStationRequest = (id,data) => {
   return (dispatch) => {
-    Axios({ method: "PUT",url: "http://localhost:3000/api/stations/" + id,data})
+    return callApi(`stations/${id}`, 'PUT', data)
+    // Axios({ method: "PUT",url: "http://localhost:3000/api/stations/" + id,data})
     .then((res) => {
       console.log(res.data)
       dispatch(putStation(res.data))
@@ -57,7 +60,8 @@ const  putStation=(data)=>{
 
 export const deleteStationRequest = (id) => {
   return (dispatch) => {
-    Axios({ method: "DELETE",url: "http://localhost:3000/api/stations/" + id})
+    return callApi(`stations/${id}`, 'DELETE', null)
+    // Axios({ method: "DELETE",url: "http://localhost:3000/api/stations/" + id})
     .then((res) => {
       console.log(res.data)
       dispatch(deleteStation(res.data))

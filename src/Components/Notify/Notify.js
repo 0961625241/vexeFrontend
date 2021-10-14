@@ -5,7 +5,6 @@ import Toast from './../Toast/Toast'
 import {getSelectNotify} from './../../actions/loading';
 const Notify = (props) => {
     const  notify  = props.notify;
-    console.log(notify)
     return(
         <> 
             {notify.loading && <Loading />}

@@ -1,7 +1,7 @@
 import *as ActionType from  './../constants/ActionType'
 import Axios from 'axios';
 import {getSelectNotify} from './loading';
-
+import callApi from './../utils/apiCaller';
 
 
 
@@ -12,7 +12,8 @@ import {getSelectNotify} from './loading';
       password: data.password
     }
     return (dispatch) => {
-      Axios({ method: "POST",url: "http://localhost:3000/api/users",data})
+      return callApi(`users`, 'POST', data)
+      // Axios({ method: "POST",url: "http://localhost:3000/api/users",data})
       .then((res) => {
           dispatch(postSignUp(user));
           dispatch(getSelectNotify({success: res.data.message}));
@@ -36,7 +37,8 @@ import {getSelectNotify} from './loading';
   export const postLoginRequest = (data,history) => {
     return (dispatch) => {
       dispatch(postLoginFirst());
-      Axios({ method: "POST",url: "http://localhost:3000/api/users/login",data})
+      return callApi(`users/login`, 'POST', data)
+      // Axios({ method: "POST",url: "http://localhost:3000/api/users/login",data})
       .then((res) => {
           dispatch(postLogin(res.data));
           dispatch(getSelectNotify({success: res.data.message}));
@@ -76,7 +78,8 @@ import {getSelectNotify} from './loading';
   
 export const getUserRequest = () => {
   return (dispatch) => {
-    Axios({ method: "GET",url: "http://localhost:3000/api/users"})
+    return callApi(`users`, 'GET', null)
+    // Axios({ method: "GET",url: "http://localhost:3000/api/users"})
     .then((res) => {
       dispatch(getUser(res.data))
   })
@@ -92,13 +95,15 @@ const  getUser=(data)=>{
 export const getUserIDRequest = (id) => {
   // const token = JSON.parse(localStorage.getItem("User")).token
   return (dispatch) => {
-    Axios.get("http://localhost:3000/api/users/" + id,
+    return callApi(`users/${id}`, 'GET', null)
+    // Axios.get("http://localhost:3000/api/users/" + id,
     //  {
     //   headers: {
     //     'token': token
     //   },
     // }
-    ).then((res) => {
+// )
+  .then((res) => {
       console.log(res.data)
       dispatch(getUserID(res.data))
     })
@@ -116,9 +121,10 @@ const  getUserID=(data)=>{
 export const putIdClient =(data)=>{
   const { token } = JSON.parse(localStorage.getItem("User"));
   return (dispatch) => {
-    Axios({ method: "PUT",url: "http://localhost:3000/api/users/me",data, headers: {
-      token: token
-    }})
+    return callApi(`users/me`, 'PUT', data,token)
+    // Axios({ method: "PUT",url: "http://localhost:3000/api/users/me",data, headers: {
+    //   token: token
+    // }})
     .then((res) => {
       console.log(res.data)
   })
@@ -130,9 +136,10 @@ export const putIdClient =(data)=>{
 export const deleteUserRequest = (id) => {
   const { token } = JSON.parse(localStorage.getItem("User"));
   return (dispatch) => {
-    Axios({ method: "DELETE",url: "http://localhost:3000/api/users/" + id, headers: {
-      token: token
-    }})
+    return callApi(`users/${id}`, 'DELETE', null,token)
+    // Axios({ method: "DELETE",url: "http://localhost:3000/api/users/" + id, headers: {
+    //   token: token
+    // }})
     .then((res) => {
       dispatch(deleteUser(res.data))
   })
@@ -147,10 +154,12 @@ const  deleteUser=(data)=>{
 
 export const putUserRequest = (id,data) => {
   const { token } = JSON.parse(localStorage.getItem("User"));
+  console.log(id,data)
   return (dispatch) => {
-    Axios({ method: "PUT",url: "http://localhost:3000/api/users/" + id,data, headers: {
-      token: token
-    }})
+    // Axios({ method: "PUT",url: "http://localhost:3000/api/users/" + id,data, headers: {
+    //   token: token}
+    // })
+    return callApi(`users/${id}`, 'PUT', data,token)
     .then((res) => {
       dispatch(putUser(res.data))
   })
