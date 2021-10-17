@@ -45,7 +45,7 @@ class ListChat extends Component {
       this.newMessage(response)
     })
     this.socket.on('serverSendUserTyping', data => {
-          if (data.showTyping === true && data.username !== this.state.inforUser.name) {
+          if (data.showTyping === true && data.username !== this.props.userOnline.inforUser.name) {
             let slug = slugify(`show-typing${data.username}`);
             if ($(`p.${slug}`).length > 0) {
               $(`p.${slug}`).remove();
@@ -53,7 +53,7 @@ class ListChat extends Component {
             const xhtmlUserTyping = `<p class='show-typing ${slug}' >${data.username} is typing ...</p>`;
             $(xhtmlUserTyping).insertBefore($(`#bottom_wrapperx${data.conversation.replace("@gmail.com", "")}`))
           }else 
-          if(data.showTyping === false && data.username !== this.state.inforUser.name) {
+          if(data.showTyping === false && data.username !== this.props.userOnline.inforUser.name) {
             $("p.show-typing").remove();
           }
     })
