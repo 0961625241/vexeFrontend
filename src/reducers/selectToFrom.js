@@ -2,7 +2,7 @@ import *as ActionType from './../constants/ActionType';
 import moment from 'moment';
 let initialState = {
     selectFrom:'Sài Gòn',
-    selectTo:'Hà Nội',
+    selectTo:'Tây Ninh',
     selectDate:moment().format("DD-MM-YYYY"),
     selectDateTo:moment().format("DD-MM-YYYY"),
     selectVe:'1c'
