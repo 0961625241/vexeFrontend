@@ -28,7 +28,6 @@ class InforManager extends Component {
         current: this.props.location.pathname,
     };
     componentDidMount() {
-       
         this.props.loginAdminChatRequest(JSON.parse(localStorage.getItem("User")))
         this.props.getStationRequest()
         this.props.getTripRequest()

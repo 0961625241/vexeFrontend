@@ -26,14 +26,6 @@ class ListChat extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      userClientOnline: [],
-      inforUser: {
-        id: '',
-        conversation: ``,
-        email: JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).email : '',
-        name: JSON.parse(localStorage.getItem("User")) !== null ? JSON.parse(localStorage.getItem("User")).fullName : '',
-        sdt: '',
-      },
     };
     this.socket = null;
   }
@@ -45,7 +37,7 @@ class ListChat extends Component {
       this.newMessage(response)
     })
     this.socket.on('serverSendUserTyping', data => {
-          if (data.showTyping === true && data.username !== this.state.inforUser.name) {
+          if (data.showTyping === true && data.username !== this.props.userOnline.inforUser.name) {
             let slug = slugify(`show-typing${data.username}`);
             if ($(`p.${slug}`).length > 0) {
               $(`p.${slug}`).remove();
@@ -53,7 +45,7 @@ class ListChat extends Component {
             const xhtmlUserTyping = `<p class='show-typing ${slug}' >${data.username} is typing ...</p>`;
             $(xhtmlUserTyping).insertBefore($(`#bottom_wrapperx${data.conversation.replace("@gmail.com", "")}`))
           }else 
-          if(data.showTyping === false && data.username !== this.state.inforUser.name) {
+          if(data.showTyping === false && data.username !== this.props.userOnline.inforUser.name) {
             $("p.show-typing").remove();
           }
     })
@@ -65,13 +57,10 @@ class ListChat extends Component {
   }
 
   buttonSend = (m, conversation) => {
-   
     if (m.value) {
       let inforUser = this.props.userOnline.inforUser;
       inforUser.conversation = conversation;
       let listContent = { email: inforUser.email, username: inforUser.name, content: m.value, created: Date.now() };
-      console.log(listContent)
-      console.log(inforUser)
       this.socket.emit("newMessage", { data: listContent, user: inforUser });
     }
   }
@@ -79,7 +68,6 @@ class ListChat extends Component {
     this.props.deleteOneUserChatRequest(conversation)
   }
   render() {
-    console.log(this.props.userOnline.inforUser)
     let userClientOnline =this.props.userOnline.userClientOnline;
     let filterMessages = this.props.listChat
       .filter(item => {
