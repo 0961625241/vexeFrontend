@@ -18,7 +18,7 @@ import { Route, Link,  useLocation ,Redirect} from 'react-router-dom';
 import FormChat from './../FormChat/FormChat';
 import Swal from 'sweetalert2';
 import {getSelectNotify} from './../../actions/loading';
-import {getSelectChatRequest}  from './../../actions/selectChat'
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -48,9 +48,7 @@ const Home = (props) => {
       localStorage.removeItem("InforTicket")
     }
   },[])
-  const selectChat=(inforChat1,inforChat2)=>{
-    props.getSelectChatRequest(inforChat1,inforChat2)
-  }
+ 
   // let query = useQuery();
   // let InforTicket=JSON.parse(localStorage.getItem("InforTicket"));
   // const qua =()=>{
@@ -83,7 +81,7 @@ const Home = (props) => {
           </div>
         </div> */}
        
-        <Headers selectChat={selectChat}></Headers>
+        <Headers ></Headers>
         <Banner></Banner>
         <FindTickets history={props.history} listStation={props.listStation} ></FindTickets>
         <InForStation></InForStation>
@@ -99,9 +97,6 @@ const Home = (props) => {
 
 const mapDispathToProps = (dispatch) => {
   return {
-    getSelectChatRequest:(inforChat1,inforChat2)=>{
-      dispatch(getSelectChatRequest(inforChat1,inforChat2))
-    },
     postTicketRequest: (data) => {
       dispatch(postTicketRequest(data))
     },

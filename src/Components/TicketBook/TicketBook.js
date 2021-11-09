@@ -44,7 +44,7 @@ class TicketBook extends Component {
         this.LuotVe = [];
     }
     componentDidMount() {
-        this.props.getSelectNotify({loading: true})
+        // this.props.getSelectNotify({loading: true})
         this.props.getTripRequest()
         var body = document.body; 
         var html = document.documentElement; 

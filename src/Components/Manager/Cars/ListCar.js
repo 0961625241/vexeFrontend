@@ -107,6 +107,7 @@ const CollectionCreateForm = ({ listProvince, selectProvince, onChangeProvince, 
           >
             {
               listCarMFG.map((item, index) => {
+                console.log(item)
                 return (<Option key={index + item._id} value={item._id}>{item.nameCarMFG}</Option>)
               })}
           </Select>

@@ -26,10 +26,6 @@ const listCar = (state = initialState, action) => {
                     seats:data.seats,
                     typesSeat:data.typesSeat,
                     station: data.station
-
-                 
-                 
-                   
                 }
                 state.cars =[...state.cars]
                 return {...state}     

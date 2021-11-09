@@ -14,7 +14,7 @@ const Headers = (props) => {
    
     const changeLogin = () => {
         let result = <Link onClick={()=>{
-            props.selectChat(true,false)
+            props.getSelectChatRequest(true,false)
         }} className='loginHeader' to="/login"><i className="fas fa-sign-in-alt"></i></Link>
         let user = JSON.parse(localStorage.getItem("User"));
         if (user) {
@@ -36,7 +36,7 @@ const Headers = (props) => {
         return result
     }
     const logout = () => {
-        props.selectChat(true,false)
+        props.getSelectChatRequest(true,false)
         localStorage.removeItem('User');
     }
     const menus = [
@@ -76,7 +76,7 @@ const Headers = (props) => {
             return <Route path='/history'
                 exact={false}
                 children={({ match }) => {
-                    var active = match ? 'active' : '';
+                    var active = match ? 'active' : ''
                     return (
                         <li className={active} > <Link to='/history'>
                             Thông tin
@@ -119,4 +119,14 @@ const Headers = (props) => {
 }
 
 
-export default Headers;
+const mapDispathToProps = (dispatch) => {
+    return {
+      getSelectChatRequest:(inforChat1,inforChat2)=>{
+        dispatch(getSelectChatRequest(inforChat1,inforChat2))
+      },
+    }
+  }
+  const mapStateToProps = (state) => ({
+  });
+  export default connect(mapStateToProps, mapDispathToProps)(Headers);
+

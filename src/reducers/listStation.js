@@ -19,13 +19,7 @@ const listStation = (state=initialState,action)=>{
             var index = state.stations.findIndex((item)=>{
                 return item._id === data._id
             })
-            state.stations[index] ={
-                _id:data._id,
-                nameStation:data.nameStation,
-                addressStation:data.addressStation,
-                province:data.province,
-                descriptionStation:data.descriptionStation,
-            }
+            state.stations[index] =data
             state.stations =[...state.stations]
             return {...state} 
             case ActionType.DELETE_STATION:

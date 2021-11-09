@@ -21,16 +21,9 @@ const listTrip = (state = initialState, action) => {
             var index = state.trips.findIndex((item) => {
                 return item._id === data._id
             })
-            console.log(data)
-            console.log(state.trips[index])
-            state.trips[index] = {
-                _id: data._id,
-                fromStation: data.fromStation,
-                toStation: data.toStation,
-                startTime: data.startTime,
-                cars:data.cars,
-                price: data.price
-            }
+            // console.log(data)
+            // console.log(state.trips[index])
+            state.trips[index] = data
             state.trips = [...state.trips]
             return { ...state }
         case ActionType.DELETE_TRIP:

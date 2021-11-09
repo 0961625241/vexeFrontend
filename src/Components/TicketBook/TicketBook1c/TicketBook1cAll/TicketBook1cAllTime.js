@@ -5,7 +5,7 @@ export default class TicketbookCalltime extends Component {
         let {index,item}=this.props;
         return (
             <>
-                <option value={item._id}>{ `${new Date(item.startTime).getHours()}:${(new Date(item.startTime).getMinutes() < 10 ? '0' : '')}${new Date(item.startTime).getMinutes()} ${item.cars.typesSeat}`}</option>
+                <option value={item._id}>{ `${new Date(item.startTime).getHours()}:${(new Date(item.startTime).getMinutes() < 10 ? '0' : '')}${new Date(item.startTime).getMinutes()} ${item.cars.typesSeat} xe ${item.cars.CarMFG.nameCarMFG}`}</option>
             </>
         )
     }

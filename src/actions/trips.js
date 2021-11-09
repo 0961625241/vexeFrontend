@@ -13,7 +13,7 @@ export const getTripRequest = (history,linkRedirect) => {
       console.log(res.data)
     // if(history && linkRedirect !== undefined)
     // {
-      dispatch(getSelectNotify({}));
+      // dispatch(getSelectNotify({}));
     //     history.push(linkRedirect)
     // }
       dispatch(getTrip(res.data))
